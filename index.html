@@ -23,9 +23,68 @@ th,td{border:1px solid #333;padding:9px;text-align:center} th{background:#f5f5f5
 .notice{padding:12px;background:#fff7ed;color:#9a3412;border-radius:10px;margin-top:14px}
 .actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px} .center{text-align:center} .score{font-size:50px;color:#9b1c1c;font-weight:800}
 @media(max-width:700px){.row{grid-template-columns:1fr} .ansrow{grid-template-columns:36px 1fr} .symbols{grid-column:2} .ansrow .rhs{grid-column:2} .card{padding:18px}}
+
+.quiz-shell{
+  max-width:920px;
+  margin:18px auto;
+  padding:0 16px;
+}
+.quiz-toggle{
+  width:100%;
+  border:0;
+  border-radius:16px;
+  background:#9b1c1c;
+  color:#fff;
+  padding:18px 20px;
+  font-size:18px;
+  font-weight:800;
+  text-align:left;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 6px 18px rgba(0,0,0,.10);
+}
+.quiz-toggle:hover{background:#821717}
+.quiz-toggle .arrow{
+  font-size:20px;
+  transition:transform .25s ease;
+}
+.quiz-toggle.open .arrow{
+  transform:rotate(90deg);
+}
+.quiz-panel{
+  display:none;
+  margin-top:12px;
+}
+.quiz-panel.open{
+  display:block;
+}
+.quiz-hint{
+  font-size:13px;
+  font-weight:400;
+  opacity:.9;
+  margin-top:4px;
+}
+
 </style>
 </head>
-<body><div class="wrap"><div id="app" class="card"></div></div>
+<body>
+<div class="quiz-shell">
+  <button id="quizToggle" class="quiz-toggle" type="button" onclick="toggleQuiz()">
+    <span>
+      Practice: Ketaksamaan Linear Dalam Dua Pembolehubah
+      <div class="quiz-hint">Klik untuk buka / tutup latihan</div>
+    </span>
+    <span class="arrow">▶</span>
+  </button>
+
+  <div id="quizPanel" class="quiz-panel">
+    <div class="wrap" style="padding:0; margin:0 auto;">
+      <div id="app" class="card"></div>
+    </div>
+  </div>
+</div>
 <script>
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz32AYhu2Dj1Lb3tKBKPC9LF9AmJDrg77g9HUvqLTJCAcYrGwqutPyqIbNnzKIroKTl/exec";
 const students = [{"name": "SAM ZHI KHOI", "class": "EMERALD"}, {"name": "CHONG JIN TONG", "class": "DIAMOND"}, {"name": "VANNESA CHONG TING EN", "class": "EMERALD"}, {"name": "LIEW WEI XUN", "class": "SAPPHIRE"}, {"name": "SIM ZI HANG", "class": "SAPPHIRE"}, {"name": "MUHAMMAD ZEYN NIFAIL BIN ZAINAL", "class": "DIAMOND"}, {"name": "ZULAIKA BINTI SULAIMAN", "class": "DIAMOND"}, {"name": "KAMALIA DARWISYAH BINTI AZHAN", "class": "EMERALD"}, {"name": "MUHAMMAD SYAHMI ADHA BIN ZAMRI", "class": "DIAMOND"}, {"name": "MUHAMMAD ZAID BIN MUSTAPA", "class": "DIAMOND"}, {"name": "SAFIYA AUNI BINTI SAIFUL LIZAN", "class": "DIAMOND"}, {"name": "SELINA TAN QI ROU", "class": "DIAMOND"}, {"name": "WONG KA XUAN", "class": "EMERALD"}, {"name": "AQILAH SAIYEEDAH BINTI MD FABILAH", "class": "EMERALD"}, {"name": "NUR SYAMILA BINTI MOHD FARID", "class": "DIAMOND"}, {"name": "HEU CHIA NEE", "class": "EMERALD"}, {"name": "NUR ARISSYA AMEYLDA BINTI AZIZ", "class": "EMERALD"}, {"name": "CHAN WAI THONG", "class": "DIAMOND"}, {"name": "MUHAMMAD AL HAFIZ BIN MOHD SAIFULLIZAM", "class": "DIAMOND"}, {"name": "NUR AIN NADIRA BINTI SHAHRUDIN", "class": "EMERALD"}, {"name": "NUR'ALYA QISTINA BINTI MOHD HASRIME", "class": "DIAMOND"}, {"name": "PUTERI NUR ALEESYA BINTI MOHD AZHAN KWONG", "class": "DIAMOND"}, {"name": "HON THONG THONG", "class": "EMERALD"}, {"name": "AMIR WAFIEY BIN ZAINAL ABIDIN", "class": "DIAMOND"}, {"name": "MUHAMMAD DARWISY AHNA BIN MAZLAN", "class": "DIAMOND"}, {"name": "NOR AMIRA BINTI MOHAMMAD NAZIR", "class": "RUBY"}, {"name": "HUSNATUN SYIFA' BINTI MOHD HAFEZ", "class": "EMERALD"}, {"name": "SITI NURQURRATUAINIE BINTI MOHAMMAD HIRMAN", "class": "EMERALD"}, {"name": "MUHAMMAD DANIAL BIN MOHD MOKHTAR", "class": "DIAMOND"}, {"name": "MUHAMMAD RIZQ IQBAAL BIN FAIZAL", "class": "DIAMOND"}, {"name": "JUSTIN NELSON", "class": "EMERALD"}, {"name": "NUR QISTINA BALQIS BINTI AZHAR", "class": "DIAMOND"}, {"name": "RIDHUAN BIN ROSLEE", "class": "DIAMOND"}, {"name": "LIM YI XIAN", "class": "SAPPHIRE"}, {"name": "LIEW SIN JAJ", "class": "EMERALD"}, {"name": "NOR ATHIRAH BINTI MOHD IZAN", "class": "EMERALD"}, {"name": "NURUL SYAQIRAH BINTI MAZLAN", "class": "EMERALD"}, {"name": "IRIS NUR AISYAH BINTI MOHD HEFFE", "class": "EMERALD"}, {"name": "IZZI HALEEF BIN AZALI", "class": "DIAMOND"}, {"name": "AIERIL ZAQUAN BIN KUSNOS", "class": "EMERALD"}, {"name": "MUHAMMAD ADAM DANIAL BIN ABD AZIZ", "class": "EMERALD"}, {"name": "NUR DAWIRNA SAFFI BINTI ISHAK", "class": "EMERALD"}, {"name": "NUR ELISYA BINTI KHAIRUL AKMAL", "class": "EMERALD"}, {"name": "MUHAMMAD HARIS BIN JAMALUDIN", "class": "EMERALD"}, {"name": "ARMAN ARIF BIN MUHAMAD RAKBI", "class": "EMERALD"}, {"name": "MUBIN HARITH BIN MOHAMMAD MUBIN", "class": "EMERALD"}, {"name": "NG MEI XIN", "class": "SAPPHIRE"}, {"name": "AIN NATASHA BINTI MOHD ZAINAL ABIDIN", "class": "RUBY"}, {"name": "HUMAIRAH DANISHA BINTI ABDUL RAZAK", "class": "RUBY"}, {"name": "MUHAMMAD FITRI SYAH BIN MOHD NAJIB", "class": "RUBY"}, {"name": "NUR LIYANA BINTI KADERI", "class": "RUBY"}, {"name": "SITI NUR HAWA BINTI MD AZMI", "class": "RUBY"}, {"name": "AMIRA BINTI EIRHAN", "class": "EMERALD"}, {"name": "CHONG YU ZHE", "class": "SAPPHIRE"}, {"name": "HAN JO EN", "class": "RUBY"}, {"name": "SAIDATUL AKEMA BINTI MU'MININ", "class": "RUBY"}, {"name": "MUHAMMAD ZAINUL ZAKWAN BIN RAZALEE", "class": "EMERALD"}, {"name": "NURFARAH HANUM BINTI SALIM", "class": "EMERALD"}, {"name": "KHAIRUNISA BINTI ABDULLAH", "class": "EMERALD"}, {"name": "MUHAMMAD IZUDDIN BIN JANESDIN", "class": "RUBY"}, {"name": "CHONG JIA EN", "class": "SAPPHIRE"}, {"name": "CHEON ZI SHAN", "class": "RUBY"}, {"name": "MUHAMAD ALIF PUTRA BIN ZULKIFFLE", "class": "RUBY"}, {"name": "MUHAMMAD DINIE FIRDAUS BIN NORARMIZAN", "class": "RUBY"}, {"name": "SITI SOLEHA BINTI MARJUNI", "class": "RUBY"}, {"name": "MUHAMMAD ALIIF ZHORIIF BIN MOHD ABDULLAH", "class": "EMERALD"}, {"name": "MUHAMMAD ARIF HAKIMI BIN ABDULLAH", "class": "EMERALD"}, {"name": "MOHAMAD FAZRUL HAZIQ BIN MOHD AMIN", "class": "SAPPHIRE"}, {"name": "NUR HAZIRA SYAFIERA BINTI AL-HAFIZ", "class": "SAPPHIRE"}, {"name": "ADAM PUTERA BIN MOHAMAD SOLLEHAN", "class": "EMERALD"}, {"name": "MUHAMMAD THAQIF BIN AZMAN", "class": "EMERALD"}, {"name": "CHAI YU ZHE", "class": "ZIRCON"}, {"name": "CHANG JIA HENG", "class": "ZIRCON"}, {"name": "MUHAMMAD FAIQ BIN MOHD FARID", "class": "RUBY"}, {"name": "AL MAN SYAH RIZZAL BIN ABD SUKOR", "class": "SAPPHIRE"}, {"name": "AZLY FAHMI BIN AZRI SHAM", "class": "SAPPHIRE"}, {"name": "HAIQAL IKHWAN BIN NORHALIFI", "class": "SAPPHIRE"}, {"name": "NURUL AZREENA FATIHAH BINTI NORSHAM", "class": "SAPPHIRE"}, {"name": "PUTERI SHAHILA BINTI MOHD HALIM SHAH", "class": "SAPPHIRE"}, {"name": "NURDAYANA ELLYSYA BINTI ABDULLAH", "class": "RUBY"}, {"name": "AHMAD THAQIF IMRAN BIN NORAZMAN", "class": "SAPPHIRE"}, {"name": "CHAU RUI MENG", "class": "SAPPHIRE"}, {"name": "MUHAMMAD WAFIQ BIN MOHD FARID", "class": "RUBY"}, {"name": "CHOON LI XIN", "class": "SAPPHIRE"}, {"name": "LIM JOO YU", "class": "SAPPHIRE"}, {"name": "NAJIB IRFAN BIN NORDIN", "class": "SAPPHIRE"}, {"name": "WONG JIA HUI", "class": "SAPPHIRE"}, {"name": "NUR ALEEYA BINTI RAMLAN", "class": "RUBY"}, {"name": "NURSAFIYYAH BALQIS BINTI ZULKIFLY", "class": "RUBY"}, {"name": "NURUL IMAN ANISSA BINTI SHAHRIZAN", "class": "RUBY"}, {"name": "SOFIANA DEWI BINTI ABDULLAH", "class": "RUBY"}, {"name": "IRFAN ISKANDAR BIN MAT SAAT", "class": "EMERALD"}, {"name": "MUHAMMAD ADAM DANIAL BIN AZWHA", "class": "EMERALD"}, {"name": "ANIS ADHANUN SYIFAA BINTI SAMSUL BAHARI", "class": "SAPPHIRE"}, {"name": "MUHAMAD ZULHAIRIE BIN KHAIRULIZAM", "class": "SAPPHIRE"}, {"name": "MUHAMMAD ADAM DARWISY BIN MAZLIHAN", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HILMI BIN HAMZAH", "class": "SAPPHIRE"}, {"name": "DERREN LAI PIN CHAO", "class": "ZIRCON"}, {"name": "SACHIN A/L RAMAMURTHY", "class": "ZIRCON"}, {"name": "TAN JIAN YI", "class": "ZIRCON"}, {"name": "MUHAMAD FARISH HAIKAL BIN OSMAN", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HELMI BIN MAHADI", "class": "SAPPHIRE"}, {"name": "YONG LI LING", "class": "SAPPHIRE"}, {"name": "KHAIRUNNISA BINTI KOMARUDDIN", "class": "RUBY"}, {"name": "MOHAMAD FARIZUAN SHAHRUL BIN HAMDAN", "class": "RUBY"}, {"name": "NUR RABIAATUL ATIKA SYAHIRA BINTI MAZLAN", "class": "RUBY"}, {"name": "SITI NUR ALEYA BINTI MOHD NIZAM", "class": "RUBY"}, {"name": "MUHAMMAD RAHFIQ BIN RAHMAT", "class": "ZIRCON"}, {"name": "YAP ZHI LI", "class": "ZIRCON"}, {"name": "MUHAMMAD RIZMAN QUZAIMI BIN RAMLI", "class": "SAPPHIRE"}, {"name": "RIEFQIEE ADAMI BIN RIZAL", "class": "RUBY"}, {"name": "WONG YU GUAN", "class": "ZIRCON"}, {"name": "PUTRA ARMAND DARIUS BIN RAHMAT", "class": "SAPPHIRE"}, {"name": "CHEON ZI XUAN", "class": "ZIRCON"}, {"name": "CHANG JIA QI", "class": "SAPPHIRE"}, {"name": "MUHAMMAD DANISH RIFQI BIN MOHD NAZLI", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HAZEEQ INDRA BIN AZALI", "class": "ZIRCON"}, {"name": "FATIN NASUHA BINTI ZAHARI", "class": "RUBY"}, {"name": "MUHAMMAD ALIF DANIEL BIN MUJAHID", "class": "ZIRCON"}, {"name": "CHONG CHEE CHEN", "class": "SAPPHIRE"}, {"name": "CHIN JI HAO", "class": "ZIRCON"}, {"name": "CHONG JING SHENG", "class": "ZIRCON"}, {"name": "CHONG LIH MIN", "class": "ZIRCON"}, {"name": "CHONG LIH SEEN", "class": "ZIRCON"}];
@@ -126,5 +185,13 @@ async function submitResult(){
  <p>${sent?"Rekod markah telah dihantar.":"Markah selesai dikira."}</p>
  <button class="primary" onclick="renderLogin()">Kembali</button></div>`;
 }
+
+function toggleQuiz(){
+  const panel = document.getElementById("quizPanel");
+  const btn = document.getElementById("quizToggle");
+  panel.classList.toggle("open");
+  btn.classList.toggle("open");
+}
+
 renderLogin();
 </script></body></html>
