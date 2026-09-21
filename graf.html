@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Praktis: Graf Ketaksamaan Linear</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f6f8;color:#1f2937}
+.wrap{max-width:1100px;margin:20px auto;padding:16px}
+.card{background:#fff;border-radius:18px;padding:24px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+h1{margin:0 0 8px;font-size:30px}
+.sub{color:#667085}
+.notice{background:#fff7ed;color:#9a3412;padding:14px;border-radius:12px;margin:14px 0;font-size:14px;line-height:1.5}
+label{font-weight:700;display:block;margin:12px 0 6px}
+select,input{width:100%;padding:10px 12px;border:1px solid #d0d5dd;border-radius:10px;font-size:15px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.primary,.secondary{border:0;padding:11px 18px;border-radius:999px;font-weight:700;cursor:pointer}
+.primary{background:#9b1c1c;color:#fff}
+.secondary{background:#e5e7eb;color:#111827}
+.primary:disabled{opacity:.45;cursor:not-allowed}
+.topbar{display:flex;justify-content:space-between;gap:10px;margin-bottom:12px;font-weight:700;color:#475467}
+.progress{height:9px;background:#e8ebef;border-radius:999px;overflow:hidden;margin-bottom:18px}
+.progress div{height:100%;background:#9b1c1c}
+.qhead{border-bottom:2px solid #111;padding-bottom:12px;margin-bottom:16px}
+.context{line-height:1.6;margin:10px 0}
+.italic{font-style:italic;color:#4b5563}
+.part{margin:18px 0;padding-top:6px}
+.part-title{font-weight:800;margin-bottom:10px}
+.marks{float:right;color:#b42318}
+.conditions{margin:10px 0 0;padding-left:20px}
+.conditions li{margin:8px 0;line-height:1.5}
+.ansrow{display:grid;grid-template-columns:40px 1fr auto 1fr;gap:8px;align-items:center;margin:10px 0}
+.symbols{display:flex;gap:6px;flex-wrap:wrap}
+.symbtn{border:1px solid #98a2b3;background:#fff;padding:8px 12px;border-radius:9px;font-size:18px;cursor:pointer}
+.symbtn.active{background:#9b1c1c;color:#fff;border-color:#9b1c1c}
+.resultline{font-size:14px;min-height:18px;margin:2px 0 6px 48px}
+.ok{color:#067647;font-weight:700}
+.bad{color:#b42318;font-weight:700}
+.graph-layout{display:grid;grid-template-columns:310px 1fr;gap:18px;align-items:start}
+.sidebox{background:#f9fafb;border:1px solid #e5e7eb;border-radius:14px;padding:14px}
+.scale-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.smallbtn{padding:8px 12px;border:1px solid #cbd5e1;background:#fff;border-radius:10px;cursor:pointer;font-weight:700}
+.linecard{border:1px solid #e5e7eb;border-radius:12px;padding:10px;margin-top:10px;background:#fff}
+.linecard h4{margin:0 0 8px}
+.point-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+.line-feedback{font-size:13px;min-height:18px;margin-top:6px}
+.canvas-wrap{background:#fff;border:1px solid #cbd5e1;border-radius:14px;padding:10px}
+canvas{width:100%;max-width:100%;display:block;background:#fff;border:1px solid #e5e7eb;border-radius:10px}
+.graph-help{font-size:13px;color:#475467;margin-top:8px;line-height:1.5}
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:13px}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:middle;margin-right:4px}
+.actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+.center{text-align:center}
+.score{font-size:52px;font-weight:800;color:#9b1c1c}
+@media(max-width:900px){.graph-layout{grid-template-columns:1fr}}
+@media(max-width:650px){.row{grid-template-columns:1fr} .ansrow{grid-template-columns:40px 1fr} .symbols{grid-column:2} .ansrow .rhs{grid-column:2} .point-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" id="app"></div>
+</div>
+
+<script>
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz32AYhu2Dj1Lb3tKBKPC9LF9AmJDrg77g9HUvqLTJCAcYrGwqutPyqIbNnzKIroKTl/exec";
+const students = [{"name": "SAM ZHI KHOI", "class": "EMERALD"}, {"name": "CHONG JIN TONG", "class": "DIAMOND"}, {"name": "VANNESA CHONG TING EN", "class": "EMERALD"}, {"name": "LIEW WEI XUN", "class": "SAPPHIRE"}, {"name": "SIM ZI HANG", "class": "SAPPHIRE"}, {"name": "MUHAMMAD ZEYN NIFAIL BIN ZAINAL", "class": "DIAMOND"}, {"name": "ZULAIKA BINTI SULAIMAN", "class": "DIAMOND"}, {"name": "KAMALIA DARWISYAH BINTI AZHAN", "class": "EMERALD"}, {"name": "MUHAMMAD SYAHMI ADHA BIN ZAMRI", "class": "DIAMOND"}, {"name": "MUHAMMAD ZAID BIN MUSTAPA", "class": "DIAMOND"}, {"name": "SAFIYA AUNI BINTI SAIFUL LIZAN", "class": "DIAMOND"}, {"name": "SELINA TAN QI ROU", "class": "DIAMOND"}, {"name": "WONG KA XUAN", "class": "EMERALD"}, {"name": "AQILAH SAIYEEDAH BINTI MD FABILAH", "class": "EMERALD"}, {"name": "NUR SYAMILA BINTI MOHD FARID", "class": "DIAMOND"}, {"name": "HEU CHIA NEE", "class": "EMERALD"}, {"name": "NUR ARISSYA AMEYLDA BINTI AZIZ", "class": "EMERALD"}, {"name": "CHAN WAI THONG", "class": "DIAMOND"}, {"name": "MUHAMMAD AL HAFIZ BIN MOHD SAIFULLIZAM", "class": "DIAMOND"}, {"name": "NUR AIN NADIRA BINTI SHAHRUDIN", "class": "EMERALD"}, {"name": "NUR'ALYA QISTINA BINTI MOHD HASRIME", "class": "DIAMOND"}, {"name": "PUTERI NUR ALEESYA BINTI MOHD AZHAN KWONG", "class": "DIAMOND"}, {"name": "HON THONG THONG", "class": "EMERALD"}, {"name": "AMIR WAFIEY BIN ZAINAL ABIDIN", "class": "DIAMOND"}, {"name": "MUHAMMAD DARWISY AHNA BIN MAZLAN", "class": "DIAMOND"}, {"name": "NOR AMIRA BINTI MOHAMMAD NAZIR", "class": "RUBY"}, {"name": "HUSNATUN SYIFA' BINTI MOHD HAFEZ", "class": "EMERALD"}, {"name": "SITI NURQURRATUAINIE BINTI MOHAMMAD HIRMAN", "class": "EMERALD"}, {"name": "MUHAMMAD DANIAL BIN MOHD MOKHTAR", "class": "DIAMOND"}, {"name": "MUHAMMAD RIZQ IQBAAL BIN FAIZAL", "class": "DIAMOND"}, {"name": "JUSTIN NELSON", "class": "EMERALD"}, {"name": "NUR QISTINA BALQIS BINTI AZHAR", "class": "DIAMOND"}, {"name": "RIDHUAN BIN ROSLEE", "class": "DIAMOND"}, {"name": "LIM YI XIAN", "class": "SAPPHIRE"}, {"name": "LIEW SIN JAJ", "class": "EMERALD"}, {"name": "NOR ATHIRAH BINTI MOHD IZAN", "class": "EMERALD"}, {"name": "NURUL SYAQIRAH BINTI MAZLAN", "class": "EMERALD"}, {"name": "IRIS NUR AISYAH BINTI MOHD HEFFE", "class": "EMERALD"}, {"name": "IZZI HALEEF BIN AZALI", "class": "DIAMOND"}, {"name": "AIERIL ZAQUAN BIN KUSNOS", "class": "EMERALD"}, {"name": "MUHAMMAD ADAM DANIAL BIN ABD AZIZ", "class": "EMERALD"}, {"name": "NUR DAWIRNA SAFFI BINTI ISHAK", "class": "EMERALD"}, {"name": "NUR ELISYA BINTI KHAIRUL AKMAL", "class": "EMERALD"}, {"name": "MUHAMMAD HARIS BIN JAMALUDIN", "class": "EMERALD"}, {"name": "ARMAN ARIF BIN MUHAMAD RAKBI", "class": "EMERALD"}, {"name": "MUBIN HARITH BIN MOHAMMAD MUBIN", "class": "EMERALD"}, {"name": "NG MEI XIN", "class": "SAPPHIRE"}, {"name": "AIN NATASHA BINTI MOHD ZAINAL ABIDIN", "class": "RUBY"}, {"name": "HUMAIRAH DANISHA BINTI ABDUL RAZAK", "class": "RUBY"}, {"name": "MUHAMMAD FITRI SYAH BIN MOHD NAJIB", "class": "RUBY"}, {"name": "NUR LIYANA BINTI KADERI", "class": "RUBY"}, {"name": "SITI NUR HAWA BINTI MD AZMI", "class": "RUBY"}, {"name": "AMIRA BINTI EIRHAN", "class": "EMERALD"}, {"name": "CHONG YU ZHE", "class": "SAPPHIRE"}, {"name": "HAN JO EN", "class": "RUBY"}, {"name": "SAIDATUL AKEMA BINTI MU'MININ", "class": "RUBY"}, {"name": "MUHAMMAD ZAINUL ZAKWAN BIN RAZALEE", "class": "EMERALD"}, {"name": "NURFARAH HANUM BINTI SALIM", "class": "EMERALD"}, {"name": "KHAIRUNISA BINTI ABDULLAH", "class": "EMERALD"}, {"name": "MUHAMMAD IZUDDIN BIN JANESDIN", "class": "RUBY"}, {"name": "CHONG JIA EN", "class": "SAPPHIRE"}, {"name": "CHEON ZI SHAN", "class": "RUBY"}, {"name": "MUHAMAD ALIF PUTRA BIN ZULKIFFLE", "class": "RUBY"}, {"name": "MUHAMMAD DINIE FIRDAUS BIN NORARMIZAN", "class": "RUBY"}, {"name": "SITI SOLEHA BINTI MARJUNI", "class": "RUBY"}, {"name": "MUHAMMAD ALIIF ZHORIIF BIN MOHD ABDULLAH", "class": "EMERALD"}, {"name": "MUHAMMAD ARIF HAKIMI BIN ABDULLAH", "class": "EMERALD"}, {"name": "MOHAMAD FAZRUL HAZIQ BIN MOHD AMIN", "class": "SAPPHIRE"}, {"name": "NUR HAZIRA SYAFIERA BINTI AL-HAFIZ", "class": "SAPPHIRE"}, {"name": "ADAM PUTERA BIN MOHAMAD SOLLEHAN", "class": "EMERALD"}, {"name": "MUHAMMAD THAQIF BIN AZMAN", "class": "EMERALD"}, {"name": "CHAI YU ZHE", "class": "ZIRCON"}, {"name": "CHANG JIA HENG", "class": "ZIRCON"}, {"name": "MUHAMMAD FAIQ BIN MOHD FARID", "class": "RUBY"}, {"name": "AL MAN SYAH RIZZAL BIN ABD SUKOR", "class": "SAPPHIRE"}, {"name": "AZLY FAHMI BIN AZRI SHAM", "class": "SAPPHIRE"}, {"name": "HAIQAL IKHWAN BIN NORHALIFI", "class": "SAPPHIRE"}, {"name": "NURUL AZREENA FATIHAH BINTI NORSHAM", "class": "SAPPHIRE"}, {"name": "PUTERI SHAHILA BINTI MOHD HALIM SHAH", "class": "SAPPHIRE"}, {"name": "NURDAYANA ELLYSYA BINTI ABDULLAH", "class": "RUBY"}, {"name": "AHMAD THAQIF IMRAN BIN NORAZMAN", "class": "SAPPHIRE"}, {"name": "CHAU RUI MENG", "class": "SAPPHIRE"}, {"name": "MUHAMMAD WAFIQ BIN MOHD FARID", "class": "RUBY"}, {"name": "CHOON LI XIN", "class": "SAPPHIRE"}, {"name": "LIM JOO YU", "class": "SAPPHIRE"}, {"name": "NAJIB IRFAN BIN NORDIN", "class": "SAPPHIRE"}, {"name": "WONG JIA HUI", "class": "SAPPHIRE"}, {"name": "NUR ALEEYA BINTI RAMLAN", "class": "RUBY"}, {"name": "NURSAFIYYAH BALQIS BINTI ZULKIFLY", "class": "RUBY"}, {"name": "NURUL IMAN ANISSA BINTI SHAHRIZAN", "class": "RUBY"}, {"name": "SOFIANA DEWI BINTI ABDULLAH", "class": "RUBY"}, {"name": "IRFAN ISKANDAR BIN MAT SAAT", "class": "EMERALD"}, {"name": "MUHAMMAD ADAM DANIAL BIN AZWHA", "class": "EMERALD"}, {"name": "ANIS ADHANUN SYIFAA BINTI SAMSUL BAHARI", "class": "SAPPHIRE"}, {"name": "MUHAMAD ZULHAIRIE BIN KHAIRULIZAM", "class": "SAPPHIRE"}, {"name": "MUHAMMAD ADAM DARWISY BIN MAZLIHAN", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HILMI BIN HAMZAH", "class": "SAPPHIRE"}, {"name": "DERREN LAI PIN CHAO", "class": "ZIRCON"}, {"name": "SACHIN A/L RAMAMURTHY", "class": "ZIRCON"}, {"name": "TAN JIAN YI", "class": "ZIRCON"}, {"name": "MUHAMAD FARISH HAIKAL BIN OSMAN", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HELMI BIN MAHADI", "class": "SAPPHIRE"}, {"name": "YONG LI LING", "class": "SAPPHIRE"}, {"name": "KHAIRUNNISA BINTI KOMARUDDIN", "class": "RUBY"}, {"name": "MOHAMAD FARIZUAN SHAHRUL BIN HAMDAN", "class": "RUBY"}, {"name": "NUR RABIAATUL ATIKA SYAHIRA BINTI MAZLAN", "class": "RUBY"}, {"name": "SITI NUR ALEYA BINTI MOHD NIZAM", "class": "RUBY"}, {"name": "MUHAMMAD RAHFIQ BIN RAHMAT", "class": "ZIRCON"}, {"name": "YAP ZHI LI", "class": "ZIRCON"}, {"name": "MUHAMMAD RIZMAN QUZAIMI BIN RAMLI", "class": "SAPPHIRE"}, {"name": "RIEFQIEE ADAMI BIN RIZAL", "class": "RUBY"}, {"name": "WONG YU GUAN", "class": "ZIRCON"}, {"name": "PUTRA ARMAND DARIUS BIN RAHMAT", "class": "SAPPHIRE"}, {"name": "CHEON ZI XUAN", "class": "ZIRCON"}, {"name": "CHANG JIA QI", "class": "SAPPHIRE"}, {"name": "MUHAMMAD DANISH RIFQI BIN MOHD NAZLI", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HAZEEQ INDRA BIN AZALI", "class": "ZIRCON"}, {"name": "FATIN NASUHA BINTI ZAHARI", "class": "RUBY"}, {"name": "MUHAMMAD ALIF DANIEL BIN MUJAHID", "class": "ZIRCON"}, {"name": "CHONG CHEE CHEN", "class": "SAPPHIRE"}, {"name": "CHIN JI HAO", "class": "ZIRCON"}, {"name": "CHONG JING SHENG", "class": "ZIRCON"}, {"name": "CHONG LIH MIN", "class": "ZIRCON"}, {"name": "CHONG LIH SEEN", "class": "ZIRCON"}];
+const questions = [{"title": "Soalan 1", "context_bm": "Shizuka merupakan seorang penjual bunga. Beliau menjual x bunga tulip dan y bunga ros di kedainya masing-masing dengan harga RM 3 dan RM 1 sekuntum. Jumlah jualan minimum bunga-bunga tersebut ialah RM 900. Bilangan bunga ros yang dijual sekurang-kurangnya dua kali bilangan bunga tulip. Manakala, bilangan maksimum bunga ros yang dijual ialah 900 kuntum.", "context_en": "Shizuka is a florist. She sells x tulips and y roses in her shop for RM 3 and RM 1 per stalk respectively. The minimum sales amount of the flowers is RM 900. The number of roses sold is at least twice the number of tulips. Meanwhile, the maximum number of roses sold is 900 stalks.", "conditions": ["Jumlah jualan minimum bunga-bunga tersebut ialah RM 900.", "Bilangan bunga ros yang dijual sekurang-kurangnya dua kali bilangan bunga tulip.", "Bilangan maksimum bunga ros yang dijual ialah 900 kuntum."], "accepted": [[{"lhs": "3x+y", "op": "≥", "rhs": "900"}, {"lhs": "y+3x", "op": "≥", "rhs": "900"}], [{"lhs": "y", "op": "≥", "rhs": "2x"}, {"lhs": "2x", "op": "≤", "rhs": "y"}], [{"lhs": "y", "op": "≤", "rhs": "900"}, {"lhs": "900", "op": "≥", "rhs": "y"}]], "boundaries": [{"a": 3, "b": 1, "c": 900, "op": "≥", "label": "I"}, {"a": -2, "b": 1, "c": 0, "op": "≥", "label": "II"}, {"a": 0, "b": 1, "c": 900, "op": "≤", "label": "III"}], "scale": {"xMax": 400, "yMax": 1000, "xStep": 50, "yStep": 100}}, {"title": "Soalan 2", "context_bm": "Sebuah pawagam menjual x tiket dewasa dan y tiket kanak-kanak masing-masing dengan harga RM 15 dan RM 10 sekeping. Jumlah kutipan minimum ialah RM 600. Bilangan tiket kanak-kanak yang dijual sekurang-kurangnya sama dengan bilangan tiket dewasa. Manakala, bilangan maksimum tiket kanak-kanak ialah 60 keping.", "context_en": "A cinema sells x adult tickets and y child tickets for RM 15 and RM 10 per ticket respectively. The minimum collection is RM 600. The number of child tickets sold is at least equal to the number of adult tickets. Meanwhile, the maximum number of child tickets is 60 tickets.", "conditions": ["Jumlah kutipan minimum ialah RM 600.", "Bilangan tiket kanak-kanak yang dijual sekurang-kurangnya sama dengan bilangan tiket dewasa.", "Bilangan maksimum tiket kanak-kanak ialah 60 keping."], "accepted": [[{"lhs": "15x+10y", "op": "≥", "rhs": "600"}, {"lhs": "3x+2y", "op": "≥", "rhs": "120"}], [{"lhs": "y", "op": "≥", "rhs": "x"}, {"lhs": "x", "op": "≤", "rhs": "y"}], [{"lhs": "y", "op": "≤", "rhs": "60"}, {"lhs": "60", "op": "≥", "rhs": "y"}]], "boundaries": [{"a": 15, "b": 10, "c": 600, "op": "≥", "label": "I"}, {"a": -1, "b": 1, "c": 0, "op": "≥", "label": "II"}, {"a": 0, "b": 1, "c": 60, "op": "≤", "label": "III"}], "scale": {"xMax": 80, "yMax": 80, "xStep": 10, "yStep": 10}}, {"title": "Soalan 3", "context_bm": "Sebuah kedai bakeri menjual x biji kek cawan coklat dan y biji kek cawan vanila dengan harga RM 8 dan RM 4 sebiji. Jumlah hasil jualan minimum ialah RM 480. Bilangan kek cawan vanila yang dijual sekurang-kurangnya tiga kali bilangan kek cawan coklat. Bilangan maksimum kek cawan vanila yang dijual ialah 120 biji.", "context_en": "A bakery sells x chocolate cupcakes and y vanilla cupcakes for RM 8 and RM 4 each respectively. The minimum sales amount is RM 480. The number of vanilla cupcakes sold is at least three times the number of chocolate cupcakes. The maximum number of vanilla cupcakes sold is 120 cupcakes.", "conditions": ["Jumlah hasil jualan minimum ialah RM 480.", "Bilangan kek cawan vanila yang dijual sekurang-kurangnya tiga kali bilangan kek cawan coklat.", "Bilangan maksimum kek cawan vanila yang dijual ialah 120 biji."], "accepted": [[{"lhs": "8x+4y", "op": "≥", "rhs": "480"}, {"lhs": "2x+y", "op": "≥", "rhs": "120"}], [{"lhs": "y", "op": "≥", "rhs": "3x"}, {"lhs": "3x", "op": "≤", "rhs": "y"}], [{"lhs": "y", "op": "≤", "rhs": "120"}, {"lhs": "120", "op": "≥", "rhs": "y"}]], "boundaries": [{"a": 8, "b": 4, "c": 480, "op": "≥", "label": "I"}, {"a": -3, "b": 1, "c": 0, "op": "≥", "label": "II"}, {"a": 0, "b": 1, "c": 120, "op": "≤", "label": "III"}], "scale": {"xMax": 80, "yMax": 140, "xStep": 10, "yStep": 20}}, {"title": "Soalan 4", "context_bm": "Seorang peniaga alat tulis menjual x batang pen dan y buah buku nota dengan harga RM 2 dan RM 5 setiap satu. Jumlah jualan minimum ialah RM 500. Bilangan buku nota yang dijual tidak melebihi 60 buah. Bilangan pen yang dijual sekurang-kurangnya dua kali bilangan buku nota.", "context_en": "A stationery seller sells x pens and y notebooks for RM 2 and RM 5 each respectively. The minimum sales amount is RM 500. The number of notebooks sold does not exceed 60. The number of pens sold is at least twice the number of notebooks.", "conditions": ["Jumlah jualan minimum ialah RM 500.", "Bilangan buku nota yang dijual tidak melebihi 60 buah.", "Bilangan pen yang dijual sekurang-kurangnya dua kali bilangan buku nota."], "accepted": [[{"lhs": "2x+5y", "op": "≥", "rhs": "500"}, {"lhs": "5y+2x", "op": "≥", "rhs": "500"}], [{"lhs": "y", "op": "≤", "rhs": "60"}, {"lhs": "60", "op": "≥", "rhs": "y"}], [{"lhs": "x", "op": "≥", "rhs": "2y"}, {"lhs": "2y", "op": "≤", "rhs": "x"}]], "boundaries": [{"a": 2, "b": 5, "c": 500, "op": "≥", "label": "I"}, {"a": 0, "b": 1, "c": 60, "op": "≤", "label": "II"}, {"a": 1, "b": -2, "c": 0, "op": "≥", "label": "III"}], "scale": {"xMax": 260, "yMax": 100, "xStep": 20, "yStep": 10}}, {"title": "Soalan 5", "context_bm": "Seorang petani menjual x bakul mangga dan y bakul jambu dengan harga RM 8 dan RM 4 setiap bakul. Jumlah hasil minimum ialah RM 480. Bilangan bakul jambu yang dijual sekurang-kurangnya tiga kali bilangan bakul mangga. Manakala, bilangan maksimum bakul jambu yang dijual ialah 120 bakul.", "context_en": "A farmer sells x baskets of mangoes and y baskets of guavas for RM 8 and RM 4 per basket respectively. The minimum sales amount is RM 480. The number of guava baskets sold is at least three times the number of mango baskets. Meanwhile, the maximum number of guava baskets sold is 120 baskets.", "conditions": ["Jumlah hasil minimum ialah RM 480.", "Bilangan bakul jambu yang dijual sekurang-kurangnya tiga kali bilangan bakul mangga.", "Bilangan maksimum bakul jambu yang dijual ialah 120 bakul."], "accepted": [[{"lhs": "8x+4y", "op": "≥", "rhs": "480"}, {"lhs": "2x+y", "op": "≥", "rhs": "120"}], [{"lhs": "y", "op": "≥", "rhs": "3x"}, {"lhs": "3x", "op": "≤", "rhs": "y"}], [{"lhs": "y", "op": "≤", "rhs": "120"}, {"lhs": "120", "op": "≥", "rhs": "y"}]], "boundaries": [{"a": 8, "b": 4, "c": 480, "op": "≥", "label": "I"}, {"a": -3, "b": 1, "c": 0, "op": "≥", "label": "II"}, {"a": 0, "b": 1, "c": 120, "op": "≤", "label": "III"}], "scale": {"xMax": 80, "yMax": 140, "xStep": 10, "yStep": 20}}];
+
+let selectedClass = "";
+let selectedStudent = "";
+let qIndex = 0;
+let totalScore = 0;
+let startTime = null;
+let inequalitySymbols = [null, null, null];
+let currentScale = null;
+let linePlots = [null, null, null];
+let shadingDone = false;
+let lastClickInside = false;
+let locked = false;
+
+const COLORS = ["#2563eb", "#dc2626", "#16a34a"];
+
+function classes() {
+  return [...new Set(students.map(s => s.class))].sort();
+}
+
+function renderLogin() {
+  document.getElementById("app").innerHTML = `
+    <div class="center">
+      <h1>Praktis: Graf Ketaksamaan Linear</h1>
+      <p class="sub">5 soalan • Format SPM • Ruang tulis ketaksamaan dan ruang graf interaktif</p>
+    </div>
+
+    <div class="notice">
+      <b>Arahan ringkas:</b><br>
+      1. Pilih kelas dan nama.<br>
+      2. Bagi bahagian (i), taip tiga ketaksamaan dan pilih simbol yang sesuai.<br>
+      3. Bagi bahagian (ii), anda boleh gunakan skala yang dicadangkan atau ubah skala sendiri.<br>
+      4. Masukkan dua titik bagi setiap garis, kemudian klik <b>Plot Garis</b> untuk melukis garis secara automatik.<br>
+      5. Selepas ketiga-tiga garis siap, klik dalam kawasan persilangan pada graf untuk melorek rantau yang memenuhi syarat.<br>
+      6. Klik <b>Semak Soalan</b> untuk melihat markah.
+    </div>
+
+    <div class="row">
+      <div>
+        <label>Kelas</label>
+        <select id="classSel" onchange="loadNames()">
+          <option value="">-- Pilih kelas --</option>
+          ${classes().map(c => `<option>${c}</option>`).join("")}
+        </select>
+      </div>
+      <div>
+        <label>Nama murid</label>
+        <select id="nameSel" onchange="toggleStart()">
+          <option value="">-- Pilih nama --</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="center" style="margin-top:18px">
+      <button id="startBtn" class="primary" disabled onclick="startQuiz()">Mula Praktis →</button>
+    </div>
+  `;
+}
+
+function loadNames() {
+  selectedClass = document.getElementById("classSel").value;
+  const list = students.filter(s => s.class === selectedClass).sort((a,b) => a.name.localeCompare(b.name));
+  document.getElementById("nameSel").innerHTML =
+    '<option value="">-- Pilih nama --</option>' +
+    list.map(s => `<option value="${String(s.name).replaceAll('"','&quot;')}">${s.name}</option>`).join("");
+  toggleStart();
+}
+
+function toggleStart() {
+  selectedStudent = document.getElementById("nameSel")?.value || "";
+  document.getElementById("startBtn").disabled = !(selectedClass && selectedStudent);
+}
+
+function startQuiz() {
+  qIndex = 0;
+  totalScore = 0;
+  startTime = new Date();
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[qIndex];
+  inequalitySymbols = [null,null,null];
+  linePlots = [null,null,null];
+  shadingDone = false;
+  lastClickInside = false;
+  locked = false;
+  currentScale = Object.assign({}, q.scale);
+
+  document.getElementById("app").innerHTML = `
+    <div class="topbar">
+      <span>${selectedStudent} • ${selectedClass}</span>
+      <span>Markah: ${totalScore} / 25</span>
+    </div>
+    <div class="progress"><div style="width:${(qIndex/5)*100}%"></div></div>
+
+    <div class="qhead">
+      <div style="font-weight:800">${q.title}</div>
+      <div class="context">(a) ${q.context_bm}</div>
+      <div class="context italic">${q.context_en}</div>
+    </div>
+
+    <div class="part">
+      <div class="part-title">
+        (i) Tulis tiga ketaksamaan yang memenuhi syarat-syarat tersebut,
+        <br><span class="italic">Write down the three inequalities that satisfy those requirements.</span>
+        <span class="marks">[ 3 markah / marks ]</span>
+      </div>
+      <ul class="conditions">
+        ${q.conditions.map((c,i)=>`<li><b>${["I","II","III"][i]}</b> ${c}</li>`).join("")}
+      </ul>
+      ${[0,1,2].map(i => answerRow(i)).join("")}
+    </div>
+
+    <div class="part">
+      <div class="part-title">
+        (ii) Pada graf di ruang jawapan, lukis dan lorek rantau yang memenuhi ketiga-tiga syarat itu.
+        <br><span class="italic">On the graph in the answer space, draw and shade the region that satisfies all three requirements.</span>
+        <span class="marks">[ 2 markah / marks ]</span>
+      </div>
+
+      <div class="graph-layout">
+        <div class="sidebox">
+          <h3 style="margin-top:0">Tetapan Graf</h3>
+          <div class="scale-grid">
+            <div>
+              <label>X maks</label>
+              <input id="xMax" type="number" min="1" value="${q.scale.xMax}">
+            </div>
+            <div>
+              <label>Y maks</label>
+              <input id="yMax" type="number" min="1" value="${q.scale.yMax}">
+            </div>
+            <div>
+              <label>Jarak grid X</label>
+              <input id="xStep" type="number" min="1" value="${q.scale.xStep}">
+            </div>
+            <div>
+              <label>Jarak grid Y</label>
+              <input id="yStep" type="number" min="1" value="${q.scale.yStep}">
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+            <button class="smallbtn" onclick="applyScale()">Kemas Kini Skala</button>
+            <button class="smallbtn" onclick="resetGraph()">Reset Graf</button>
+          </div>
+          <div class="graph-help">Skala cadangan boleh diubah mengikut kehendak soalan atau mengikut pilihan pelajar.</div>
+
+          ${[0,1,2].map(i => lineCard(i)).join("")}
+        </div>
+
+        <div class="canvas-wrap">
+          <canvas id="graphCanvas" width="620" height="500"></canvas>
+          <div class="legend">
+            <span><span class="dot" style="background:${COLORS[0]}"></span>Garis I</span>
+            <span><span class="dot" style="background:${COLORS[1]}"></span>Garis II</span>
+            <span><span class="dot" style="background:${COLORS[2]}"></span>Garis III</span>
+            <span><span class="dot" style="background:#f59e0b"></span>Titik klik / lorekan</span>
+          </div>
+          <div class="graph-help">
+            Selepas semua garis diplot, klik pada graf dalam kawasan persilangan yang betul untuk melorek rantau. Jika klik di luar rantau yang betul, tiada markah lorekan akan diberi.
+          </div>
+          <div id="shadeMsg" class="line-feedback" style="margin-top:8px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="checkBtn" onclick="checkQuestion()">Semak Soalan</button>
+      <button class="primary" id="nextBtn" style="display:none" onclick="nextQuestion()">${qIndex===4 ? "Hantar Markah" : "Soalan Seterusnya →"}</button>
+    </div>
+  `;
+
+  setupCanvas();
+  drawGraph();
+}
+
+function answerRow(i) {
+  const roman = ["I","II","III"][i];
+  return `
+    <div class="ansrow">
+      <b>${roman}</b>
+      <input id="lhs${i}" placeholder="Bahagian kiri, contoh: 3x + y">
+      <div class="symbols">
+        ${["<",">","≤","≥"].map(sym => `<button type="button" class="symbtn" data-row="${i}" onclick="pickSymbol(${i}, '${sym}', this)">${sym}</button>`).join("")}
+      </div>
+      <input id="rhs${i}" class="rhs" placeholder="Bahagian kanan, contoh: 900">
+    </div>
+    <div id="ansfb${i}" class="resultline"></div>
+  `;
+}
+
+function lineCard(i) {
+  const roman = ["I","II","III"][i];
+  return `
+    <div class="linecard">
+      <h4>Plot Garis ${roman}</h4>
+      <div class="point-grid">
+        <div><label>x₁</label><input id="x1_${i}" type="number" step="any"></div>
+        <div><label>y₁</label><input id="y1_${i}" type="number" step="any"></div>
+        <div><label>x₂</label><input id="x2_${i}" type="number" step="any"></div>
+        <div><label>y₂</label><input id="y2_${i}" type="number" step="any"></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <button class="smallbtn" onclick="plotLine(${i})">Plot Garis</button>
+        <button class="smallbtn" onclick="clearLine(${i})">Padam</button>
+      </div>
+      <div id="linefb${i}" class="line-feedback"></div>
+    </div>
+  `;
+}
+
+function pickSymbol(row, sym, btn) {
+  inequalitySymbols[row] = sym;
+  document.querySelectorAll(`.symbtn[data-row="${row}"]`).forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
+function norm(s) {
+  return String(s || "").toLowerCase().replace(/\s+/g,'').replace(/×/g,'*').replace(/−/g,'-');
+}
+
+function isAccepted(inputLhs, inputOp, inputRhs, acceptedSet) {
+  const lhs = norm(inputLhs);
+  const rhs = norm(inputRhs);
+  return acceptedSet.some(opt => norm(opt.lhs) === lhs && opt.op === inputOp && norm(opt.rhs) === rhs);
+}
+
+function setupCanvas() {
+  const canvas = document.getElementById("graphCanvas");
+  canvas.addEventListener("click", handleCanvasClick);
+}
+
+function graphConfig() {
+  const canvas = document.getElementById("graphCanvas");
+  const pad = {left:55, right:20, top:20, bottom:45};
+  const gw = canvas.width - pad.left - pad.right;
+  const gh = canvas.height - pad.top - pad.bottom;
+  return {canvas, pad, gw, gh};
+}
+
+function toCanvasX(x) {
+  const cfg = graphConfig();
+  return cfg.pad.left + (x / currentScale.xMax) * cfg.gw;
+}
+
+function toCanvasY(y) {
+  const cfg = graphConfig();
+  return cfg.pad.top + cfg.gh - (y / currentScale.yMax) * cfg.gh;
+}
+
+function toGraphPoint(px, py) {
+  const cfg = graphConfig();
+  const x = ((px - cfg.pad.left) / cfg.gw) * currentScale.xMax;
+  const y = ((cfg.pad.top + cfg.gh - py) / cfg.gh) * currentScale.yMax;
+  return {x, y};
+}
+
+function drawGraph() {
+  const {canvas, pad, gw, gh} = graphConfig();
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  ctx.strokeStyle = "#e5e7eb";
+  ctx.lineWidth = 1;
+
+  for(let x=0; x<=currentScale.xMax+1e-9; x+=currentScale.xStep) {
+    const cx = toCanvasX(x);
+    ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, pad.top+gh); ctx.stroke();
+    ctx.fillStyle = "#6b7280"; ctx.font = "12px Arial"; ctx.textAlign = "center";
+    ctx.fillText(String(Math.round(x*100)/100), cx, pad.top+gh+18);
+  }
+  for(let y=0; y<=currentScale.yMax+1e-9; y+=currentScale.yStep) {
+    const cy = toCanvasY(y);
+    ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(pad.left+gw, cy); ctx.stroke();
+    ctx.fillStyle = "#6b7280"; ctx.font = "12px Arial"; ctx.textAlign = "right";
+    ctx.fillText(String(Math.round(y*100)/100), pad.left-8, cy+4);
+  }
+
+  ctx.strokeStyle = "#111827";
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(pad.left, pad.top); ctx.lineTo(pad.left, pad.top+gh); ctx.lineTo(pad.left+gw, pad.top+gh); ctx.stroke();
+  ctx.fillStyle = "#111827"; ctx.font = "bold 13px Arial"; ctx.textAlign="center";
+  ctx.fillText("x", pad.left+gw+12, pad.top+gh+5);
+  ctx.fillText("y", pad.left-5, pad.top-8);
+
+  if(shadingDone) {
+    const poly = feasiblePolygon();
+    if(poly.length >= 3) {
+      const path = poly.map(p => [toCanvasX(p.x), toCanvasY(p.y)]);
+      ctx.fillStyle = "rgba(245, 158, 11, 0.25)";
+      ctx.beginPath();
+      ctx.moveTo(path[0][0], path[0][1]);
+      for(let i=1;i<path.length;i++) ctx.lineTo(path[i][0], path[i][1]);
+      ctx.closePath();
+      ctx.fill();
+    }
+  }
+
+  linePlots.forEach((lp, idx) => {
+    if(!lp) return;
+    drawBoundaryLine(ctx, questions[qIndex].boundaries[idx], COLORS[idx]);
+    drawPoint(ctx, lp.x1, lp.y1, COLORS[idx]);
+    drawPoint(ctx, lp.x2, lp.y2, COLORS[idx]);
+  });
+}
+
+function drawPoint(ctx, x, y, color) {
+  const cx = toCanvasX(x), cy = toCanvasY(y);
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI*2); ctx.fill();
+}
+
+function intersectionPointsWithBox(boundary) {
+  const a = boundary.a, b = boundary.b, c = boundary.c;
+  const xMax = currentScale.xMax, yMax = currentScale.yMax;
+  const pts = [];
+
+  function addIfValid(x,y) {
+    if(Number.isFinite(x) && Number.isFinite(y) && x >= -1e-6 && x <= xMax+1e-6 && y >= -1e-6 && y <= yMax+1e-6) {
+      const key = x.toFixed(4)+","+y.toFixed(4);
+      if(!pts.some(p => (p.x.toFixed(4)+","+p.y.toFixed(4))===key)) pts.push({x,y});
+    }
+  }
+
+  if(Math.abs(b) > 1e-9) {
+    addIfValid(0, (c - a*0)/b);
+    addIfValid(xMax, (c - a*xMax)/b);
+  }
+  if(Math.abs(a) > 1e-9) {
+    addIfValid((c - b*0)/a, 0);
+    addIfValid((c - b*yMax)/a, yMax);
+  }
+  return pts.slice(0,2);
+}
+
+function drawBoundaryLine(ctx, boundary, color) {
+  const pts = intersectionPointsWithBox(boundary);
+  if(pts.length < 2) return;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(toCanvasX(pts[0].x), toCanvasY(pts[0].y));
+  ctx.lineTo(toCanvasX(pts[1].x), toCanvasY(pts[1].y));
+  ctx.stroke();
+}
+
+function applyScale() {
+  currentScale = {
+    xMax: Math.max(1, parseFloat(document.getElementById("xMax").value || 1)),
+    yMax: Math.max(1, parseFloat(document.getElementById("yMax").value || 1)),
+    xStep: Math.max(1, parseFloat(document.getElementById("xStep").value || 1)),
+    yStep: Math.max(1, parseFloat(document.getElementById("yStep").value || 1))
+  };
+  drawGraph();
+}
+
+function resetGraph() {
+  linePlots = [null,null,null];
+  shadingDone = false;
+  lastClickInside = false;
+  document.getElementById("shadeMsg").innerHTML = "";
+  [0,1,2].forEach(i => {
+    ["x1_","y1_","x2_","y2_"].forEach(prefix => {
+      const el = document.getElementById(prefix+i);
+      if(el) el.value = "";
+    });
+    const fb = document.getElementById("linefb"+i);
+    if(fb) fb.innerHTML = "";
+  });
+  drawGraph();
+}
+
+function clearLine(i) {
+  linePlots[i] = null;
+  document.getElementById("linefb"+i).innerHTML = "";
+  drawGraph();
+}
+
+function boundarySatisfied(boundary, x, y) {
+  return Math.abs(boundary.a*x + boundary.b*y - boundary.c) < 1e-6;
+}
+
+function plotLine(i) {
+  const x1 = parseFloat(document.getElementById("x1_"+i).value);
+  const y1 = parseFloat(document.getElementById("y1_"+i).value);
+  const x2 = parseFloat(document.getElementById("x2_"+i).value);
+  const y2 = parseFloat(document.getElementById("y2_"+i).value);
+  const fb = document.getElementById("linefb"+i);
+  if([x1,y1,x2,y2].some(v => Number.isNaN(v))) {
+    fb.innerHTML = '<span class="bad">Sila masukkan dua titik yang lengkap.</span>';
+    return;
+  }
+  if(Math.abs(x1-x2)<1e-9 && Math.abs(y1-y2)<1e-9) {
+    fb.innerHTML = '<span class="bad">Dua titik mestilah berlainan.</span>';
+    return;
+  }
+  linePlots[i] = {x1,y1,x2,y2};
+  const ok = boundarySatisfied(questions[qIndex].boundaries[i], x1, y1) && boundarySatisfied(questions[qIndex].boundaries[i], x2, y2);
+  fb.innerHTML = ok
+    ? '<span class="ok">Titik berada pada garis yang betul.</span>'
+    : '<span class="bad">Titik diplot, tetapi tidak berada pada garis sempadan yang betul.</span>';
+  shadingDone = false;
+  lastClickInside = false;
+  document.getElementById("shadeMsg").innerHTML = "";
+  drawGraph();
+}
+
+function halfPlaneCheck(boundary, p) {
+  const val = boundary.a*p.x + boundary.b*p.y;
+  if(boundary.op === "≥") return val >= boundary.c - 1e-9;
+  if(boundary.op === "≤") return val <= boundary.c + 1e-9;
+  return false;
+}
+
+function intersectSegmentWithBoundary(S, E, boundary) {
+  const ds = boundary.a*S.x + boundary.b*S.y - boundary.c;
+  const de = boundary.a*E.x + boundary.b*E.y - boundary.c;
+  const t = ds / (ds - de);
+  return {
+    x: S.x + t * (E.x - S.x),
+    y: S.y + t * (E.y - S.y)
+  };
+}
+
+function clipPolygonWithHalfPlane(poly, boundary) {
+  const output = [];
+  for(let i=0;i<poly.length;i++) {
+    const S = poly[i];
+    const E = poly[(i+1)%poly.length];
+    const Sinside = halfPlaneCheck(boundary, S);
+    const Einside = halfPlaneCheck(boundary, E);
+
+    if(Sinside && Einside) {
+      output.push(E);
+    } else if(Sinside && !Einside) {
+      output.push(intersectSegmentWithBoundary(S,E,boundary));
+    } else if(!Sinside && Einside) {
+      output.push(intersectSegmentWithBoundary(S,E,boundary));
+      output.push(E);
+    }
+  }
+  return output;
+}
+
+function feasiblePolygon() {
+  let poly = [
+    {x:0,y:0},
+    {x:currentScale.xMax,y:0},
+    {x:currentScale.xMax,y:currentScale.yMax},
+    {x:0,y:currentScale.yMax}
+  ];
+  questions[qIndex].boundaries.forEach(b => {
+    poly = clipPolygonWithHalfPlane(poly, b);
+  });
+  return poly;
+}
+
+function pointInPolygon(pt, poly) {
+  let inside = false;
+  for(let i=0,j=poly.length-1;i<poly.length;j=i++) {
+    const xi = poly[i].x, yi = poly[i].y;
+    const xj = poly[j].x, yj = poly[j].y;
+    const intersect = ((yi > pt.y)!=(yj > pt.y)) && (pt.x < (xj-xi)*(pt.y-yi)/(yj-yi+1e-12)+xi);
+    if(intersect) inside = !inside;
+  }
+  return inside;
+}
+
+function handleCanvasClick(evt) {
+  if(locked) return;
+  if(linePlots.some(lp => !lp)) {
+    document.getElementById("shadeMsg").innerHTML = '<span class="bad">Sila plot ketiga-tiga garis terlebih dahulu.</span>';
+    return;
+  }
+  const rect = evt.target.getBoundingClientRect();
+  const px = (evt.clientX - rect.left) * (evt.target.width / rect.width);
+  const py = (evt.clientY - rect.top) * (evt.target.height / rect.height);
+  const p = toGraphPoint(px, py);
+  const poly = feasiblePolygon();
+  if(poly.length < 3) {
+    document.getElementById("shadeMsg").innerHTML = '<span class="bad">Tiada rantau persilangan dalam julat graf semasa.</span>';
+    return;
+  }
+  if(pointInPolygon(p, poly)) {
+    shadingDone = true;
+    lastClickInside = true;
+    document.getElementById("shadeMsg").innerHTML = '<span class="ok">Rantau persilangan berjaya dikenal pasti dan dilorek.</span>';
+  } else {
+    shadingDone = false;
+    lastClickInside = false;
+    document.getElementById("shadeMsg").innerHTML = '<span class="bad">Titik klik berada di luar rantau persilangan yang betul.</span>';
+  }
+  drawGraph();
+}
+
+function allLinesCorrect() {
+  return [0,1,2].every(i => {
+    const lp = linePlots[i];
+    if(!lp) return false;
+    return boundarySatisfied(questions[qIndex].boundaries[i], lp.x1, lp.y1)
+      && boundarySatisfied(questions[qIndex].boundaries[i], lp.x2, lp.y2);
+  });
+}
+
+function checkQuestion() {
+  if(locked) return;
+  let score = 0;
+  const q = questions[qIndex];
+
+  for(let i=0;i<3;i++) {
+    const lhs = document.getElementById("lhs"+i).value;
+    const rhs = document.getElementById("rhs"+i).value;
+    const op = inequalitySymbols[i];
+    const fb = document.getElementById("ansfb"+i);
+    if(isAccepted(lhs, op, rhs, q.accepted[i])) {
+      score += 1;
+      fb.className = "resultline ok";
+      fb.textContent = "✓ Betul";
+    } else {
+      const first = q.accepted[i][0];
+      fb.className = "resultline bad";
+      fb.innerHTML = `✗ Cadangan jawapan: <b>${first.lhs} ${first.op} ${first.rhs}</b>`;
+    }
+  }
+
+  const linesOk = allLinesCorrect();
+  const msgEl = document.getElementById("shadeMsg");
+  if(linesOk) score += 1;
+  if(linesOk && lastClickInside && shadingDone) {
+    score += 1;
+    msgEl.innerHTML = (msgEl.innerHTML || "") + '<div class="ok">✓ Garis dan lorekan graf adalah betul.</div>';
+  } else if(linesOk) {
+    msgEl.innerHTML = (msgEl.innerHTML || "") + '<div class="bad">✗ Garis betul tetapi lorekan belum tepat.</div>';
+  } else {
+    msgEl.innerHTML = (msgEl.innerHTML || "") + '<div class="bad">✗ Pastikan semua garis sempadan diplot dengan betul.</div>';
+  }
+
+  totalScore += score;
+  locked = true;
+  document.querySelectorAll("input, select, button.smallbtn, .symbtn").forEach(el => el.disabled = true);
+  document.getElementById("checkBtn").style.display = "none";
+  document.getElementById("nextBtn").style.display = "inline-block";
+}
+
+function nextQuestion() {
+  qIndex++;
+  if(qIndex < questions.length) renderQuestion();
+  else submitResult();
+}
+
+async function submitResult() {
+  const percent = Math.round(totalScore / 25 * 100);
+  const duration = Math.round((new Date() - startTime)/1000);
+  const payload = {
+    name: selectedStudent,
+    class: selectedClass,
+    score: totalScore,
+    total: 25,
+    percent: percent,
+    duration_seconds: duration,
+    submitted_at: new Date().toISOString(),
+    topic: "Praktis Graf Ketaksamaan Linear"
+  };
+
+  let sent = false;
+  if(WEB_APP_URL) {
+    try {
+      await fetch(WEB_APP_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {"Content-Type":"text/plain"},
+        body: JSON.stringify(payload)
+      });
+      sent = true;
+    } catch(e) {}
+  }
+
+  document.getElementById("app").innerHTML = `
+    <div class="center">
+      <h1>Praktis Selesai</h1>
+      <p class="sub">${selectedStudent} • ${selectedClass}</p>
+      <div class="score">${totalScore} / 25</div>
+      <h2>${percent}%</h2>
+      <p>${sent ? "Rekod markah telah dihantar ke Google Sheets." : "Markah telah dikira."}</p>
+      <button class="primary" onclick="renderLogin()">Kembali</button>
+    </div>
+  `;
+}
+
+renderLogin();
+</script>
+</body>
+</html>
