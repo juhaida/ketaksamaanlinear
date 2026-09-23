@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MATHGIC TOUCH - Explore Set Apple Catch</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#eef7f0;color:#1f2937}
+.wrap{max-width:1180px;margin:18px auto;padding:14px}
+.card{background:#fff;border-radius:20px;box-shadow:0 10px 28px rgba(0,0,0,.08);overflow:hidden}
+.header{padding:20px 22px;background:linear-gradient(135deg,#14532d,#16a34a);color:#fff}
+.badge{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);padding:6px 11px;border-radius:999px;font-size:12px;font-weight:800}
+h1{margin:10px 0 5px;font-size:30px} .sub{opacity:.9}
+.content{padding:18px}
+.login-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:block;font-weight:800;margin:10px 0 5px}
+select,input{width:100%;padding:10px 11px;border:1px solid #d1d5db;border-radius:10px;font-size:14px}
+.notice{background:#f0fdf4;color:#166534;border-left:5px solid #22c55e;padding:12px 14px;border-radius:10px;margin:14px 0;line-height:1.5;font-size:14px}
+.primary,.smallbtn{border:0;border-radius:999px;font-weight:800;cursor:pointer}
+.primary{background:#166534;color:#fff;padding:11px 18px}
+.smallbtn{padding:8px 12px;background:#e5e7eb;color:#111827}
+.primary:disabled{opacity:.45;cursor:not-allowed}
+.dashboard{display:grid;grid-template-columns:minmax(0,2fr) minmax(300px,1fr);gap:16px}
+.game-panel,.side-panel{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:14px}
+.game-head{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;margin-bottom:10px}
+.challenge{font-weight:900;color:#14532d;font-size:17px}
+.timer,.scorebox{background:#f3f4f6;border-radius:10px;padding:9px 12px;font-weight:900;text-align:center}
+.timer{color:#b91c1c}
+.game-area{position:relative;height:520px;overflow:hidden;border-radius:16px;background:linear-gradient(#c7ecff 0 60%,#c7f9cc 60% 100%);border:2px solid #bbf7d0}
+.sun{position:absolute;right:30px;top:28px;width:70px;height:70px;border-radius:50%;background:#fde047}
+.tree-trunk{position:absolute;left:44%;bottom:40px;width:90px;height:220px;background:#8b5a2b;border-radius:30px}
+.tree-crown{position:absolute;left:27%;bottom:200px;width:430px;height:220px;background:#15803d;border-radius:50% 45% 52% 48%}
+.tree-crown:before,.tree-crown:after{content:"";position:absolute;background:#16a34a;border-radius:50%}
+.tree-crown:before{width:190px;height:170px;left:-55px;top:40px}
+.tree-crown:after{width:190px;height:170px;right:-55px;top:35px}
+.apple{position:absolute;width:52px;height:52px;border-radius:50% 50% 48% 48%;background:#dc2626;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:inset -6px -7px 0 rgba(0,0,0,.08),0 4px 8px rgba(0,0,0,.18);user-select:none;z-index:5}
+.apple:before{content:"";position:absolute;top:-10px;width:5px;height:13px;background:#7c2d12;border-radius:4px}
+.apple:after{content:"";position:absolute;top:-8px;right:8px;width:14px;height:8px;background:#22c55e;border-radius:50%;transform:rotate(-25deg)}
+.pop{position:absolute;font-weight:900;z-index:10;pointer-events:none;animation:floatup .7s forwards}
+@keyframes floatup{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-45px)}}
+.legend-note{font-size:12px;color:#64748b;margin-top:8px;line-height:1.4}
+.side-panel h3{margin:2px 0 10px}
+.leader{margin-bottom:16px}
+.leader table{width:100%;border-collapse:collapse}
+.leader th,.leader td{font-size:12px;padding:6px 5px;border-bottom:1px solid #eef2f7;text-align:left}
+.leader .pts{text-align:right;font-weight:900}
+.chat-box{height:250px;overflow:auto;border:1px solid #e5e7eb;border-radius:12px;background:#fafafa;padding:9px}
+.msg{padding:7px 8px;margin-bottom:7px;background:#fff;border-radius:10px;border:1px solid #edf0f3}
+.msg .meta{font-size:10px;color:#64748b;margin-bottom:3px}
+.msg .text{font-size:12px;line-height:1.35;word-break:break-word}
+.chat-row{display:grid;grid-template-columns:1fr auto;gap:7px;margin-top:8px}
+.chat-row input{text-align:left}
+.quick{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+.quick button{border:1px solid #cbd5e1;background:#fff;border-radius:999px;padding:5px 8px;font-size:11px;cursor:pointer}
+.status{font-size:12px;min-height:18px;margin-top:6px;color:#64748b}
+.final{text-align:center;padding:26px} .bigscore{font-size:58px;font-weight:900;color:#166534}
+@media(max-width:900px){.dashboard{grid-template-columns:1fr}.game-area{height:470px}}
+@media(max-width:600px){.login-grid{grid-template-columns:1fr}.game-head{grid-template-columns:1fr 1fr}.challenge{grid-column:1/-1}.game-area{height:430px}h1{font-size:25px}}
+
+.basket{
+  position:absolute;
+  bottom:14px;
+  width:110px;
+  height:48px;
+  background:#a16207;
+  border:4px solid #713f12;
+  border-radius:10px 10px 24px 24px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:8;
+  box-shadow:inset 0 5px 0 rgba(255,255,255,.18),0 5px 10px rgba(0,0,0,.18);
+}
+.basket:before{
+  content:"";
+  position:absolute;
+  left:16px;
+  right:16px;
+  top:-18px;
+  height:24px;
+  border:4px solid #713f12;
+  border-bottom:0;
+  border-radius:30px 30px 0 0;
+}
+.basket-label{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  color:#fff7ed;
+  font-weight:900;
+  pointer-events:none;
+}
+.controls{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:10px;
+}
+.movebtn{
+  border:0;
+  border-radius:14px;
+  padding:13px 10px;
+  font-size:22px;
+  font-weight:900;
+  cursor:pointer;
+  background:#166534;
+  color:#fff;
+  user-select:none;
+  touch-action:none;
+}
+.movebtn:active{transform:scale(.98);background:#14532d}
+.keyboard-note{
+  text-align:center;
+  font-size:12px;
+  color:#64748b;
+  margin-top:7px;
+}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="header">
+      <span class="badge">EXPLORE • GAMIFICATION • SET</span>
+      <h1>MATHGIC Apple Catch</h1>
+      <div class="sub">Gerakkan bakul untuk menangkap epal yang merupakan elemen set sasaran • 1 minit • Main bersama rakan</div>
+    </div>
+    <div class="content" id="app"></div>
+  </div>
+</div>
+
+<script>
+const WEB_APP_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+const students = [{"name": "SAM ZHI KHOI", "class": "EMERALD"}, {"name": "CHONG JIN TONG", "class": "DIAMOND"}, {"name": "VANNESA CHONG TING EN", "class": "EMERALD"}, {"name": "LIEW WEI XUN", "class": "SAPPHIRE"}, {"name": "SIM ZI HANG", "class": "SAPPHIRE"}, {"name": "MUHAMMAD ZEYN NIFAIL BIN ZAINAL", "class": "DIAMOND"}, {"name": "ZULAIKA BINTI SULAIMAN", "class": "DIAMOND"}, {"name": "KAMALIA DARWISYAH BINTI AZHAN", "class": "EMERALD"}, {"name": "MUHAMMAD SYAHMI ADHA BIN ZAMRI", "class": "DIAMOND"}, {"name": "MUHAMMAD ZAID BIN MUSTAPA", "class": "DIAMOND"}, {"name": "SAFIYA AUNI BINTI SAIFUL LIZAN", "class": "DIAMOND"}, {"name": "SELINA TAN QI ROU", "class": "DIAMOND"}, {"name": "WONG KA XUAN", "class": "EMERALD"}, {"name": "AQILAH SAIYEEDAH BINTI MD FABILAH", "class": "EMERALD"}, {"name": "NUR SYAMILA BINTI MOHD FARID", "class": "DIAMOND"}, {"name": "HEU CHIA NEE", "class": "EMERALD"}, {"name": "NUR ARISSYA AMEYLDA BINTI AZIZ", "class": "EMERALD"}, {"name": "CHAN WAI THONG", "class": "DIAMOND"}, {"name": "MUHAMMAD AL HAFIZ BIN MOHD SAIFULLIZAM", "class": "DIAMOND"}, {"name": "NUR AIN NADIRA BINTI SHAHRUDIN", "class": "EMERALD"}, {"name": "NUR'ALYA QISTINA BINTI MOHD HASRIME", "class": "DIAMOND"}, {"name": "PUTERI NUR ALEESYA BINTI MOHD AZHAN KWONG", "class": "DIAMOND"}, {"name": "HON THONG THONG", "class": "EMERALD"}, {"name": "AMIR WAFIEY BIN ZAINAL ABIDIN", "class": "DIAMOND"}, {"name": "MUHAMMAD DARWISY AHNA BIN MAZLAN", "class": "DIAMOND"}, {"name": "NOR AMIRA BINTI MOHAMMAD NAZIR", "class": "RUBY"}, {"name": "HUSNATUN SYIFA' BINTI MOHD HAFEZ", "class": "EMERALD"}, {"name": "SITI NURQURRATUAINIE BINTI MOHAMMAD HIRMAN", "class": "EMERALD"}, {"name": "MUHAMMAD DANIAL BIN MOHD MOKHTAR", "class": "DIAMOND"}, {"name": "MUHAMMAD RIZQ IQBAAL BIN FAIZAL", "class": "DIAMOND"}, {"name": "JUSTIN NELSON", "class": "EMERALD"}, {"name": "NUR QISTINA BALQIS BINTI AZHAR", "class": "DIAMOND"}, {"name": "RIDHUAN BIN ROSLEE", "class": "DIAMOND"}, {"name": "LIM YI XIAN", "class": "SAPPHIRE"}, {"name": "LIEW SIN JAJ", "class": "EMERALD"}, {"name": "NOR ATHIRAH BINTI MOHD IZAN", "class": "EMERALD"}, {"name": "NURUL SYAQIRAH BINTI MAZLAN", "class": "EMERALD"}, {"name": "IRIS NUR AISYAH BINTI MOHD HEFFE", "class": "EMERALD"}, {"name": "IZZI HALEEF BIN AZALI", "class": "DIAMOND"}, {"name": "AIERIL ZAQUAN BIN KUSNOS", "class": "EMERALD"}, {"name": "MUHAMMAD ADAM DANIAL BIN ABD AZIZ", "class": "EMERALD"}, {"name": "NUR DAWIRNA SAFFI BINTI ISHAK", "class": "EMERALD"}, {"name": "NUR ELISYA BINTI KHAIRUL AKMAL", "class": "EMERALD"}, {"name": "MUHAMMAD HARIS BIN JAMALUDIN", "class": "EMERALD"}, {"name": "ARMAN ARIF BIN MUHAMAD RAKBI", "class": "EMERALD"}, {"name": "MUBIN HARITH BIN MOHAMMAD MUBIN", "class": "EMERALD"}, {"name": "NG MEI XIN", "class": "SAPPHIRE"}, {"name": "AIN NATASHA BINTI MOHD ZAINAL ABIDIN", "class": "RUBY"}, {"name": "HUMAIRAH DANISHA BINTI ABDUL RAZAK", "class": "RUBY"}, {"name": "MUHAMMAD FITRI SYAH BIN MOHD NAJIB", "class": "RUBY"}, {"name": "NUR LIYANA BINTI KADERI", "class": "RUBY"}, {"name": "SITI NUR HAWA BINTI MD AZMI", "class": "RUBY"}, {"name": "AMIRA BINTI EIRHAN", "class": "EMERALD"}, {"name": "CHONG YU ZHE", "class": "SAPPHIRE"}, {"name": "HAN JO EN", "class": "RUBY"}, {"name": "SAIDATUL AKEMA BINTI MU'MININ", "class": "RUBY"}, {"name": "MUHAMMAD ZAINUL ZAKWAN BIN RAZALEE", "class": "EMERALD"}, {"name": "NURFARAH HANUM BINTI SALIM", "class": "EMERALD"}, {"name": "KHAIRUNISA BINTI ABDULLAH", "class": "EMERALD"}, {"name": "MUHAMMAD IZUDDIN BIN JANESDIN", "class": "RUBY"}, {"name": "CHONG JIA EN", "class": "SAPPHIRE"}, {"name": "CHEON ZI SHAN", "class": "RUBY"}, {"name": "MUHAMAD ALIF PUTRA BIN ZULKIFFLE", "class": "RUBY"}, {"name": "MUHAMMAD DINIE FIRDAUS BIN NORARMIZAN", "class": "RUBY"}, {"name": "SITI SOLEHA BINTI MARJUNI", "class": "RUBY"}, {"name": "MUHAMMAD ALIIF ZHORIIF BIN MOHD ABDULLAH", "class": "EMERALD"}, {"name": "MUHAMMAD ARIF HAKIMI BIN ABDULLAH", "class": "EMERALD"}, {"name": "MOHAMAD FAZRUL HAZIQ BIN MOHD AMIN", "class": "SAPPHIRE"}, {"name": "NUR HAZIRA SYAFIERA BINTI AL-HAFIZ", "class": "SAPPHIRE"}, {"name": "ADAM PUTERA BIN MOHAMAD SOLLEHAN", "class": "EMERALD"}, {"name": "MUHAMMAD THAQIF BIN AZMAN", "class": "EMERALD"}, {"name": "CHAI YU ZHE", "class": "ZIRCON"}, {"name": "CHANG JIA HENG", "class": "ZIRCON"}, {"name": "MUHAMMAD FAIQ BIN MOHD FARID", "class": "RUBY"}, {"name": "AL MAN SYAH RIZZAL BIN ABD SUKOR", "class": "SAPPHIRE"}, {"name": "AZLY FAHMI BIN AZRI SHAM", "class": "SAPPHIRE"}, {"name": "HAIQAL IKHWAN BIN NORHALIFI", "class": "SAPPHIRE"}, {"name": "NURUL AZREENA FATIHAH BINTI NORSHAM", "class": "SAPPHIRE"}, {"name": "PUTERI SHAHILA BINTI MOHD HALIM SHAH", "class": "SAPPHIRE"}, {"name": "NURDAYANA ELLYSYA BINTI ABDULLAH", "class": "RUBY"}, {"name": "AHMAD THAQIF IMRAN BIN NORAZMAN", "class": "SAPPHIRE"}, {"name": "CHAU RUI MENG", "class": "SAPPHIRE"}, {"name": "MUHAMMAD WAFIQ BIN MOHD FARID", "class": "RUBY"}, {"name": "CHOON LI XIN", "class": "SAPPHIRE"}, {"name": "LIM JOO YU", "class": "SAPPHIRE"}, {"name": "NAJIB IRFAN BIN NORDIN", "class": "SAPPHIRE"}, {"name": "WONG JIA HUI", "class": "SAPPHIRE"}, {"name": "NUR ALEEYA BINTI RAMLAN", "class": "RUBY"}, {"name": "NURSAFIYYAH BALQIS BINTI ZULKIFLY", "class": "RUBY"}, {"name": "NURUL IMAN ANISSA BINTI SHAHRIZAN", "class": "RUBY"}, {"name": "SOFIANA DEWI BINTI ABDULLAH", "class": "RUBY"}, {"name": "IRFAN ISKANDAR BIN MAT SAAT", "class": "EMERALD"}, {"name": "MUHAMMAD ADAM DANIAL BIN AZWHA", "class": "EMERALD"}, {"name": "ANIS ADHANUN SYIFAA BINTI SAMSUL BAHARI", "class": "SAPPHIRE"}, {"name": "MUHAMAD ZULHAIRIE BIN KHAIRULIZAM", "class": "SAPPHIRE"}, {"name": "MUHAMMAD ADAM DARWISY BIN MAZLIHAN", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HILMI BIN HAMZAH", "class": "SAPPHIRE"}, {"name": "DERREN LAI PIN CHAO", "class": "ZIRCON"}, {"name": "SACHIN A/L RAMAMURTHY", "class": "ZIRCON"}, {"name": "TAN JIAN YI", "class": "ZIRCON"}, {"name": "MUHAMAD FARISH HAIKAL BIN OSMAN", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HELMI BIN MAHADI", "class": "SAPPHIRE"}, {"name": "YONG LI LING", "class": "SAPPHIRE"}, {"name": "KHAIRUNNISA BINTI KOMARUDDIN", "class": "RUBY"}, {"name": "MOHAMAD FARIZUAN SHAHRUL BIN HAMDAN", "class": "RUBY"}, {"name": "NUR RABIAATUL ATIKA SYAHIRA BINTI MAZLAN", "class": "RUBY"}, {"name": "SITI NUR ALEYA BINTI MOHD NIZAM", "class": "RUBY"}, {"name": "MUHAMMAD RAHFIQ BIN RAHMAT", "class": "ZIRCON"}, {"name": "YAP ZHI LI", "class": "ZIRCON"}, {"name": "MUHAMMAD RIZMAN QUZAIMI BIN RAMLI", "class": "SAPPHIRE"}, {"name": "RIEFQIEE ADAMI BIN RIZAL", "class": "RUBY"}, {"name": "WONG YU GUAN", "class": "ZIRCON"}, {"name": "PUTRA ARMAND DARIUS BIN RAHMAT", "class": "SAPPHIRE"}, {"name": "CHEON ZI XUAN", "class": "ZIRCON"}, {"name": "CHANG JIA QI", "class": "SAPPHIRE"}, {"name": "MUHAMMAD DANISH RIFQI BIN MOHD NAZLI", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HAZEEQ INDRA BIN AZALI", "class": "ZIRCON"}, {"name": "FATIN NASUHA BINTI ZAHARI", "class": "RUBY"}, {"name": "MUHAMMAD ALIF DANIEL BIN MUJAHID", "class": "ZIRCON"}, {"name": "CHONG CHEE CHEN", "class": "SAPPHIRE"}, {"name": "CHIN JI HAO", "class": "ZIRCON"}, {"name": "CHONG JING SHENG", "class": "ZIRCON"}, {"name": "CHONG LIH MIN", "class": "ZIRCON"}, {"name": "CHONG LIH SEEN", "class": "ZIRCON"}];
+
+const challenges = [
+  {name:"A = {faktor bagi 24}", values:[1,2,3,4,6,8,12,24], pool:[1,2,3,4,5,6,7,8,9,10,12,14,16,18,20,24,25]},
+  {name:"B = {nombor perdana kurang daripada 20}", values:[2,3,5,7,11,13,17,19], pool:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]},
+  {name:"C = {gandaan 3 kurang daripada 30}", values:[3,6,9,12,15,18,21,24,27], pool:[2,3,4,6,7,9,11,12,14,15,18,20,21,22,24,25,27,28]},
+  {name:"D = {nombor genap dari 2 hingga 20}", values:[2,4,6,8,10,12,14,16,18,20], pool:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]},
+  {name:"E = {kuasa dua sempurna ≤ 100}", values:[1,4,9,16,25,36,49,64,81,100], pool:[1,4,6,9,12,16,20,25,30,36,40,49,50,64,72,81,90,100]}
+];
+
+let selectedClass="", selectedStudent="";
+let score=0, timeLeft=60, playing=false, spawnTimer=null, clockTimer=null;
+let apples=new Map(), appleId=0, challenge=null, refreshTimer=null;
+let basketX=0, basketWidth=110, moveLeft=false, moveRight=false, basketAnim=null;
+
+function classes(){return [...new Set(students.map(s=>s.class))].sort();}
+
+function renderLogin(){
+  document.getElementById("app").innerHTML=`
+    <div class="notice">
+      <b>Cara bermain:</b> Dalam masa 1 minit, gerakkan bakul ke kiri atau kanan untuk menangkap epal yang mengandungi elemen bagi set sasaran.
+      Jawapan betul <b>+1 markah</b>. Jika bakul menangkap epal yang salah, <b>−1 markah</b>. Selepas tamat, markah akan masuk ke ranking MATHGIC.
+      Ruang chat hanya untuk perbincangan pembelajaran dan boleh dilihat oleh semua pelajar dalam aktiviti ini.
+    </div>
+    <div class="login-grid">
+      <div><label>Kelas</label><select id="classSel" onchange="loadNames()"><option value="">-- Pilih kelas --</option>${classes().map(c=>`<option>${c}</option>`).join("")}</select></div>
+      <div><label>Nama</label><select id="nameSel" onchange="toggleStart()"><option value="">-- Pilih nama --</option></select></div>
+    </div>
+    <div style="text-align:center;margin-top:16px"><button id="startBtn" class="primary" disabled onclick="startGame()">Mula Permainan 1 Minit</button></div>`;
+}
+
+function loadNames(){
+  selectedClass=document.getElementById("classSel").value;
+  const list=students.filter(s=>s.class===selectedClass).sort((a,b)=>a.name.localeCompare(b.name));
+  document.getElementById("nameSel").innerHTML='<option value="">-- Pilih nama --</option>'+list.map(s=>`<option>${s.name}</option>`).join("");
+  toggleStart();
+}
+function toggleStart(){
+  selectedStudent=document.getElementById("nameSel").value;
+  document.getElementById("startBtn").disabled=!(selectedClass&&selectedStudent);
+}
+
+function startGame(){
+  score=0; timeLeft=60; playing=true; challenge=challenges[Math.floor(Math.random()*challenges.length)];
+  renderGame();
+  setupBasketControls();
+  updateScoreTimer();
+  spawnApple();
+  spawnTimer=setInterval(spawnApple,850);
+  clockTimer=setInterval(()=>{
+    timeLeft--;
+    updateScoreTimer();
+    if(timeLeft<=0) endGame();
+  },1000);
+  loadLeaderboard();
+  loadChat();
+  refreshTimer=setInterval(()=>{loadLeaderboard();loadChat();},4000);
+}
+
+function renderGame(){
+  document.getElementById("app").innerHTML=`
+    <div class="dashboard">
+      <div class="game-panel">
+        <div class="game-head">
+          <div class="challenge">Tangkap elemen: ${challenge.name}</div>
+          <div class="timer">⏱ <span id="timeVal">60</span>s</div>
+          <div class="scorebox">⭐ <span id="scoreVal">0</span></div>
+        </div>
+        <div class="game-area" id="gameArea">
+          <div class="sun"></div>
+          <div class="tree-crown"></div>
+          <div class="tree-trunk"></div>
+          <div id="basket" class="basket"><div class="basket-label">BAKUL</div></div>
+        </div>
+        <div class="controls">
+          <button class="movebtn" id="leftBtn">◀ Kiri</button>
+          <button class="movebtn" id="rightBtn">Kanan ▶</button>
+        </div>
+        <div class="keyboard-note">Komputer: gunakan kekunci ← dan → • Telefon/tablet: tekan butang Kiri/Kanan</div>
+        <div class="legend-note">Gerakkan bakul untuk menangkap epal. Tangkap elemen yang betul untuk +1 markah. Jika bakul menangkap epal yang salah, −1 markah.</div>
+      </div>
+
+      <div class="side-panel">
+        <div class="leader">
+          <h3>🏆 Live Top 10</h3>
+          <div id="leaderBox">Memuatkan...</div>
+        </div>
+        <div>
+          <h3>💬 MATHGIC Chat</h3>
+          <div class="chat-box" id="chatBox"></div>
+          <div class="chat-row">
+            <input id="chatInput" maxlength="80" placeholder="Tulis mesej pembelajaran...">
+            <button class="smallbtn" onclick="sendChat()">Hantar</button>
+          </div>
+          <div class="quick">
+            <button onclick="quickChat('Set apa yang anda dapat?')">Set apa?</button>
+            <button onclick="quickChat('Saya dapat faktor bagi 24!')">Faktor 24</button>
+            <button onclick="quickChat('Jom semak elemen bersama.')">Jom semak</button>
+            <button onclick="quickChat('Good luck semua!')">Good luck</button>
+          </div>
+          <div id="chatStatus" class="status"></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function updateScoreTimer(){
+  const s=document.getElementById("scoreVal"), t=document.getElementById("timeVal");
+  if(s)s.textContent=score;
+  if(t)t.textContent=timeLeft;
+}
+
+function spawnApple(){
+  if(!playing)return;
+  const area=document.getElementById("gameArea");
+  if(!area)return;
+
+  const id=++appleId;
+  const value=challenge.pool[Math.floor(Math.random()*challenge.pool.length)];
+  const apple=document.createElement("div");
+  apple.className="apple";
+  apple.textContent=value;
+  apple.dataset.id=id;
+  apple.dataset.value=value;
+
+  const maxX=Math.max(20, area.clientWidth-70);
+  const startX=20+Math.random()*(maxX-20);
+  apple.style.left=startX+"px";
+  apple.style.top="-60px";
+  area.appendChild(apple);
+
+  const speed=1.6+Math.random()*1.7;
+  apples.set(id,{el:apple,y:-60,speed,value});
+  animateApple(id);
+}
+
+function animateApple(id){
+  const item=apples.get(id);
+  if(!item||!playing)return;
+  const area=document.getElementById("gameArea");
+  const basket=document.getElementById("basket");
+  if(!area||!basket)return;
+
+  item.y+=item.speed;
+  item.el.style.top=item.y+"px";
+
+  // Collision with basket
+  const ar=area.getBoundingClientRect();
+  const appleRect=item.el.getBoundingClientRect();
+  const basketRect=basket.getBoundingClientRect();
+
+  const hit =
+    appleRect.bottom >= basketRect.top &&
+    appleRect.top <= basketRect.bottom &&
+    appleRect.right >= basketRect.left &&
+    appleRect.left <= basketRect.right;
+
+  if(hit){
+    const correct=challenge.values.includes(Number(item.value));
+    score += correct ? 1 : -1;
+    showPop(item.el, correct ? "+1" : "−1", correct);
+    item.el.remove();
+    apples.delete(id);
+    updateScoreTimer();
+    return;
+  }
+
+  if(item.y>area.clientHeight+10){
+    item.el.remove();
+    apples.delete(id);
+    return;
+  }
+
+  requestAnimationFrame(()=>animateApple(id));
+}
+
+function setupBasketControls(){
+  const area=document.getElementById("gameArea");
+  const basket=document.getElementById("basket");
+  if(!area||!basket)return;
+
+  basketX=(area.clientWidth-basketWidth)/2;
+  updateBasket();
+
+  const leftBtn=document.getElementById("leftBtn");
+  const rightBtn=document.getElementById("rightBtn");
+
+  const startLeft=(e)=>{e.preventDefault();moveLeft=true;};
+  const stopLeft=(e)=>{if(e)e.preventDefault();moveLeft=false;};
+  const startRight=(e)=>{e.preventDefault();moveRight=true;};
+  const stopRight=(e)=>{if(e)e.preventDefault();moveRight=false;};
+
+  ["pointerdown","touchstart"].forEach(ev=>leftBtn.addEventListener(ev,startLeft,{passive:false}));
+  ["pointerup","pointerleave","pointercancel","touchend"].forEach(ev=>leftBtn.addEventListener(ev,stopLeft,{passive:false}));
+
+  ["pointerdown","touchstart"].forEach(ev=>rightBtn.addEventListener(ev,startRight,{passive:false}));
+  ["pointerup","pointerleave","pointercancel","touchend"].forEach(ev=>rightBtn.addEventListener(ev,stopRight,{passive:false}));
+
+  document.addEventListener("keydown",basketKeyDown);
+  document.addEventListener("keyup",basketKeyUp);
+
+  // Also allow dragging / moving pointer inside game area
+  let dragging=false;
+  area.addEventListener("pointerdown",(e)=>{
+    if(e.target.classList.contains("apple"))return;
+    dragging=true;
+    moveBasketToPointer(e);
+  });
+  area.addEventListener("pointermove",(e)=>{
+    if(dragging)moveBasketToPointer(e);
+  });
+  area.addEventListener("pointerup",()=>dragging=false);
+  area.addEventListener("pointerleave",()=>dragging=false);
+
+  basketLoop();
+}
+
+function basketKeyDown(e){
+  if(!playing)return;
+  if(e.key==="ArrowLeft"){e.preventDefault();moveLeft=true;}
+  if(e.key==="ArrowRight"){e.preventDefault();moveRight=true;}
+}
+function basketKeyUp(e){
+  if(e.key==="ArrowLeft")moveLeft=false;
+  if(e.key==="ArrowRight")moveRight=false;
+}
+function moveBasketToPointer(e){
+  const area=document.getElementById("gameArea");
+  if(!area)return;
+  const rect=area.getBoundingClientRect();
+  basketX=(e.clientX-rect.left)-basketWidth/2;
+  clampBasket();
+  updateBasket();
+}
+function clampBasket(){
+  const area=document.getElementById("gameArea");
+  if(!area)return;
+  basketX=Math.max(0,Math.min(area.clientWidth-basketWidth,basketX));
+}
+function updateBasket(){
+  const basket=document.getElementById("basket");
+  if(!basket)return;
+  basket.style.left=basketX+"px";
+  basket.style.transform="none";
+}
+function basketLoop(){
+  if(!playing)return;
+  const speed=7;
+  if(moveLeft)basketX-=speed;
+  if(moveRight)basketX+=speed;
+  clampBasket();
+  updateBasket();
+  basketAnim=requestAnimationFrame(basketLoop);
+}
+
+function showPop(el,text,good){
+  const area=document.getElementById("gameArea");
+  if(!area)return;
+  const p=document.createElement("div");
+  p.className="pop";
+  p.textContent=text;
+  p.style.left=(el.offsetLeft+15)+"px";
+  p.style.top=(el.offsetTop)+"px";
+  p.style.color=good?"#166534":"#b91c1c";
+  area.appendChild(p);
+  setTimeout(()=>p.remove(),700);
+}
+
+async function endGame(){
+  playing=false;
+  clearInterval(spawnTimer); clearInterval(clockTimer); clearInterval(refreshTimer);
+  if(basketAnim) cancelAnimationFrame(basketAnim);
+  document.removeEventListener('keydown',basketKeyDown);
+  document.removeEventListener('keyup',basketKeyUp);
+  apples.forEach(x=>x.el.remove()); apples.clear();
+
+  const payload={
+    type:"game_score",
+    name:selectedStudent,class:selectedClass,
+    score:score,challenge:challenge.name,
+    topic:"Explore Set - MATHGIC Apple Catch"
+  };
+
+  if(WEB_APP_URL && !WEB_APP_URL.startsWith("PASTE_")){
+    try{await fetch(WEB_APP_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(payload)});}catch(e){}
+  }
+
+  document.getElementById("app").innerHTML=`
+    <div class="final">
+      <span class="badge">1 MINIT SELESAI</span>
+      <h1>MATHGIC Apple Catch Tamat</h1>
+      <p>${selectedStudent} • ${selectedClass}</p>
+      <div class="bigscore">${score}</div>
+      <p class="sub">Set sasaran: ${challenge.name}</p>
+      <button class="primary" onclick="renderLogin()">Kembali</button>
+    </div>`;
+}
+
+function jsonp(url){
+  return new Promise((resolve,reject)=>{
+    const cb="cb_"+Date.now()+"_"+Math.floor(Math.random()*100000);
+    const s=document.createElement("script");
+    const timer=setTimeout(()=>{cleanup();reject(new Error("timeout"));},8000);
+    function cleanup(){clearTimeout(timer);delete window[cb];if(s.parentNode)s.parentNode.removeChild(s);}
+    window[cb]=(data)=>{cleanup();resolve(data);};
+    s.onerror=()=>{cleanup();reject(new Error("network"));};
+    s.src=url+(url.includes("?")?"&":"?")+"callback="+cb;
+    document.body.appendChild(s);
+  });
+}
+
+async function loadLeaderboard(){
+  const box=document.getElementById("leaderBox");
+  if(!box || !WEB_APP_URL || WEB_APP_URL.startsWith("PASTE_"))return;
+  try{
+    const data=await jsonp(WEB_APP_URL+"?action=game_leaderboard");
+    const rows=Array.isArray(data.leaderboard)?data.leaderboard:[];
+    box.innerHTML=rows.length?`<table><tbody>${rows.map(r=>`<tr><td>${r.rank}</td><td>${escapeHtml(r.name)}</td><td>${escapeHtml(r.class)}</td><td class="pts">${r.score}</td></tr>`).join("")}</tbody></table>`:"Belum ada markah.";
+  }catch(e){box.textContent="Ranking belum tersedia.";}
+}
+
+async function loadChat(){
+  const box=document.getElementById("chatBox");
+  if(!box || !WEB_APP_URL || WEB_APP_URL.startsWith("PASTE_"))return;
+  try{
+    const data=await jsonp(WEB_APP_URL+"?action=chat_read");
+    const rows=Array.isArray(data.messages)?data.messages:[];
+    box.innerHTML=rows.map(m=>`<div class="msg"><div class="meta">${escapeHtml(m.name)} • ${escapeHtml(m.class)} • ${escapeHtml(m.time)}</div><div class="text">${escapeHtml(m.message)}</div></div>`).join("");
+    box.scrollTop=box.scrollHeight;
+  }catch(e){}
+}
+
+async function sendChat(){
+  const input=document.getElementById("chatInput");
+  const status=document.getElementById("chatStatus");
+  if(!input)return;
+  const message=input.value.trim();
+  if(!message)return;
+  if(message.length>80)return;
+  status.textContent="Menghantar...";
+  const payload={type:"chat_message",name:selectedStudent,class:selectedClass,message:message};
+  try{
+    await fetch(WEB_APP_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(payload)});
+    input.value=""; status.textContent="Dihantar.";
+    setTimeout(loadChat,800);
+  }catch(e){status.textContent="Mesej tidak dapat dihantar.";}
+}
+function quickChat(m){const i=document.getElementById("chatInput");if(i){i.value=m;sendChat();}}
+function escapeHtml(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;")}
+
+renderLogin();
+</script>
+</body>
+</html>
