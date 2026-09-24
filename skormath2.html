@@ -12,7 +12,7 @@
 <section id="resultArea" class="panel hidden"><h2>Keputusan</h2><div class="result" id="resultBox"></div><p id="resultMsg"></p><button class="secondary" onclick="location.reload()">BUAT SEMULA</button></section>
 </main><footer>Matematik Aras Sederhana • 20 Soalan</footer>
 <script>
-const GOOGLE_SCRIPT_URL = "PASTE_WEB_APP_URL_SEDERHANA_HERE";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzmGkKwR1EqMLi0JTfhGeKEceOwpGojqFAS7t7u9LCHWYAv2Lcg8ct4QN3NkQys_d9M/exec";
 const students=[
 ["SAM ZHI KHOI","EMERALD"],["CHONG JIN TONG","DIAMOND"],["VANNESA CHONG TING EN","EMERALD"],
 ["LIEW WEI XUN","SAPPHIRE"],["SIM ZI HANG","SAPPHIRE"],["MUHAMMAD ZEYN NIFAIL BIN ZAINAL","DIAMOND"],
@@ -75,6 +75,22 @@ kelas.addEventListener('change',()=>{const list=students.filter(x=>x[1]===kelas.
 document.getElementById('mulaBtn').onclick=()=>{if(!kelas.value||!nama.value){alert('Sila pilih kelas dan nama murid.');return}currentClass=kelas.value;currentStudent=nama.value;document.getElementById('loginPanel').classList.add('hidden');document.getElementById('quizArea').classList.remove('hidden');document.getElementById('studentBadge').textContent=currentStudent;document.getElementById('classBadge').textContent=currentClass;renderQuiz();scrollTo({top:0,behavior:'smooth'})};
 function renderQuiz(){document.getElementById('questions').innerHTML=questions.map((it,i)=>`<div class="qcard"><div class="qnum">SOALAN ${i+1}</div><div class="qtext">${it.q}</div>${it.media||''}${it.o.map((op,j)=>`<label class="opt" id="opt${i}_${j}"><input type="radio" name="q${i}" value="${j}" onchange="updateProgress()"> ${String.fromCharCode(65+j)}. ${op}</label>`).join('')}<div class="feedback hidden" id="fb${i}"></div></div>`).join('');updateProgress()}
 function updateProgress(){let n=0;questions.forEach((_,i)=>{if(document.querySelector(`input[name=q${i}]:checked`))n++});document.getElementById('ansBadge').textContent=`${n}/20 dijawab`;document.getElementById('progressBar').style.width=(n/20*100)+'%'}
-async function sendToGoogle(rec){if(!GOOGLE_SCRIPT_URL||GOOGLE_SCRIPT_URL.includes('PASTE_WEB_APP_URL'))return;try{await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(rec)})}catch(e){console.warn(e)}}
+async function sendToGoogle(rec){
+  if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes('PASTE_WEB_APP_URL')){
+    return {ok:false,message:'URL Apps Script belum dimasukkan.'};
+  }
+  try{
+    await fetch(GOOGLE_SCRIPT_URL,{
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(rec)
+    });
+    return {ok:true,message:'Markah dihantar ke Google Sheet.'};
+  }catch(e){
+    console.warn(e);
+    return {ok:false,message:'Markah gagal dihantar ke Google Sheet.'};
+  }
+}
 document.getElementById('submitBtn').onclick=async()=>{if(submitted)return;let score=0,un=0;questions.forEach((it,i)=>{const p=document.querySelector(`input[name=q${i}]:checked`);const fb=document.getElementById('fb'+i);fb.classList.remove('hidden');document.querySelectorAll(`input[name=q${i}]`).forEach(x=>x.disabled=true);if(!p){un++;fb.innerHTML='<span class="bad">Belum dijawab.</span>';return}const v=Number(p.value);if(v===it.a){score++;document.getElementById(`opt${i}_${v}`).classList.add('correct');fb.innerHTML='<span class="good">Betul ✓</span>'}else{document.getElementById(`opt${i}_${v}`).classList.add('wrong');document.getElementById(`opt${i}_${it.a}`).classList.add('correct');fb.innerHTML=`<span class="bad">Salah ✗</span> Jawapan: ${String.fromCharCode(65+it.a)}`}});if(un&&!confirm(`Ada ${un} soalan belum dijawab. Teruskan hantar?`))return;submitted=true;const pct=Math.round(score/20*100);const rec={name:currentStudent,class:currentClass,set:'SEDERHANA',score,total:20,pct,date:new Date().toLocaleString('ms-MY')};await sendToGoogle(rec);document.getElementById('resultArea').classList.remove('hidden');document.getElementById('resultBox').textContent=`${score}/20 • ${pct}%`;document.getElementById('resultMsg').textContent=pct>=80?'Tahniah! Prestasi sangat baik.':pct>=60?'Baik. Teruskan latihan.':pct>=40?'Ada kemajuan. Semak semula soalan yang salah.':'Teruskan berlatih dan cuba semula.';document.getElementById('resultArea').scrollIntoView({behavior:'smooth'})};
 </script></body></html>
