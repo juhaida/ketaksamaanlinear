@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SKOR Matematik 15 to 40 – Latihan Kertas 1</title>
+<style>
+:root{
+  --bg:#f4f7fb;--card:#fff;--ink:#14213d;--muted:#667085;--line:#d9e2f1;
+  --primary:#155eef;--good:#0f9d58;--bad:#d92d20;--warn:#f59e0b;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(135deg,#102a56,#155eef);color:#fff;padding:28px 18px}
+.wrap{max-width:980px;margin:auto}
+h1{margin:0 0 8px;font-size:clamp(25px,4vw,42px)}
+header p{margin:4px 0;opacity:.95}
+.panel,.qcard{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 6px 20px rgba(16,42,86,.07)}
+.panel{padding:18px;margin:18px 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+label{font-weight:700;font-size:14px}
+select,input,button{width:100%;padding:11px 12px;border-radius:10px;border:1px solid #b8c4d6;font-size:15px}
+button{cursor:pointer;border:0;font-weight:700}
+.primary{background:var(--primary);color:#fff}
+.secondary{background:#e9efff;color:#173b8f}
+.danger{background:#feeceb;color:#9f1d16}
+.small{width:auto;padding:9px 12px}
+.hidden{display:none!important}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.badge{background:#eef4ff;padding:8px 10px;border-radius:999px;font-weight:700}
+.progress{height:12px;background:#e8edf5;border-radius:999px;overflow:hidden}
+.progress>div{height:100%;background:var(--primary);width:0}
+.qcard{padding:18px;margin:14px 0}
+.qnum{font-size:13px;font-weight:800;color:var(--primary);letter-spacing:.4px}
+.qtext{font-size:18px;line-height:1.5;margin:8px 0 12px}
+.opt{display:block;border:1px solid var(--line);padding:11px 12px;border-radius:10px;margin:8px 0;cursor:pointer}
+.opt:hover{background:#f7f9fd}
+.opt input{width:auto;margin-right:9px}
+.correct{border-color:#84d6aa;background:#ecfdf3}
+.wrong{border-color:#f4a5a0;background:#fff1f0}
+.feedback{margin-top:10px;font-weight:700}
+.good{color:var(--good)} .bad{color:var(--bad)}
+.result{font-size:22px;font-weight:800;padding:18px;border-radius:14px;background:#eef4ff}
+.tablewrap{overflow:auto}
+table{width:100%;border-collapse:collapse}
+th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left;white-space:nowrap}
+th{background:#f7f9fc}
+.note{font-size:13px;color:var(--muted);line-height:1.5}
+.teacherbox{border-top:1px dashed var(--line);margin-top:15px;padding-top:15px}
+code{background:#eef2f7;padding:2px 5px;border-radius:5px}
+.diagram{border:1px dashed #aab8ca;background:#fafcff;border-radius:12px;padding:12px;margin:12px 0;text-align:center;color:#3b4a63}
+.diagram svg{width:100%;max-width:620px;height:auto;display:block;margin:auto}
+.diagram-title{font-size:13px;color:#667085;margin-top:6px}
+svg{max-width:100%;height:auto}
+footer{padding:30px 18px;color:var(--muted);text-align:center}
+
+.matrix-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0}
+.matrix{
+  display:inline-grid;
+  grid-template-columns:repeat(2,minmax(34px,auto));
+  gap:6px 18px;
+  padding:8px 14px;
+  position:relative;
+  font-family:"Times New Roman",serif;
+  font-size:22px;
+  line-height:1.2;
+}
+.matrix::before,.matrix::after{
+  content:"";
+  position:absolute;
+  top:0;bottom:0;
+  width:9px;
+  border-top:2px solid #111827;
+  border-bottom:2px solid #111827;
+}
+.matrix::before{left:0;border-left:2px solid #111827}
+.matrix::after{right:0;border-right:2px solid #111827}
+.matrix span{text-align:center}
+.matrix-op{font-size:25px;font-weight:700}
+.matrix-answer{
+  display:inline-flex;align-items:center;gap:4px;
+}
+
+
+.math{font-family:"Times New Roman",serif;font-size:1.08em}
+.frac{display:inline-block;vertical-align:middle;text-align:center;line-height:1.05;margin:0 3px}
+.frac .top{display:block;border-bottom:1.8px solid currentColor;padding:0 5px 2px}
+.frac .bottom{display:block;padding:2px 5px 0}
+sup{font-size:.72em;vertical-align:super}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>SKOR Matematik 15 to 40</h1>
+    <p><b>Kertas 1 • Misi Lulus Matematik SPM 2026</b></p>
+    <p>Latihan objektif interaktif – Set 1 & Set 2</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="panel" id="loginPanel">
+    <h2>Maklumat Murid</h2>
+    <div class="grid">
+      <div>
+        <label for="kelas">Kelas</label>
+        <select id="kelas">
+          <option value="">-- Pilih kelas --</option>
+          <option>DIAMOND</option><option>EMERALD</option><option>RUBY</option><option>SAPPHIRE</option><option>ZIRCON</option>
+        </select>
+      </div>
+      <div>
+        <label for="nama">Nama murid</label>
+        <select id="nama"><option value="">-- Pilih kelas dahulu --</option></select>
+      </div>
+      <div>
+        <label for="setQuiz">Set Latihan</label>
+        <select id="setQuiz"><option value="1">SET 1</option><option value="2">SET 2</option></select>
+      </div>
+      <div style="display:flex;align-items:end">
+        <button class="primary" id="mulaBtn">MULA LATIHAN</button>
+      </div>
+    </div>
+    <p class="note">Nama murid ditapis automatik mengikut kelas. Keputusan disimpan pada pelayar ini. Untuk kutipan markah daripada banyak peranti, sambungkan ke Google Sheets menggunakan ruangan konfigurasi dalam kod.</p>
+  </section>
+
+  <section id="quizArea" class="hidden">
+    <div class="panel">
+      <div class="meta">
+        <span class="badge" id="studentBadge"></span>
+        <span class="badge" id="classBadge"></span>
+        <span class="badge" id="setBadge"></span>
+        <span class="badge" id="scoreBadge">0/20</span>
+      </div>
+      <div class="progress"><div id="progressBar"></div></div>
+    </div>
+    <div id="questions"></div>
+    <div class="panel">
+      <button class="primary" id="submitBtn">HANTAR JAWAPAN & SIMPAN MARKAH</button>
+    </div>
+  </section>
+
+  <section id="resultArea" class="panel hidden">
+    <h2>Keputusan</h2>
+    <div class="result" id="resultBox"></div>
+    <p id="resultMsg"></p>
+    <div class="grid">
+      <button class="secondary" id="retryBtn">BUAT SEMULA</button>
+      <button class="secondary" id="otherSetBtn">CUBA SET LAIN</button>
+    </div>
+  </section>
+</main>
+
+<footer>Latihan Matematik • Rekod automatik mengikut nama, kelas dan set</footer>
+
+<script>
+// =============================================================
+// 1) OPTIONAL: GOOGLE SHEETS WEB APP
+// Letak URL Google Apps Script Web App di bawah jika mahu
+// keputusan semua murid dihantar ke satu Google Sheet.
+// Jika kosong, sistem masih berfungsi menggunakan localStorage.
+// =============================================================
+const GOOGLE_SCRIPT_URL = "";
+
+// =============================================================
+// 2) SENARAI MURID
+// =============================================================
+const students = [
+["SAM ZHI KHOI","EMERALD"],["CHONG JIN TONG","DIAMOND"],["VANNESA CHONG TING EN","EMERALD"],
+["LIEW WEI XUN","SAPPHIRE"],["SIM ZI HANG","SAPPHIRE"],["MUHAMMAD ZEYN NIFAIL BIN ZAINAL","DIAMOND"],
+["ZULAIKA BINTI SULAIMAN","DIAMOND"],["KAMALIA DARWISYAH BINTI AZHAN","EMERALD"],
+["MUHAMMAD SYAHMI ADHA BIN ZAMRI","DIAMOND"],["MUHAMMAD ZAID BIN MUSTAPA","DIAMOND"],
+["SAFIYA AUNI BINTI SAIFUL LIZAN","DIAMOND"],["SELINA TAN QI ROU","DIAMOND"],["WONG KA XUAN","EMERALD"],
+["AQILAH SAIYEEDAH BINTI MD FABILAH","EMERALD"],["NUR SYAMILA BINTI MOHD FARID","DIAMOND"],
+["HEU CHIA NEE","EMERALD"],["NUR ARISSYA AMEYLDA BINTI AZIZ","EMERALD"],["CHAN WAI THONG","DIAMOND"],
+["MUHAMMAD AL HAFIZ BIN MOHD SAIFULLIZAM","DIAMOND"],["NUR AIN NADIRA BINTI SHAHRUDIN","EMERALD"],
+["NUR'ALYA QISTINA BINTI MOHD HASRIME","DIAMOND"],["PUTERI NUR ALEESYA BINTI MOHD AZHAN KWONG","DIAMOND"],
+["HON THONG THONG","EMERALD"],["AMIR WAFIEY BIN ZAINAL ABIDIN","DIAMOND"],
+["MUHAMMAD DARWISY AHNA BIN MAZLAN","DIAMOND"],["NOR AMIRA BINTI MOHAMMAD NAZIR","RUBY"],
+["HUSNATUN SYIFA' BINTI MOHD HAFEZ","EMERALD"],["SITI NURQURRATUAINIE BINTI MOHAMMAD HIRMAN","EMERALD"],
+["MUHAMMAD DANIAL BIN MOHD MOKHTAR","DIAMOND"],["MUHAMMAD RIZQ IQBAAL BIN FAIZAL","DIAMOND"],
+["JUSTIN NELSON","EMERALD"],["NUR QISTINA BALQIS BINTI AZHAR","DIAMOND"],["RIDHUAN BIN ROSLEE","DIAMOND"],
+["LIM YI XIAN","SAPPHIRE"],["LIEW SIN JAJ","EMERALD"],["NOR ATHIRAH BINTI MOHD IZAN","EMERALD"],
+["NURUL SYAQIRAH BINTI MAZLAN","EMERALD"],["IRIS NUR AISYAH BINTI MOHD HEFFE","EMERALD"],
+["IZZI HALEEF BIN AZALI","DIAMOND"],["AIERIL ZAQUAN BIN KUSNOS","EMERALD"],
+["MUHAMMAD ADAM DANIAL BIN ABD AZIZ","EMERALD"],["NUR DAWIRNA SAFFI BINTI ISHAK","EMERALD"],
+["NUR ELISYA BINTI KHAIRUL AKMAL","EMERALD"],["MUHAMMAD HARIS BIN JAMALUDIN","EMERALD"],
+["ARMAN ARIF BIN MUHAMAD RAKBI","EMERALD"],["MUBIN HARITH BIN MOHAMMAD MUBIN","EMERALD"],
+["NG MEI XIN","SAPPHIRE"],["AIN NATASHA BINTI MOHD ZAINAL ABIDIN","RUBY"],
+["HUMAIRAH DANISHA BINTI ABDUL RAZAK","RUBY"],["MUHAMMAD FITRI SYAH BIN MOHD NAJIB","RUBY"],
+["NUR LIYANA BINTI KADERI","RUBY"],["SITI NUR HAWA BINTI MD AZMI","RUBY"],["AMIRA BINTI EIRHAN","EMERALD"],
+["CHONG YU ZHE","SAPPHIRE"],["HAN JO EN","RUBY"],["SAIDATUL AKEMA BINTI MU'MININ","RUBY"],
+["MUHAMMAD ZAINUL ZAKWAN BIN RAZALEE","EMERALD"],["NURFARAH HANUM BINTI SALIM","EMERALD"],
+["KHAIRUNISA BINTI ABDULLAH","EMERALD"],["MUHAMMAD IZUDDIN BIN JANESDIN","RUBY"],
+["CHONG JIA EN","SAPPHIRE"],["CHEON ZI SHAN","RUBY"],["MUHAMAD ALIF PUTRA BIN ZULKIFFLE","RUBY"],
+["MUHAMMAD DINIE FIRDAUS BIN NORARMIZAN","RUBY"],["SITI SOLEHA BINTI MARJUNI","RUBY"],
+["MUHAMMAD ALIIF ZHORIIF BIN MOHD ABDULLAH","EMERALD"],["MUHAMMAD ARIF HAKIMI BIN ABDULLAH","EMERALD"],
+["MOHAMAD FAZRUL HAZIQ BIN MOHD AMIN","SAPPHIRE"],["NUR HAZIRA SYAFIERA BINTI AL-HAFIZ","SAPPHIRE"],
+["ADAM PUTERA BIN MOHAMAD SOLLEHAN","EMERALD"],["MUHAMMAD THAQIF BIN AZMAN","EMERALD"],
+["CHAI YU ZHE","ZIRCON"],["CHANG JIA HENG","ZIRCON"],["MUHAMMAD FAIQ BIN MOHD FARID","RUBY"],
+["AL MAN SYAH RIZZAL BIN ABD SUKOR","SAPPHIRE"],["AZLY FAHMI BIN AZRI SHAM","SAPPHIRE"],
+["HAIQAL IKHWAN BIN NORHALIFI","SAPPHIRE"],["NURUL AZREENA FATIHAH BINTI NORSHAM","SAPPHIRE"],
+["PUTERI SHAHILA BINTI MOHD HALIM SHAH","SAPPHIRE"],["NURDAYANA ELLYSYA BINTI ABDULLAH","RUBY"],
+["AHMAD THAQIF IMRAN BIN NORAZMAN","SAPPHIRE"],["CHAU RUI MENG","SAPPHIRE"],
+["MUHAMMAD WAFIQ BIN MOHD FARID","RUBY"],["CHOON LI XIN","SAPPHIRE"],["LIM JOO YU","SAPPHIRE"],
+["NAJIB IRFAN BIN NORDIN","SAPPHIRE"],["WONG JIA HUI","SAPPHIRE"],["NUR ALEEYA BINTI RAMLAN","RUBY"],
+["NURSAFIYYAH BALQIS BINTI ZULKIFLY","RUBY"],["NURUL IMAN ANISSA BINTI SHAHRIZAN","RUBY"],
+["SOFIANA DEWI BINTI ABDULLAH","RUBY"],["IRFAN ISKANDAR BIN MAT SAAT","EMERALD"],
+["MUHAMMAD ADAM DANIAL BIN AZWHA","EMERALD"],["ANIS ADHANUN SYIFAA BINTI SAMSUL BAHARI","SAPPHIRE"],
+["MUHAMAD ZULHAIRIE BIN KHAIRULIZAM","SAPPHIRE"],["MUHAMMAD ADAM DARWISY BIN MAZLIHAN","SAPPHIRE"],
+["MUHAMMAD HILMI BIN HAMZAH","SAPPHIRE"],["DERREN LAI PIN CHAO","ZIRCON"],["SACHIN A/L RAMAMURTHY","ZIRCON"],
+["TAN JIAN YI","ZIRCON"],["MUHAMAD FARISH HAIKAL BIN OSMAN","SAPPHIRE"],["MUHAMMAD HELMI BIN MAHADI","SAPPHIRE"],
+["YONG LI LING","SAPPHIRE"],["KHAIRUNNISA BINTI KOMARUDDIN","RUBY"],
+["MOHAMAD FARIZUAN SHAHRUL BIN HAMDAN","RUBY"],["NUR RABIAATUL ATIKA SYAHIRA BINTI MAZLAN","RUBY"],
+["SITI NUR ALEYA BINTI MOHD NIZAM","RUBY"],["MUHAMMAD RAHFIQ BIN RAHMAT","ZIRCON"],["YAP ZHI LI","ZIRCON"],
+["MUHAMMAD RIZMAN QUZAIMI BIN RAMLI","SAPPHIRE"],["RIEFQIEE ADAMI BIN RIZAL","RUBY"],["WONG YU GUAN","ZIRCON"],
+["PUTRA ARMAND DARIUS BIN RAHMAT","SAPPHIRE"],["CHEON ZI XUAN","ZIRCON"],["CHANG JIA QI","SAPPHIRE"],
+["MUHAMMAD DANISH RIFQI BIN MOHD NAZLI","SAPPHIRE"],["MUHAMMAD HAZEEQ INDRA BIN AZALI","ZIRCON"],
+["FATIN NASUHA BINTI ZAHARI","RUBY"],["MUHAMMAD ALIF DANIEL BIN MUJAHID","ZIRCON"],
+["CHONG CHEE CHEN","SAPPHIRE"],["CHIN JI HAO","ZIRCON"],["CHONG JING SHENG","ZIRCON"],
+["CHONG LIH MIN","ZIRCON"],["CHONG LIH SEEN","ZIRCON"]
+];
+
+// =============================================================
+// 3) BANK SOALAN – berdasarkan modul yang dibekalkan
+// Soalan berasaskan rajah ditulis semula dalam bentuk yang boleh
+// dilaksanakan terus dalam web tanpa fail imej luaran.
+// =============================================================
+const qset1 = [
+{q:"Suatu nombor, apabila dibundarkan betul kepada dua angka bererti menjadi 4.7. Antara berikut, yang manakah nilai yang mungkin?",o:["4.64","4.66","4.75","4.81"],a:1},
+{q:`45 600 ditulis dalam bentuk piawai <span class="math"><i>a</i> × 10<sup><i>b</i></sup></span> dengan <span class="math">1 ≤ <i>a</i> ≤ 10</span>. Apakah nilai <i>a</i> dan <i>b</i>?`,o:["a = 4.56, b = 4","a = 45.6, b = 3","a = 0.456, b = 4","a = 4.56, b = 3"],a:0},
+{q:"Diberi jujukan 6, 11, 16, 21, … Jika pola diteruskan, apakah nilai sebutan ke-8?",o:["54","48","41","37"],a:2},
+{q:"Harga sebuah buku nota ialah RMx. Harga sebuah beg sekolah ialah RM15 kurang daripada dua kali harga buku nota. Ungkapan algebra bagi harga beg sekolah ialah",o:["2x + 15","2x − 15","15 − 2x","2(x − 15)"],a:1},
+{q:"Tentukan pasangan tertib yang merupakan suatu fungsi.",o:["{(1,2),(1,3),(3,3),(4,5)}","{(1,3),(2,3),(3,4),(3,5)}","{(1,2),(2,2),(3,3),(4,4),(4,5)}","{(2,1),(3,1),(4,1),(5,1),(6,1)}"],a:3},
+{q:"Diberi 2a = √b + 5. Ungkapkan b sebagai perkara rumus.",o:["b = (2a − 5)²","b = (2a + 5)²","b = 2a − 25","b = √(2a) − 5"],a:0},
+{q:"PR ialah satu garis lurus. Apakah jenis sudut yang terbentuk pada garis lurus tersebut?",o:["Sudut refleks","Sudut pelengkap","Sudut pada garis lurus","Sudut putaran lengkap"],a:2},
+{q:"Rajah menunjukkan suatu silinder dan unjurannya ke atas suatu satah mencancang. Antara berikut, yang manakah merupakan unjuran ortogon bagi silinder itu sebagaimana dilihat dari arah X?",o:["Segi empat tepat","Bulatan","Bentuk sisi melengkung A","Bentuk sisi melengkung B"],a:0},
+{q:"Sekeping kad dipilih secara rawak daripada sebuah kotak seperti dalam modul. Cari kebarangkalian tidak mendapat nombor genap.",o:["0","1","3/4","1/4"],a:3},
+{q:"Diberi p^x × p³ = p⁶. Cari nilai x.",o:["2","3","9","18"],a:1},
+{q:"Nyatakan nilai tempat yang bergaris dalam nombor 43218.",o:["8","64","512","1 536"],a:1},
+{q:"Berikut ialah faktor utama yang perlu dipertimbangkan semasa menyediakan pelan kewangan jangka panjang, kecuali",o:["Simpanan kecemasan","Matlamat kewangan masa depan","Kadar inflasi","Warna kegemaran"],a:3},
+{q:"Data manakah merupakan data numerik? I Bilangan adik-beradik murid, II Warna kegemaran murid, III Suhu harian, IV Jenis sukan diminati.",o:["I dan II","I dan III","II dan IV","III dan IV"],a:1},
+{q:"Sebuah beg mengandungi guli H dan guli P. Dua guli dikeluarkan satu demi satu dengan pemulangan. Tentukan ruang sampel.",o:["{(H,H),(H,P),(P,H),(P,P)}","{(H,P),(P,H)}","{(H,H),(P,P)}","{(H,H),(H,H),(P,P),(P,P)}"],a:0},
+{q:"Sebuah histogram menunjukkan taburan jisim sekumpulan buah betik dan ekornya memanjang ke sebelah kanan. Apakah bentuk taburan?",o:["Pencong ke kanan","Pencong ke kiri","Bentuk loceng","Bentuk seragam"],a:0},
+{q:"Antara berikut, yang manakah pernyataan benar?",o:["Semua haiwan mamalia bertelur.","Kuala Lumpur ialah ibu negara Thailand.","Sebilangan segi tiga mempunyai sudut cakah.","Semua nombor ganjil boleh dibahagi tepat dengan 3."],a:2},
+{q:"Premis 1: Jika larutan X ialah asid, maka larutan X menukarkan litmus biru kepada merah. Kesimpulan: Larutan X bukan asid. Premis 2 yang sesuai ialah",o:["Larutan X ialah sejenis asid.","Larutan X menukarkan litmus biru kepada merah.","Larutan X tidak menukarkan litmus biru kepada merah.","Larutan X menukarkan litmus merah kepada biru."],a:2},
+{q:"Empat graf y=2x², y=6x², y=½x² dan y=⅛x² dilukis pada paksi yang sama. Graf y=½x² ialah graf yang",o:["paling sempit","kedua paling lebar","kedua paling sempit","paling lebar"],a:1},
+{q:`Diberi bahawa <span class="math"><i>P</i> ∝ <span class="frac"><span class="top">1</span><span class="bottom"><i>mn</i></span></span></span>. Apakah hubungan antara <i>P</i>, <i>m</i> dan <i>n</i>?`,o:["P berkadar langsung dengan hasil tambah m dan n.","P berkadar songsang dengan hasil darab m dan n.","P berkadar langsung dengan hasil darab m dan n.","P berkadar songsang dengan hasil tambah m dan n."],a:1},
+{q:`Hitung
+<div class="matrix-row">
+  <span class="matrix"><span>−2</span><span>1</span><span>3</span><span>5</span></span>
+  <span class="matrix-op">−</span>
+  <span class="matrix"><span>−4</span><span>2</span><span>0</span><span>−7</span></span>
+</div>`,o:[`<span class="matrix-answer"><span class="matrix"><span>−6</span><span>−1</span><span>3</span><span>−2</span></span></span>`,`<span class="matrix-answer"><span class="matrix"><span>−6</span><span>3</span><span>3</span><span>12</span></span></span>`,`<span class="matrix-answer"><span class="matrix"><span>2</span><span>3</span><span>3</span><span>−2</span></span></span>`,`<span class="matrix-answer"><span class="matrix"><span>2</span><span>−1</span><span>3</span><span>12</span></span></span>`],a:3}
+];
+
+const qset2 = [
+{q:"Suatu nombor x apabila dibundarkan betul kepada dua angka bererti menjadi 0.30. Antara berikut, yang manakah nilai x yang mungkin?",o:["0.2928","0.2971","0.3052","0.3083"],a:1},
+{q:`28 880 ditulis sebagai <span class="math"><i>a</i> × 10<sup><i>b</i></sup></span> dalam bentuk piawai. Nyatakan nilai <i>a</i> dan <i>b</i>.`,o:["a = 2.9, b = −4","a = 2.9, b = 4","a = 3.0, b = −4","a = 3.0, b = 4"],a:3},
+{q:"Diberi jujukan 3, 8, 13, 18, … Apakah sebutan ke-6?",o:["23","28","33","38"],a:1},
+{q:"Bilangan buku cerita ialah m. Bilangan buku rujukan ialah 5 lebih daripada tiga kali bilangan buku cerita. Ungkapan algebra ialah",o:["3m + 5","4m + 5","3m − 5","4m − 5"],a:0},
+{q:"Diberi 2r = √q + 3. Ungkapkan q sebagai perkara rumus.",o:["q = (r − 3)²","q = √(2r) + 3","q = √(−r) − 3","q = (2r − 3)²"],a:3},
+{q:"Dalam suatu pemetaan daripada set M ke set N, unsur 1 dipetakan kepada dua unsur yang berlainan dalam set N. Mengapakah hubungan itu bukan fungsi?",o:["Unsur 5 mempunyai satu objek.","Terdapat unsur dalam set N yang tidak mempunyai objek.","Unsur 1 dipetakan kepada dua unsur yang berlainan dalam set N.","Bilangan unsur dalam set M tidak sama dengan bilangan unsur dalam set N."],a:2},
+{q:"Sudut θ dalam rajah modul melebihi 180° tetapi kurang daripada 360°. Apakah jenis sudut θ?",o:["Sudut pelengkap","Sudut pada garis lurus","Sudut refleks","Sudut putaran lengkap"],a:2},
+{q:"Sebuah kotak mengandungi kad '5' dan kad 'M'. Dua kad dikeluarkan satu demi satu dengan pemulangan. Tentukan ruang sampel.",o:["{(5,5),(5,M),(M,5),(M,M)}","{(5,5),(5,5),(M,M),(M,M)}","{(5,M),(M,5)}","{(5,5),(M,M)}"],a:0},
+{q:"Histogram panjang terung dalam modul mempunyai ekor yang memanjang ke kanan. Nyatakan taburannya.",o:["Pencong ke kiri","Pencong ke kanan","Bentuk loceng","Bentuk seragam"],a:1},
+{q:"Antara berikut, yang manakah pernyataan palsu?",o:["9−4=5 atau 18÷3=6.","12 ialah nombor genap dan 15 ialah gandaan 5.","Semua segi empat sama mempunyai empat sisi.","Semua nombor perdana ialah nombor ganjil."],a:3},
+{q:"Premis 1: Semua mamalia berdarah panas. Kesimpulan: Paus berdarah panas. Premis 2 yang sesuai ialah",o:["Paus ialah mamalia.","Paus hidup di dalam laut.","Paus ialah semua mamalia.","Semua mamalia ialah paus."],a:0},
+{q:`Diberi bahawa <span class="math"><i>Q</i> ∝ <span class="frac"><span class="top"><i>x</i></span><span class="bottom"><i>y</i></span></span></span>. Apakah hubungan antara <i>Q</i>, <i>x</i> dan <i>y</i>?`,o:["Q berubah secara langsung dengan hasil darab x dan y.","Q berubah secara songsang dengan x dan y.","Q berubah secara langsung dengan x dan secara songsang dengan y.","Q berubah secara songsang dengan hasil darab x dan y."],a:2},
+{q:`Hitung
+<div class="matrix-row">
+  <span class="matrix"><span>−6</span><span>8</span><span>3</span><span>−5</span></span>
+  <span class="matrix-op">+</span>
+  <span class="matrix"><span>2</span><span>−4</span><span>7</span><span>9</span></span>
+</div>`,o:[`<span class="matrix-answer"><span class="matrix"><span>−4</span><span>4</span><span>10</span><span>4</span></span></span>`,`<span class="matrix-answer"><span class="matrix"><span>8</span><span>−12</span><span>21</span><span>−45</span></span></span>`,`<span class="matrix-answer"><span class="matrix"><span>4</span><span>12</span><span>4</span><span>−14</span></span></span>`,`<span class="matrix-answer"><span class="matrix"><span>−4</span><span>−4</span><span>10</span><span>−14</span></span></span>`],a:0},
+{q:"Rajah menunjukkan suatu objek. Antara berikut, yang manakah unjuran ortogon bagi objek itu sebagaimana dilihat dari arah X?",o:["A","B","C","D"],a:2},
+{q:"Kad nombor ialah 2, 8, 13, 1, 27, 19, 23, 99. Kebarangkalian memilih nombor perdana ialah",o:["1/4","3/8","1/2","7/8"],a:2},
+{q:"Diberi a^x × a⁴ = a⁸. Cari nilai x.",o:["3","4","5","6"],a:1},
+{q:"Nyatakan nilai tempat yang bergaris dalam nombor 3567.",o:["1","3","7","49"],a:3},
+{q:"Berikut ialah aspek utama yang perlu diambil kira semasa membuat pelan kewangan jangka panjang, kecuali",o:["Kadar inflasi","Pendidikan anak","Matlamat kewangan masa depan","Gaya hidup semasa"],a:3},
+{q:"Antara berikut, yang manakah data numerik? I Gred peperiksaan (A,B,C), II Masa larian 100 m, III Tinggi pokok kelapa sawit, IV Negeri kelahiran murid.",o:["I dan II","I dan IV","II dan III","III dan IV"],a:2},
+{q:"Empat graf y=3x², y=x², y=½x² dan y=¼x² dilukis pada paksi yang sama. Graf y=3x² ialah graf yang",o:["paling sempit","kedua paling sempit","kedua paling lebar","paling lebar"],a:0}
+];
+
+
+// =============================================================
+// 4) RAJAH / GAMBAR INTERAKTIF
+// Rajah dibina semula secara bersih berdasarkan rajah dalam modul.
+// =============================================================
+const media = {
+"1-7": `<div class="diagram">
+<svg viewBox="0 0 520 150" aria-label="Rajah sudut pada garis lurus">
+<line x1="90" y1="90" x2="430" y2="90" stroke="#1f2937" stroke-width="4"/>
+<path d="M230 90 A30 30 0 0 1 290 90" fill="none" stroke="#1f2937" stroke-width="4"/>
+<text x="65" y="98" font-size="25">P</text><text x="445" y="98" font-size="25">R</text>
+</svg><div class="diagram-title">Rajah 7</div></div>`,
+
+"1-8": `<div class="diagram">
+<svg viewBox="0 0 620 260" aria-label="Silinder dan satah mencancang">
+<polygon points="90,70 185,45 185,205 90,220" fill="#f8fafc" stroke="#334155" stroke-width="3"/>
+<ellipse cx="410" cy="80" rx="42" ry="16" fill="#fff" stroke="#334155" stroke-width="3"/>
+<line x1="368" y1="80" x2="368" y2="190" stroke="#334155" stroke-width="3"/>
+<line x1="452" y1="80" x2="452" y2="190" stroke="#334155" stroke-width="3"/>
+<path d="M368 190 A42 16 0 0 0 452 190" fill="none" stroke="#334155" stroke-width="3"/>
+<line x1="185" y1="80" x2="368" y2="80" stroke="#94a3b8" stroke-dasharray="7 6" stroke-width="2"/>
+<line x1="185" y1="190" x2="368" y2="190" stroke="#94a3b8" stroke-dasharray="7 6" stroke-width="2"/>
+<line x1="560" y1="135" x2="470" y2="135" stroke="#111827" stroke-width="3"/>
+<polygon points="470,135 486,126 486,144" fill="#111827"/>
+<text x="570" y="143" font-size="24">X</text>
+</svg><div class="diagram-title">Rajah 8</div></div>`,
+
+"1-9": `<div class="diagram">
+<svg viewBox="0 0 650 140" aria-label="Kad nombor 2 3 3 2 4 2 4 4">
+${[2,3,3,2,4,2,4,4].map((n,i)=>`<rect x="${35+i*75}" y="35" width="55" height="55" rx="5" fill="#e5e7eb"/><text x="${62+i*75}" y="72" text-anchor="middle" font-size="27">${n}</text>`).join("")}
+</svg><div class="diagram-title">Rajah 9</div></div>`,
+
+"1-15": `<div class="diagram">
+<svg viewBox="0 0 650 350" aria-label="Histogram taburan pencong ke kanan">
+<line x1="75" y1="290" x2="610" y2="290" stroke="#111827" stroke-width="3"/>
+<line x1="75" y1="290" x2="75" y2="35" stroke="#111827" stroke-width="3"/>
+${[[120,90],[190,110],[260,145],[330,170],[400,205],[470,240],[540,260]].map(([x,y],i)=>`<rect x="${x}" y="${y}" width="70" height="${290-y}" fill="#dbe4ef" stroke="#334155" stroke-width="2"/>`).join("")}
+<text x="325" y="335" text-anchor="middle" font-size="20">Markah</text>
+<text x="24" y="165" transform="rotate(-90 24 165)" text-anchor="middle" font-size="20">Bilangan pelajar</text>
+</svg><div class="diagram-title">Rajah 15</div></div>`,
+
+"1-18": `<div class="diagram">
+<svg viewBox="0 0 620 360" aria-label="Empat graf fungsi kuadratik P Q R S">
+<line x1="310" y1="40" x2="310" y2="320" stroke="#64748b" stroke-width="2"/>
+<line x1="80" y1="300" x2="550" y2="300" stroke="#64748b" stroke-width="2"/>
+<g fill="none" stroke="#111827" stroke-width="3">
+<path d="M185 55 Q310 545 435 55"/>
+<path d="M225 55 Q310 545 395 55"/>
+<path d="M255 55 Q310 545 365 55"/>
+<path d="M275 55 Q310 545 345 55"/>
+</g>
+<text x="176" y="48" font-size="21">P</text><text x="218" y="48" font-size="21">Q</text>
+<text x="250" y="48" font-size="21">R</text><text x="278" y="48" font-size="21">S</text>
+<text x="322" y="320" font-size="18">0</text>
+</svg><div class="diagram-title">Rajah 18</div></div>`,
+
+"2-6": `<div class="diagram">
+<svg viewBox="0 0 620 250" aria-label="Pemetaan unsur 1 kepada dua unsur">
+<ellipse cx="175" cy="125" rx="85" ry="95" fill="#fff" stroke="#334155" stroke-width="3"/>
+<ellipse cx="445" cy="125" rx="85" ry="95" fill="#fff" stroke="#334155" stroke-width="3"/>
+<text x="160" y="55" font-size="21">M</text><text x="430" y="55" font-size="21">N</text>
+<text x="170" y="118" font-size="24">1</text><text x="170" y="170" font-size="24">5</text>
+<text x="440" y="100" font-size="24">2</text><text x="440" y="155" font-size="24">3</text>
+<line x1="195" y1="110" x2="420" y2="95" stroke="#155eef" stroke-width="3"/><polygon points="420,95 406,88 408,102" fill="#155eef"/>
+<line x1="195" y1="115" x2="420" y2="150" stroke="#155eef" stroke-width="3"/><polygon points="420,150 406,141 405,156" fill="#155eef"/>
+</svg><div class="diagram-title">Rajah 1</div></div>`,
+
+"2-7": `<div class="diagram">
+<svg viewBox="0 0 520 240" aria-label="Sudut refleks theta">
+<line x1="260" y1="135" x2="410" y2="135" stroke="#1f2937" stroke-width="4"/>
+<line x1="260" y1="135" x2="180" y2="55" stroke="#1f2937" stroke-width="4"/>
+<path d="M210 85 A95 95 0 1 0 355 170" fill="none" stroke="#155eef" stroke-width="5"/>
+<text x="115" y="180" font-size="28">θ</text>
+</svg><div class="diagram-title">Rajah 2</div></div>`,
+
+"2-9": `<div class="diagram">
+<svg viewBox="0 0 650 350" aria-label="Histogram pencong ke kanan">
+<line x1="75" y1="290" x2="610" y2="290" stroke="#111827" stroke-width="3"/>
+<line x1="75" y1="290" x2="75" y2="35" stroke="#111827" stroke-width="3"/>
+${[[120,75],[190,100],[260,135],[330,180],[400,220],[470,250],[540,267]].map(([x,y])=>`<rect x="${x}" y="${y}" width="70" height="${290-y}" fill="#dbe4ef" stroke="#334155" stroke-width="2"/>`).join("")}
+<text x="325" y="335" text-anchor="middle" font-size="20">Panjang terung</text>
+</svg><div class="diagram-title">Rajah 3</div></div>`,
+
+"2-14": `<div class="diagram">
+<svg viewBox="0 0 650 300" aria-label="Objek unjuran ortogon dilihat dari arah X">
+<rect x="105" y="145" width="440" height="95" fill="#fff" stroke="#334155" stroke-width="3"/>
+<polygon points="105,145 245,55 405,55 545,145" fill="#f8fafc" stroke="#334155" stroke-width="3"/>
+<rect x="245" y="55" width="160" height="90" fill="none" stroke="#64748b" stroke-dasharray="6 5" stroke-width="2"/>
+<line x1="245" y1="145" x2="105" y2="240" stroke="#64748b" stroke-dasharray="6 5" stroke-width="2"/>
+<line x1="405" y1="145" x2="545" y2="240" stroke="#64748b" stroke-dasharray="6 5" stroke-width="2"/>
+<line x1="325" y1="285" x2="325" y2="250" stroke="#111827" stroke-width="3"/><polygon points="325,250 316,266 334,266" fill="#111827"/>
+<text x="345" y="282" font-size="24">X</text>
+</svg><div class="diagram-title">Rajah objek</div></div>`,
+
+"2-15": `<div class="diagram">
+<svg viewBox="0 0 650 140" aria-label="Kad nombor 2 8 13 1 27 19 23 99">
+${[2,8,13,1,27,19,23,99].map((n,i)=>`<rect x="${35+i*75}" y="35" width="55" height="55" rx="5" fill="#e5e7eb"/><text x="${62+i*75}" y="72" text-anchor="middle" font-size="25">${n}</text>`).join("")}
+</svg><div class="diagram-title">Rajah 4</div></div>`,
+
+"2-20": `<div class="diagram">
+<svg viewBox="0 0 620 360" aria-label="Empat graf fungsi kuadratik P Q R S">
+<line x1="310" y1="40" x2="310" y2="320" stroke="#64748b" stroke-width="2"/>
+<line x1="80" y1="300" x2="550" y2="300" stroke="#64748b" stroke-width="2"/>
+<g fill="none" stroke="#111827" stroke-width="3">
+<path d="M195 55 Q310 545 425 55"/>
+<path d="M230 55 Q310 545 390 55"/>
+<path d="M260 55 Q310 545 360 55"/>
+<path d="M280 55 Q310 545 340 55"/>
+</g>
+<text x="186" y="48" font-size="21">P</text><text x="222" y="48" font-size="21">Q</text>
+<text x="254" y="48" font-size="21">R</text><text x="275" y="48" font-size="21">S</text>
+</svg><div class="diagram-title">Rajah 5</div></div>`
+};
+
+let activeSet=1, currentStudent="", currentClass="", submitted=false;
+
+const kelas=document.getElementById("kelas"), nama=document.getElementById("nama");
+kelas.addEventListener("change",()=>{
+  const k=kelas.value;
+  const list=students.filter(x=>x[1]===k).sort((a,b)=>a[0].localeCompare(b[0]));
+  nama.innerHTML='<option value="">-- Pilih nama --</option>'+list.map(x=>`<option>${x[0]}</option>`).join("");
+});
+
+document.getElementById("mulaBtn").onclick=()=>{
+  if(!kelas.value||!nama.value){alert("Sila pilih kelas dan nama murid.");return;}
+  currentClass=kelas.value; currentStudent=nama.value; activeSet=Number(document.getElementById("setQuiz").value);
+  submitted=false;
+  document.getElementById("loginPanel").classList.add("hidden");
+  document.getElementById("resultArea").classList.add("hidden");
+  document.getElementById("quizArea").classList.remove("hidden");
+  document.getElementById("studentBadge").textContent=currentStudent;
+  document.getElementById("classBadge").textContent=currentClass;
+  document.getElementById("setBadge").textContent="SET "+activeSet;
+  renderQuiz();
+  scrollTo({top:0,behavior:"smooth"});
+};
+
+function renderQuiz(){
+  const data=activeSet===1?qset1:qset2;
+  const holder=document.getElementById("questions");
+  holder.innerHTML=data.map((item,i)=>`
+    <div class="qcard" id="qcard${i}">
+      <div class="qnum">SOALAN ${i+1}</div>
+      <div class="qtext">${item.q}</div>
+      ${media[`${activeSet}-${i+1}`]||""}
+      ${item.o.map((op,j)=>`
+        <label class="opt" id="opt${i}_${j}">
+          <input type="radio" name="q${i}" value="${j}" onchange="updateProgress()"> ${String.fromCharCode(65+j)}. ${op}
+        </label>`).join("")}
+      <div class="feedback hidden" id="fb${i}"></div>
+    </div>`).join("");
+  updateProgress();
+}
+
+function updateProgress(){
+  const data=activeSet===1?qset1:qset2;
+  let answered=0;
+  data.forEach((_,i)=>{if(document.querySelector(`input[name=q${i}]:checked`))answered++});
+  document.getElementById("progressBar").style.width=(answered/data.length*100)+"%";
+  document.getElementById("scoreBadge").textContent=`${answered}/${data.length} dijawab`;
+}
+
+document.getElementById("submitBtn").onclick=async()=>{
+  if(submitted) return;
+  const data=activeSet===1?qset1:qset2;
+  let score=0, unanswered=0;
+  data.forEach((item,i)=>{
+    const picked=document.querySelector(`input[name=q${i}]:checked`);
+    document.querySelectorAll(`input[name=q${i}]`).forEach(x=>x.disabled=true);
+    const fb=document.getElementById("fb"+i); fb.classList.remove("hidden");
+    if(!picked){unanswered++;fb.innerHTML='<span class="bad">Belum dijawab.</span>';return;}
+    const v=Number(picked.value);
+    if(v===item.a){
+      score++;
+      document.getElementById(`opt${i}_${v}`).classList.add("correct");
+      fb.innerHTML='<span class="good">Betul ✓</span>';
+    }else{
+      document.getElementById(`opt${i}_${v}`).classList.add("wrong");
+      document.getElementById(`opt${i}_${item.a}`).classList.add("correct");
+      fb.innerHTML=`<span class="bad">Salah ✗</span> Jawapan: ${String.fromCharCode(65+item.a)}`;
+    }
+  });
+  if(unanswered && !confirm(`Ada ${unanswered} soalan belum dijawab. Teruskan hantar?`)){
+    location.reload(); return;
+  }
+  submitted=true;
+  const pct=Math.round(score/data.length*100);
+  const rec={name:currentStudent,class:currentClass,set:activeSet,score,total:data.length,pct,date:new Date().toLocaleString("ms-MY")};
+  saveRecord(rec);
+  if(GOOGLE_SCRIPT_URL) sendToGoogle(rec);
+
+  document.getElementById("resultArea").classList.remove("hidden");
+  document.getElementById("resultBox").textContent=`${score}/${data.length}  •  ${pct}%`;
+  document.getElementById("resultMsg").textContent =
+    pct>=80?"Tahniah! Prestasi sangat baik.":
+    pct>=60?"Baik. Teruskan latihan untuk tingkatkan ketepatan.":
+    pct>=40?"Ada kemajuan. Semak semula soalan yang salah.":
+    "Teruskan usaha. Cuba semula selepas membuat pembetulan.";
+  document.getElementById("resultArea").scrollIntoView({behavior:"smooth"});
+};
+
+function saveRecord(rec){
+  const all=JSON.parse(localStorage.getItem("skorMathRecords")||"[]");
+  all.push(rec); localStorage.setItem("skorMathRecords",JSON.stringify(all));
+}
+async function sendToGoogle(rec){
+  try{
+    await fetch(GOOGLE_SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify(rec)});
+  }catch(e){console.warn("Google Sheet gagal dihantar",e)}
+}
+
+
+document.getElementById("retryBtn").onclick=()=>location.reload();
+document.getElementById("otherSetBtn").onclick=()=>{
+  document.getElementById("setQuiz").value=activeSet===1?"2":"1";
+  document.getElementById("quizArea").classList.add("hidden");
+  document.getElementById("resultArea").classList.add("hidden");
+  document.getElementById("loginPanel").classList.remove("hidden");
+  scrollTo({top:0,behavior:"smooth"});
+};
+
+
+</script>
+</body>
+</html>
