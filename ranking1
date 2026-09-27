@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Top 10 Matematik Aras Sederhana</title>
+<style>
+*{box-sizing:border-box} body{margin:0;background:transparent;font-family:Arial,Helvetica,sans-serif;color:#1f2937}
+.card{width:min(820px,98vw);margin:8px auto;background:#fffaf0;border:1px solid #ead9b8;border-left:7px solid #d99a1d;border-radius:16px;box-shadow:0 8px 24px rgba(60,45,20,.12);padding:22px 24px 18px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:8px} .title{font-size:22px;font-weight:800} .scope{font-size:12px;color:#7b6c4f}
+.status{font-size:12px;color:#8a7449;margin:3px 0 10px} .error{display:none;background:#fff1f0;color:#b42318;border:1px solid #f2b8b5;border-radius:9px;padding:9px 11px;margin:8px 0}
+table{width:100%;border-collapse:collapse;table-layout:fixed} th{font-size:12px;color:#8a7449;text-align:left;padding:7px;border-bottom:1px dashed #ddcfb4}
+td{padding:9px 7px;border-bottom:1px dashed #e3d9c4;font-size:13px} .rank{width:52px;font-weight:800} .name{font-weight:700} .kelas{width:120px} .mark{width:100px;text-align:right;font-weight:900}
+.empty{text-align:center;padding:26px;color:#8c7b5d} .footer{text-align:right;font-size:10px;color:#8c7b5d;margin-top:10px}
+@media(max-width:600px){.card{padding:15px 12px}.title{font-size:17px}td{font-size:11px}.kelas{width:80px}.mark{width:70px}.rank{width:38px}}
+</style></head>
+<body>
+<div class="card">
+<div class="top"><div class="title">🏆 Top 10 Matematik Aras Sederhana</div><div class="scope">Semua kelas</div></div>
+<div id="status" class="status">Mengemas kini ranking...</div>
+<div id="error" class="error"></div>
+<table><thead><tr><th class="rank">Rank</th><th>Nama</th><th class="kelas">Kelas</th><th class="mark">Markah</th></tr></thead>
+<tbody id="body"><tr><td colspan="4" class="empty">Memuatkan data...</td></tr></tbody></table>
+<div class="footer">Markah terbaik setiap murid • dikemas kini automatik</div>
+</div>
+<script>
+const WEB_APP_URL="https://script.google.com/macros/s/AKfycbzmGkKwR1EqMLi0JTfhGeKEceOwpGojqFAS7t7u9LCHWYAv2Lcg8ct4QN3NkQys_d9M/exec";
+function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+function medal(i){return i===0?"🥇":i===1?"🥈":i===2?"🥉":String(i+1)}
+function receiveRanking(data){
+ const tbody=document.getElementById("body"),err=document.getElementById("error");err.style.display="none";
+ if(!Array.isArray(data)){err.textContent=(data&&data.message)?data.message:"Data ranking tidak sah.";err.style.display="block";tbody.innerHTML='<tr><td colspan="4" class="empty">Ranking belum dapat dipaparkan.</td></tr>';return;}
+ if(!data.length) tbody.innerHTML='<tr><td colspan="4" class="empty">Belum ada rekod markah.</td></tr>';
+ else tbody.innerHTML=data.map((r,i)=>`<tr><td class="rank">${medal(i)}</td><td class="name">${esc(r.name)}</td><td class="kelas">${esc(r.class)}</td><td class="mark">${Number(r.pct||0).toFixed(2)}%</td></tr>`).join("");
+ document.getElementById("status").textContent="Dikemas kini: "+new Date().toLocaleTimeString("ms-MY");
+}
+function loadRanking(){
+ document.getElementById("status").textContent="Mengemas kini ranking...";
+ const old=document.getElementById("rankingJsonp");if(old)old.remove();
+ const s=document.createElement("script");s.id="rankingJsonp";
+ s.src=WEB_APP_URL+"?mode=top10&callback=receiveRanking&t="+Date.now();
+ s.onerror=function(){
+  document.getElementById("error").style.display="block";
+  document.getElementById("error").textContent="Sambungan Apps Script gagal. Pastikan Web App = Anyone dan deploy versi terbaru.";
+  document.getElementById("status").textContent="Gagal mengemas kini ranking.";
+ };
+ document.body.appendChild(s);
+}
+loadRanking();setInterval(loadRanking,10000);
+</script></body></html>
