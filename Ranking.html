@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ranking Matematik Set 1 hingga Set 4</title>
+<style>
+:root{
+  --bg:#f5f7fb;
+  --card:#fffaf0;
+  --ink:#1f2937;
+  --muted:#7b6c4f;
+  --line:#ead9b8;
+  --accent:#d99a1d;
+  --accent-dark:#8b5a05;
+  --danger:#b42318;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:transparent;
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--ink);
+}
+.wrap{
+  width:min(1080px,98vw);
+  margin:8px auto;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-left:7px solid var(--accent);
+  border-radius:16px;
+  box-shadow:0 8px 24px rgba(60,45,20,.12);
+  padding:22px 24px 18px;
+  margin-bottom:16px;
+}
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:8px;
+}
+.title{
+  font-size:22px;
+  font-weight:900;
+}
+.subtitle{
+  font-size:12px;
+  color:var(--muted);
+}
+.status{
+  font-size:12px;
+  color:#8a7449;
+  margin:3px 0 10px;
+}
+.error{
+  display:none;
+  background:#fff1f0;
+  color:var(--danger);
+  border:1px solid #f2b8b5;
+  border-radius:9px;
+  padding:9px 11px;
+  margin:8px 0;
+}
+.controls{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin:12px 0 14px;
+}
+label{
+  display:block;
+  margin-bottom:5px;
+  font-size:12px;
+  font-weight:800;
+  color:var(--muted);
+}
+select{
+  width:100%;
+  padding:10px 12px;
+  border:1px solid #d8c8a7;
+  border-radius:10px;
+  background:white;
+  font-size:14px;
+}
+.badge{
+  display:inline-block;
+  background:#fff1cf;
+  border:1px solid #efd28e;
+  padding:4px 9px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:900;
+  color:#7a4b00;
+}
+.note{
+  background:#fff7e7;
+  border:1px solid #efdcae;
+  border-radius:10px;
+  padding:10px 12px;
+  color:#6d5a33;
+  font-size:12px;
+  line-height:1.5;
+  margin:10px 0 14px;
+}
+.table-wrap{
+  overflow-x:auto;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:auto;
+}
+th{
+  font-size:12px;
+  color:#8a7449;
+  text-align:left;
+  padding:8px 7px;
+  border-bottom:1px dashed #ddcfb4;
+  white-space:nowrap;
+}
+td{
+  padding:10px 7px;
+  border-bottom:1px dashed #e3d9c4;
+  font-size:13px;
+  vertical-align:middle;
+}
+.rank{
+  width:58px;
+  font-weight:900;
+}
+.name{
+  font-weight:800;
+}
+.num{
+  text-align:right;
+  font-weight:900;
+  white-space:nowrap;
+}
+.center{
+  text-align:center;
+}
+.small{
+  font-size:11px;
+  color:#7b6c4f;
+}
+.empty{
+  text-align:center;
+  padding:26px;
+  color:#8c7b5d;
+}
+.clickable{
+  cursor:pointer;
+}
+.clickable:hover{
+  background:#fff5dc;
+}
+.footer{
+  text-align:right;
+  font-size:10px;
+  color:#8c7b5d;
+  margin-top:10px;
+}
+.setscore{
+  font-weight:800;
+  white-space:nowrap;
+}
+.avg{
+  font-size:14px;
+  font-weight:900;
+}
+@media(max-width:720px){
+  .card{padding:15px 12px}
+  .title{font-size:17px}
+  .controls{grid-template-columns:1fr}
+  td{font-size:11px}
+  th{font-size:10px}
+  .rank{width:42px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- TOP 10 DAERAH -->
+  <section class="card">
+    <div class="top">
+      <div>
+        <div class="title">🏆 Top 10 Daerah / PPD</div>
+        <div class="subtitle">Purata keseluruhan Set 1 hingga Set 4</div>
+      </div>
+      <span class="badge">WAJIB LENGKAP 4 SET</span>
+    </div>
+
+    <div class="note">
+      Ranking hanya mengira murid yang telah melengkapkan <b>Set 1, Set 2, Set 3 dan Set 4</b>.
+      Bagi setiap set, sistem mengambil <b>percubaan terbaik</b>. Purata keseluruhan murid digunakan untuk ranking sekolah dan daerah.
+    </div>
+
+    <div id="districtStatus" class="status">Mengemas kini ranking...</div>
+    <div id="districtError" class="error"></div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="rank">Rank</th>
+            <th>Daerah / PPD</th>
+            <th class="center">Sekolah</th>
+            <th class="center">Murid Lengkap 4 Set</th>
+            <th class="num">Purata</th>
+          </tr>
+        </thead>
+        <tbody id="districtBody">
+          <tr><td colspan="5" class="empty">Memuatkan data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">Klik daerah untuk melihat Top 5 sekolah</div>
+  </section>
+
+  <!-- TOP 5 SEKOLAH -->
+  <section class="card">
+    <div class="top">
+      <div>
+        <div class="title">🏫 Top 5 Sekolah Dalam Daerah</div>
+        <span id="districtBadge" class="badge">Pilih daerah</span>
+      </div>
+      <div class="subtitle">Purata murid yang lengkap semua 4 set</div>
+    </div>
+
+    <div class="controls">
+      <div>
+        <label>Pilih Daerah / PPD</label>
+        <select id="ppdSelect">
+          <option value="">-- Pilih daerah --</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Pilih Sekolah</label>
+        <select id="schoolSelect" disabled>
+          <option value="">-- Pilih daerah dahulu --</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="schoolStatus" class="status">Pilih daerah untuk melihat ranking sekolah.</div>
+    <div id="schoolError" class="error"></div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="rank">Rank</th>
+            <th>Sekolah</th>
+            <th>Kod</th>
+            <th class="center">Murid Lengkap 4 Set</th>
+            <th class="num">Purata</th>
+          </tr>
+        </thead>
+        <tbody id="schoolBody">
+          <tr><td colspan="5" class="empty">Pilih daerah dahulu.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">Klik sekolah untuk melihat Top 20 murid</div>
+  </section>
+
+  <!-- TOP 20 MURID -->
+  <section class="card">
+    <div class="top">
+      <div>
+        <div class="title">🎓 Top 20 Murid Dalam Sekolah</div>
+        <span id="schoolBadge" class="badge">Pilih sekolah</span>
+      </div>
+      <div class="subtitle">Purata 4 set • Percubaan terbaik setiap set</div>
+    </div>
+
+    <div id="studentStatus" class="status">Pilih sekolah untuk melihat ranking murid.</div>
+    <div id="studentError" class="error"></div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="rank">Rank</th>
+            <th>Nama</th>
+            <th>Kelas</th>
+            <th class="center">Set 1</th>
+            <th class="center">Set 2</th>
+            <th class="center">Set 3</th>
+            <th class="center">Set 4</th>
+            <th class="num">Purata</th>
+          </tr>
+        </thead>
+        <tbody id="studentBody">
+          <tr><td colspan="8" class="empty">Pilih sekolah dahulu.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">Dikemas kini automatik setiap 15 saat</div>
+  </section>
+
+</div>
+
+<script>
+const WEB_APP_URL="https://script.google.com/macros/s/AKfycbzmGkKwR1EqMLi0JTfhGeKEceOwpGojqFAS7t7u9LCHWYAv2Lcg8ct4QN3NkQys_d9M/exec";
+
+let currentPPD="";
+let currentSchoolCode="";
+let currentSchoolName="";
+let districtDataCache=[];
+
+function esc(v){
+  return String(v??"")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function medal(i){
+  return i===0?"🥇":i===1?"🥈":i===2?"🥉":String(i+1);
+}
+
+function jsonp(params,callbackName,scriptId,onError){
+  const old=document.getElementById(scriptId);
+  if(old) old.remove();
+
+  const q=new URLSearchParams(params);
+  q.set("callback",callbackName);
+  q.set("t",Date.now());
+
+  const s=document.createElement("script");
+  s.id=scriptId;
+  s.src=WEB_APP_URL+"?"+q.toString();
+  s.onerror=onError;
+  document.body.appendChild(s);
+}
+
+function scoreForSet(r,setKey){
+  const item=r?.setResults?.[setKey];
+  return item ? Number(item.pct||0).toFixed(2)+"%" : "—";
+}
+
+/* ===============================
+   TOP 10 DAERAH
+================================ */
+function receiveDistricts(data){
+  const body=document.getElementById("districtBody");
+  const err=document.getElementById("districtError");
+  err.style.display="none";
+
+  if(!Array.isArray(data)){
+    err.textContent=(data&&data.message)?data.message:"Data ranking daerah tidak sah.";
+    err.style.display="block";
+    body.innerHTML='<tr><td colspan="5" class="empty">Ranking belum dapat dipaparkan.</td></tr>';
+    return;
+  }
+
+  districtDataCache=data;
+
+  const ppdSelect=document.getElementById("ppdSelect");
+  const oldValue=ppdSelect.value;
+
+  ppdSelect.innerHTML=
+    '<option value="">-- Pilih daerah --</option>'+
+    data.map(r=>`<option value="${esc(r.ppd)}">${esc(r.ppd)}</option>`).join("");
+
+  if(oldValue && data.some(r=>r.ppd===oldValue)){
+    ppdSelect.value=oldValue;
+  }
+
+  if(!data.length){
+    body.innerHTML='<tr><td colspan="5" class="empty">Belum ada murid yang lengkap keempat-empat set.</td></tr>';
+  }else{
+    body.innerHTML=data.map((r,i)=>`
+      <tr class="clickable" onclick='selectDistrict(${JSON.stringify(r.ppd)})'>
+        <td class="rank">${medal(i)}</td>
+        <td class="name">${esc(r.ppd)}</td>
+        <td class="center">${Number(r.schools||0)}</td>
+        <td class="center">${Number(r.students||0)}</td>
+        <td class="num">${Number(r.avgPct||0).toFixed(2)}%</td>
+      </tr>
+    `).join("");
+  }
+
+  document.getElementById("districtStatus").textContent=
+    "Dikemas kini: "+new Date().toLocaleTimeString("ms-MY");
+}
+
+function loadDistricts(){
+  document.getElementById("districtStatus").textContent="Mengemas kini ranking daerah...";
+
+  jsonp(
+    {mode:"districts"},
+    "receiveDistricts",
+    "districtJsonp",
+    ()=>{
+      const err=document.getElementById("districtError");
+      err.style.display="block";
+      err.textContent="Gagal menyambung ke Apps Script. Pastikan Web App telah deploy versi terbaru.";
+      document.getElementById("districtStatus").textContent="Gagal mengemas kini ranking.";
+    }
+  );
+}
+
+/* ===============================
+   TOP 5 SEKOLAH
+================================ */
+function selectDistrict(ppd){
+  currentPPD=ppd;
+  currentSchoolCode="";
+  currentSchoolName="";
+
+  document.getElementById("ppdSelect").value=ppd;
+  document.getElementById("districtBadge").textContent="PPD "+ppd;
+  document.getElementById("schoolBadge").textContent="Pilih sekolah";
+  document.getElementById("studentBody").innerHTML=
+    '<tr><td colspan="8" class="empty">Pilih sekolah dahulu.</td></tr>';
+
+  loadSchools(ppd);
+}
+
+function receiveSchools(data){
+  const body=document.getElementById("schoolBody");
+  const sel=document.getElementById("schoolSelect");
+  const err=document.getElementById("schoolError");
+
+  err.style.display="none";
+
+  if(!Array.isArray(data)){
+    err.textContent=(data&&data.message)?data.message:"Data ranking sekolah tidak sah.";
+    err.style.display="block";
+    body.innerHTML='<tr><td colspan="5" class="empty">Ranking sekolah belum dapat dipaparkan.</td></tr>';
+    sel.disabled=true;
+    return;
+  }
+
+  if(!data.length){
+    body.innerHTML='<tr><td colspan="5" class="empty">Belum ada sekolah dengan murid yang lengkap semua 4 set.</td></tr>';
+    sel.innerHTML='<option value="">-- Tiada sekolah --</option>';
+    sel.disabled=true;
+  }else{
+    body.innerHTML=data.map((r,i)=>`
+      <tr class="clickable"
+          onclick='selectSchool(${JSON.stringify(r.schoolCode||"")},${JSON.stringify(r.school||"")})'>
+        <td class="rank">${medal(i)}</td>
+        <td class="name">${esc(r.school)}</td>
+        <td>${esc(r.schoolCode)}</td>
+        <td class="center">${Number(r.students||0)}</td>
+        <td class="num">${Number(r.avgPct||0).toFixed(2)}%</td>
+      </tr>
+    `).join("");
+
+    sel.disabled=false;
+    sel.innerHTML=
+      '<option value="">-- Pilih sekolah --</option>'+
+      data.map(r=>`
+        <option value="${esc(r.schoolCode)}" data-name="${esc(r.school)}">
+          ${esc(r.school)} — ${esc(r.schoolCode)}
+        </option>
+      `).join("");
+  }
+
+  document.getElementById("schoolStatus").textContent=
+    "Dikemas kini: "+new Date().toLocaleTimeString("ms-MY");
+}
+
+function loadSchools(ppd){
+  if(!ppd) return;
+
+  document.getElementById("schoolStatus").textContent="Mengemas kini ranking sekolah...";
+  document.getElementById("schoolBody").innerHTML=
+    '<tr><td colspan="5" class="empty">Memuatkan data...</td></tr>';
+
+  jsonp(
+    {mode:"schools",ppd:ppd},
+    "receiveSchools",
+    "schoolJsonp",
+    ()=>{
+      const err=document.getElementById("schoolError");
+      err.style.display="block";
+      err.textContent="Gagal memuatkan ranking sekolah.";
+      document.getElementById("schoolStatus").textContent="Gagal mengemas kini ranking.";
+    }
+  );
+}
+
+/* ===============================
+   TOP 20 MURID
+================================ */
+function selectSchool(code,name){
+  currentSchoolCode=code;
+  currentSchoolName=name;
+
+  document.getElementById("schoolSelect").value=code;
+  document.getElementById("schoolBadge").textContent=
+    name+(code?" • "+code:"");
+
+  loadStudents(code,name);
+}
+
+function receiveStudents(data){
+  const body=document.getElementById("studentBody");
+  const err=document.getElementById("studentError");
+
+  err.style.display="none";
+
+  if(!Array.isArray(data)){
+    err.textContent=(data&&data.message)?data.message:"Data ranking murid tidak sah.";
+    err.style.display="block";
+    body.innerHTML='<tr><td colspan="8" class="empty">Ranking murid belum dapat dipaparkan.</td></tr>';
+    return;
+  }
+
+  if(!data.length){
+    body.innerHTML='<tr><td colspan="8" class="empty">Belum ada murid sekolah ini yang lengkap semua 4 set.</td></tr>';
+  }else{
+    body.innerHTML=data.map((r,i)=>`
+      <tr>
+        <td class="rank">${medal(i)}</td>
+        <td class="name">${esc(r.name)}</td>
+        <td>${esc(r.class)}</td>
+        <td class="center setscore">${scoreForSet(r,"SET 1")}</td>
+        <td class="center setscore">${scoreForSet(r,"SET 2")}</td>
+        <td class="center setscore">${scoreForSet(r,"SET 3")}</td>
+        <td class="center setscore">${scoreForSet(r,"SET 4")}</td>
+        <td class="num avg">${Number(r.avgPct ?? r.pct ?? 0).toFixed(2)}%</td>
+      </tr>
+    `).join("");
+  }
+
+  document.getElementById("studentStatus").textContent=
+    "Dikemas kini: "+new Date().toLocaleTimeString("ms-MY");
+}
+
+function loadStudents(code,name){
+  if(!code && !name) return;
+
+  document.getElementById("studentStatus").textContent="Mengemas kini ranking murid...";
+  document.getElementById("studentBody").innerHTML=
+    '<tr><td colspan="8" class="empty">Memuatkan data...</td></tr>';
+
+  const params={mode:"students"};
+  if(code) params.schoolCode=code;
+  else params.school=name;
+
+  jsonp(
+    params,
+    "receiveStudents",
+    "studentJsonp",
+    ()=>{
+      const err=document.getElementById("studentError");
+      err.style.display="block";
+      err.textContent="Gagal memuatkan ranking murid.";
+      document.getElementById("studentStatus").textContent="Gagal mengemas kini ranking.";
+    }
+  );
+}
+
+/* ===============================
+   EVENTS
+================================ */
+document.getElementById("ppdSelect").addEventListener("change",function(){
+  if(!this.value){
+    currentPPD="";
+    currentSchoolCode="";
+    currentSchoolName="";
+
+    document.getElementById("districtBadge").textContent="Pilih daerah";
+    document.getElementById("schoolBadge").textContent="Pilih sekolah";
+
+    const sel=document.getElementById("schoolSelect");
+    sel.disabled=true;
+    sel.innerHTML='<option value="">-- Pilih daerah dahulu --</option>';
+
+    document.getElementById("schoolBody").innerHTML=
+      '<tr><td colspan="5" class="empty">Pilih daerah dahulu.</td></tr>';
+
+    document.getElementById("studentBody").innerHTML=
+      '<tr><td colspan="8" class="empty">Pilih sekolah dahulu.</td></tr>';
+    return;
+  }
+
+  selectDistrict(this.value);
+});
+
+document.getElementById("schoolSelect").addEventListener("change",function(){
+  if(!this.value){
+    currentSchoolCode="";
+    currentSchoolName="";
+    document.getElementById("schoolBadge").textContent="Pilih sekolah";
+    document.getElementById("studentBody").innerHTML=
+      '<tr><td colspan="8" class="empty">Pilih sekolah dahulu.</td></tr>';
+    return;
+  }
+
+  const opt=this.options[this.selectedIndex];
+  selectSchool(this.value,opt.dataset.name||opt.textContent);
+});
+
+/* ===============================
+   AUTO REFRESH
+================================ */
+function refreshVisibleRankings(){
+  loadDistricts();
+
+  if(currentPPD){
+    loadSchools(currentPPD);
+  }
+
+  if(currentSchoolCode || currentSchoolName){
+    loadStudents(currentSchoolCode,currentSchoolName);
+  }
+}
+
+loadDistricts();
+setInterval(refreshVisibleRankings,15000);
+</script>
+</body>
+</html>
