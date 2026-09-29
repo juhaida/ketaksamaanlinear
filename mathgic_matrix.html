@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MATHGIC TOUCH - Praktis Matriks</title>
+<style>
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f5f7fb;color:#1f2937;font-size:14px}
+.wrap{max-width:900px;margin:10px auto;padding:8px}
+.card{background:#fff;border-radius:14px;padding:16px;box-shadow:0 5px 18px rgba(0,0,0,.07)}
+.badge{display:inline-block;background:#ede9fe;color:#5b21b6;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:800}
+h1{margin:9px 0 6px;font-size:24px;line-height:1.2}
+h2{font-size:19px;margin:12px 0 8px}
+h3{font-size:15px;line-height:1.35;margin:12px 0 8px}
+.sub{color:#667085;line-height:1.45;font-size:13px}
+.notice{background:#fff7ed;color:#9a3412;padding:10px 11px;border-radius:10px;margin:12px 0;line-height:1.45;font-size:13px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{display:block;font-weight:800;margin:8px 0 5px;font-size:13px}
+select,input{width:100%;min-height:38px;padding:7px 8px;border:1px solid #d0d5dd;border-radius:8px;font-size:14px;text-align:center;background:#fff}
+input:focus,select:focus{outline:2px solid #c4b5fd;border-color:#7c3aed}
+.primary,.secondary{border:0;border-radius:999px;padding:10px 15px;font-size:13px;font-weight:800;cursor:pointer;min-height:40px}
+.primary{background:#5b21b6;color:#fff}.secondary{background:#e5e7eb;color:#111827}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px;font-size:12px;font-weight:800;color:#475467;line-height:1.3}
+.topbar span:first-child{max-width:68%}
+.progress{height:7px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-bottom:12px}.progress div{height:100%;background:#7c3aed}
+.qtext{line-height:1.5;margin-bottom:8px;font-size:13px}.en{font-style:italic;color:#6b7280;font-size:12px}
+.work{margin-top:12px;border-top:1px solid #e5e7eb;padding-top:10px}
+.work-title{font-weight:800;margin-bottom:8px;font-size:14px}
+.step{margin-bottom:12px}
+.mathline{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;margin:9px 0;padding:8px;border-radius:10px;background:#fafafa;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.eq{font-weight:900;font-size:18px;flex:0 0 auto}
+.frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1;flex:0 0 auto}
+.frac .top{border-bottom:1.5px solid #111827;padding:0 5px 3px}.frac .bottom{padding-top:3px}
+.matrix2{display:grid;grid-template-columns:repeat(2,42px);gap:4px;padding:6px 7px;position:relative;margin:0 5px;flex:0 0 auto}
+.matrix2::before,.matrix2::after,.vector2::before,.vector2::after,.varvec::before,.varvec::after,.exprvec::before,.exprvec::after{position:absolute;top:50%;transform:translateY(-50%);font-size:54px;line-height:1;color:#111827;font-family:Georgia,"Times New Roman",serif}
+.matrix2::before,.vector2::before,.varvec::before,.exprvec::before{content:"[";left:-7px}.matrix2::after,.vector2::after,.varvec::after,.exprvec::after{content:"]";right:-7px}
+.vector2{display:grid;grid-template-columns:42px;gap:4px;padding:6px 7px;position:relative;margin:0 5px;flex:0 0 auto}
+.matrix2 input,.vector2 input{width:42px;min-height:34px;padding:5px;font-size:13px}
+.varvec{display:grid;grid-template-columns:34px;gap:4px;padding:6px 7px;text-align:center;font-size:13px;font-weight:800;position:relative;margin:0 5px;flex:0 0 auto}
+.exprvec{display:grid;grid-template-columns:145px;gap:4px;padding:6px 7px;position:relative;margin:0 5px;flex:0 0 auto}
+.exprvec input{width:145px;text-align:left;font-size:12px;min-height:34px}
+.feedback{margin-top:5px;min-height:18px;font-size:12px}.ok{color:#047857;font-weight:800}.bad{color:#b42318;font-weight:800}
+.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.center{text-align:center}.score{font-size:42px;font-weight:900;color:#5b21b6}
+.answerline{display:flex;gap:8px;align-items:end;flex-wrap:nowrap}.answerline>div{min-width:120px}.answerline input{min-height:34px}
+.eqrow{display:grid;grid-template-columns:50px 18px 18px 50px 18px 18px 64px;align-items:center;gap:4px;margin:7px 0}
+.eqrow input{width:100%;min-height:34px;padding:5px}
+.smallvar{font-weight:800;text-align:center}
+
+@media(max-width:650px){
+ body{font-size:13px}
+ .wrap{margin:0 auto;padding:5px}
+ .card{border-radius:0;padding:12px 10px;box-shadow:none;min-height:100vh}
+ h1{font-size:20px} h2{font-size:17px} h3{font-size:14px}
+ .row{grid-template-columns:1fr;gap:4px}
+ .notice{font-size:12px;padding:9px}
+ .topbar{font-size:11px;align-items:flex-start}
+ .qtext{font-size:12.5px}.en{font-size:11.5px}
+ .mathline{margin-left:-2px;margin-right:-2px;padding:7px 5px;gap:5px}
+ .eq{font-size:16px}
+ .matrix2{grid-template-columns:repeat(2,38px)}
+ .vector2{grid-template-columns:38px}
+ .matrix2 input,.vector2 input{width:38px;min-height:32px;font-size:12px}
+ .matrix2::before,.matrix2::after,.vector2::before,.vector2::after,.varvec::before,.varvec::after,.exprvec::before,.exprvec::after{font-size:52px}
+ .varvec{grid-template-columns:29px;font-size:12px}
+ .exprvec{grid-template-columns:125px}.exprvec input{width:125px;font-size:11px}
+ .eqrow{grid-template-columns:46px 15px 14px 46px 15px 14px 60px;gap:3px}
+ .eqrow input{min-height:32px;font-size:12px}
+ #det,#det2,#det3{width:58px!important;min-height:32px!important;font-size:12px}
+ .answerline{gap:6px}.answerline>div{min-width:92px}.answerline label{font-size:11px;margin:0 0 3px}
+ .actions{position:sticky;bottom:0;background:rgba(255,255,255,.96);padding:8px 0 4px;margin-top:10px;z-index:5}
+ .actions .primary{width:100%;font-size:13px}
+ .score{font-size:38px}
+}
+
+@media(max-width:390px){
+ .card{padding:10px 8px}
+ .matrix2{grid-template-columns:repeat(2,35px)}.vector2{grid-template-columns:35px}
+ .matrix2 input,.vector2 input{width:35px}
+ .varvec{grid-template-columns:26px;margin:0 4px;padding-left:6px;padding-right:6px}
+ .exprvec{grid-template-columns:112px}.exprvec input{width:112px}
+ .eqrow{grid-template-columns:42px 14px 12px 42px 14px 12px 54px;gap:2px}
+ .mathline{gap:4px}
+}
+</style>
+</head>
+<body>
+<div class="wrap"><div id="app" class="card"></div></div>
+
+<script>
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyyH6y1mSBJ8RL-XigB0TqRSEWxZ3Yp3aQgVszla30NxcTtWl6EMoOZAxFkNCtaJghZ-A/exec";
+const students = [{"name": "SAM ZHI KHOI", "class": "EMERALD"}, {"name": "CHONG JIN TONG", "class": "DIAMOND"}, {"name": "VANNESA CHONG TING EN", "class": "EMERALD"}, {"name": "LIEW WEI XUN", "class": "SAPPHIRE"}, {"name": "SIM ZI HANG", "class": "SAPPHIRE"}, {"name": "MUHAMMAD ZEYN NIFAIL BIN ZAINAL", "class": "DIAMOND"}, {"name": "ZULAIKA BINTI SULAIMAN", "class": "DIAMOND"}, {"name": "KAMALIA DARWISYAH BINTI AZHAN", "class": "EMERALD"}, {"name": "MUHAMMAD SYAHMI ADHA BIN ZAMRI", "class": "DIAMOND"}, {"name": "MUHAMMAD ZAID BIN MUSTAPA", "class": "DIAMOND"}, {"name": "SAFIYA AUNI BINTI SAIFUL LIZAN", "class": "DIAMOND"}, {"name": "SELINA TAN QI ROU", "class": "DIAMOND"}, {"name": "WONG KA XUAN", "class": "EMERALD"}, {"name": "AQILAH SAIYEEDAH BINTI MD FABILAH", "class": "EMERALD"}, {"name": "NUR SYAMILA BINTI MOHD FARID", "class": "DIAMOND"}, {"name": "HEU CHIA NEE", "class": "EMERALD"}, {"name": "NUR ARISSYA AMEYLDA BINTI AZIZ", "class": "EMERALD"}, {"name": "CHAN WAI THONG", "class": "DIAMOND"}, {"name": "MUHAMMAD AL HAFIZ BIN MOHD SAIFULLIZAM", "class": "DIAMOND"}, {"name": "NUR AIN NADIRA BINTI SHAHRUDIN", "class": "EMERALD"}, {"name": "NUR'ALYA QISTINA BINTI MOHD HASRIME", "class": "DIAMOND"}, {"name": "PUTERI NUR ALEESYA BINTI MOHD AZHAN KWONG", "class": "DIAMOND"}, {"name": "HON THONG THONG", "class": "EMERALD"}, {"name": "AMIR WAFIEY BIN ZAINAL ABIDIN", "class": "DIAMOND"}, {"name": "MUHAMMAD DARWISY AHNA BIN MAZLAN", "class": "DIAMOND"}, {"name": "NOR AMIRA BINTI MOHAMMAD NAZIR", "class": "RUBY"}, {"name": "HUSNATUN SYIFA' BINTI MOHD HAFEZ", "class": "EMERALD"}, {"name": "SITI NURQURRATUAINIE BINTI MOHAMMAD HIRMAN", "class": "EMERALD"}, {"name": "MUHAMMAD DANIAL BIN MOHD MOKHTAR", "class": "DIAMOND"}, {"name": "MUHAMMAD RIZQ IQBAAL BIN FAIZAL", "class": "DIAMOND"}, {"name": "JUSTIN NELSON", "class": "EMERALD"}, {"name": "NUR QISTINA BALQIS BINTI AZHAR", "class": "DIAMOND"}, {"name": "RIDHUAN BIN ROSLEE", "class": "DIAMOND"}, {"name": "LIM YI XIAN", "class": "SAPPHIRE"}, {"name": "LIEW SIN JAJ", "class": "EMERALD"}, {"name": "NOR ATHIRAH BINTI MOHD IZAN", "class": "EMERALD"}, {"name": "NURUL SYAQIRAH BINTI MAZLAN", "class": "EMERALD"}, {"name": "IRIS NUR AISYAH BINTI MOHD HEFFE", "class": "EMERALD"}, {"name": "IZZI HALEEF BIN AZALI", "class": "DIAMOND"}, {"name": "AIERIL ZAQUAN BIN KUSNOS", "class": "EMERALD"}, {"name": "MUHAMMAD ADAM DANIAL BIN ABD AZIZ", "class": "EMERALD"}, {"name": "NUR DAWIRNA SAFFI BINTI ISHAK", "class": "EMERALD"}, {"name": "NUR ELISYA BINTI KHAIRUL AKMAL", "class": "EMERALD"}, {"name": "MUHAMMAD HARIS BIN JAMALUDIN", "class": "EMERALD"}, {"name": "ARMAN ARIF BIN MUHAMAD RAKBI", "class": "EMERALD"}, {"name": "MUBIN HARITH BIN MOHAMMAD MUBIN", "class": "EMERALD"}, {"name": "NG MEI XIN", "class": "SAPPHIRE"}, {"name": "AIN NATASHA BINTI MOHD ZAINAL ABIDIN", "class": "RUBY"}, {"name": "HUMAIRAH DANISHA BINTI ABDUL RAZAK", "class": "RUBY"}, {"name": "MUHAMMAD FITRI SYAH BIN MOHD NAJIB", "class": "RUBY"}, {"name": "NUR LIYANA BINTI KADERI", "class": "RUBY"}, {"name": "SITI NUR HAWA BINTI MD AZMI", "class": "RUBY"}, {"name": "AMIRA BINTI EIRHAN", "class": "EMERALD"}, {"name": "CHONG YU ZHE", "class": "SAPPHIRE"}, {"name": "HAN JO EN", "class": "RUBY"}, {"name": "SAIDATUL AKEMA BINTI MU'MININ", "class": "RUBY"}, {"name": "MUHAMMAD ZAINUL ZAKWAN BIN RAZALEE", "class": "EMERALD"}, {"name": "NURFARAH HANUM BINTI SALIM", "class": "EMERALD"}, {"name": "KHAIRUNISA BINTI ABDULLAH", "class": "EMERALD"}, {"name": "MUHAMMAD IZUDDIN BIN JANESDIN", "class": "RUBY"}, {"name": "CHONG JIA EN", "class": "SAPPHIRE"}, {"name": "CHEON ZI SHAN", "class": "RUBY"}, {"name": "MUHAMAD ALIF PUTRA BIN ZULKIFFLE", "class": "RUBY"}, {"name": "MUHAMMAD DINIE FIRDAUS BIN NORARMIZAN", "class": "RUBY"}, {"name": "SITI SOLEHA BINTI MARJUNI", "class": "RUBY"}, {"name": "MUHAMMAD ALIIF ZHORIIF BIN MOHD ABDULLAH", "class": "EMERALD"}, {"name": "MUHAMMAD ARIF HAKIMI BIN ABDULLAH", "class": "EMERALD"}, {"name": "MOHAMAD FAZRUL HAZIQ BIN MOHD AMIN", "class": "SAPPHIRE"}, {"name": "NUR HAZIRA SYAFIERA BINTI AL-HAFIZ", "class": "SAPPHIRE"}, {"name": "ADAM PUTERA BIN MOHAMAD SOLLEHAN", "class": "EMERALD"}, {"name": "MUHAMMAD THAQIF BIN AZMAN", "class": "EMERALD"}, {"name": "CHAI YU ZHE", "class": "ZIRCON"}, {"name": "CHANG JIA HENG", "class": "ZIRCON"}, {"name": "MUHAMMAD FAIQ BIN MOHD FARID", "class": "RUBY"}, {"name": "AL MAN SYAH RIZZAL BIN ABD SUKOR", "class": "SAPPHIRE"}, {"name": "AZLY FAHMI BIN AZRI SHAM", "class": "SAPPHIRE"}, {"name": "HAIQAL IKHWAN BIN NORHALIFI", "class": "SAPPHIRE"}, {"name": "NURUL AZREENA FATIHAH BINTI NORSHAM", "class": "SAPPHIRE"}, {"name": "PUTERI SHAHILA BINTI MOHD HALIM SHAH", "class": "SAPPHIRE"}, {"name": "NURDAYANA ELLYSYA BINTI ABDULLAH", "class": "RUBY"}, {"name": "AHMAD THAQIF IMRAN BIN NORAZMAN", "class": "SAPPHIRE"}, {"name": "CHAU RUI MENG", "class": "SAPPHIRE"}, {"name": "MUHAMMAD WAFIQ BIN MOHD FARID", "class": "RUBY"}, {"name": "CHOON LI XIN", "class": "SAPPHIRE"}, {"name": "LIM JOO YU", "class": "SAPPHIRE"}, {"name": "NAJIB IRFAN BIN NORDIN", "class": "SAPPHIRE"}, {"name": "WONG JIA HUI", "class": "SAPPHIRE"}, {"name": "NUR ALEEYA BINTI RAMLAN", "class": "RUBY"}, {"name": "NURSAFIYYAH BALQIS BINTI ZULKIFLY", "class": "RUBY"}, {"name": "NURUL IMAN ANISSA BINTI SHAHRIZAN", "class": "RUBY"}, {"name": "SOFIANA DEWI BINTI ABDULLAH", "class": "RUBY"}, {"name": "IRFAN ISKANDAR BIN MAT SAAT", "class": "EMERALD"}, {"name": "MUHAMMAD ADAM DANIAL BIN AZWHA", "class": "EMERALD"}, {"name": "ANIS ADHANUN SYIFAA BINTI SAMSUL BAHARI", "class": "SAPPHIRE"}, {"name": "MUHAMAD ZULHAIRIE BIN KHAIRULIZAM", "class": "SAPPHIRE"}, {"name": "MUHAMMAD ADAM DARWISY BIN MAZLIHAN", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HILMI BIN HAMZAH", "class": "SAPPHIRE"}, {"name": "DERREN LAI PIN CHAO", "class": "ZIRCON"}, {"name": "SACHIN A/L RAMAMURTHY", "class": "ZIRCON"}, {"name": "TAN JIAN YI", "class": "ZIRCON"}, {"name": "MUHAMAD FARISH HAIKAL BIN OSMAN", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HELMI BIN MAHADI", "class": "SAPPHIRE"}, {"name": "YONG LI LING", "class": "SAPPHIRE"}, {"name": "KHAIRUNNISA BINTI KOMARUDDIN", "class": "RUBY"}, {"name": "MOHAMAD FARIZUAN SHAHRUL BIN HAMDAN", "class": "RUBY"}, {"name": "NUR RABIAATUL ATIKA SYAHIRA BINTI MAZLAN", "class": "RUBY"}, {"name": "SITI NUR ALEYA BINTI MOHD NIZAM", "class": "RUBY"}, {"name": "MUHAMMAD RAHFIQ BIN RAHMAT", "class": "ZIRCON"}, {"name": "YAP ZHI LI", "class": "ZIRCON"}, {"name": "MUHAMMAD RIZMAN QUZAIMI BIN RAMLI", "class": "SAPPHIRE"}, {"name": "RIEFQIEE ADAMI BIN RIZAL", "class": "RUBY"}, {"name": "WONG YU GUAN", "class": "ZIRCON"}, {"name": "PUTRA ARMAND DARIUS BIN RAHMAT", "class": "SAPPHIRE"}, {"name": "CHEON ZI XUAN", "class": "ZIRCON"}, {"name": "CHANG JIA QI", "class": "SAPPHIRE"}, {"name": "MUHAMMAD DANISH RIFQI BIN MOHD NAZLI", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HAZEEQ INDRA BIN AZALI", "class": "ZIRCON"}, {"name": "FATIN NASUHA BINTI ZAHARI", "class": "RUBY"}, {"name": "MUHAMMAD ALIF DANIEL BIN MUJAHID", "class": "ZIRCON"}, {"name": "CHONG CHEE CHEN", "class": "SAPPHIRE"}, {"name": "CHIN JI HAO", "class": "ZIRCON"}, {"name": "CHONG JING SHENG", "class": "ZIRCON"}, {"name": "CHONG LIH MIN", "class": "ZIRCON"}, {"name": "CHONG LIH SEEN", "class": "ZIRCON"}];
+const questions = [{"bm": "Sempena hari ulang tahun perkahwinan Encik Khairulnizam yang kelima, beliau bercadang membeli hadiah untuk isteri dan anaknya. Beliau ingin membeli dua pasang baju kurung dan seutas jam tangan untuk isterinya, serta sepasang baju kurung dan seutas jam tangan untuk anaknya. Bajet untuk isteri dan anaknya masing-masing ialah RM550 dan RM350. Dengan menggunakan kaedah matriks, hitung harga sepasang baju kurung dan seutas jam tangan.", "en": "In conjunction with Mr. Khairulnizam’s fifth wedding anniversary, he plans to buy gifts for his wife and daughter. He plans to buy two pairs of baju kurung and one watch for his wife, and one pair of baju kurung and one watch for his daughter. The budgets are RM550 and RM350 respectively. By using the matrix method, calculate the price of a pair of baju kurung and a watch.", "A": [[2, 1], [1, 1]], "B": [550, 350], "det": 1, "adj": [[1, -1], [-1, 2]], "prod": [200, 150], "sol": [200, 150], "vars": ["x", "y"], "labels": ["Harga sepasang baju kurung", "Harga seutas jam tangan"]}, {"bm": "Sebuah kedai alat tulis menjual buku nota dan kalkulator. Tiga buah buku nota dan sebuah kalkulator berharga RM150, manakala sebuah buku nota dan dua buah kalkulator berharga RM120. Dengan menggunakan kaedah matriks, hitung harga sebuah buku nota dan sebuah kalkulator.", "en": "A stationery shop sells notebooks and calculators. Three notebooks and one calculator cost RM150, while one notebook and two calculators cost RM120. By using the matrix method, calculate the price of a notebook and a calculator.", "A": [[3, 1], [1, 2]], "B": [150, 120], "det": 5, "adj": [[2, -1], [-1, 3]], "prod": [180, 210], "sol": [36, 42], "vars": ["x", "y"], "labels": ["Harga sebuah buku nota", "Harga sebuah kalkulator"]}, {"bm": "Sebuah panggung wayang menjual tiket dewasa dan tiket kanak-kanak. Empat tiket dewasa dan tiga tiket kanak-kanak berjumlah RM180, manakala dua tiket dewasa dan lima tiket kanak-kanak berjumlah RM160. Dengan menggunakan kaedah matriks, hitung harga satu tiket dewasa dan satu tiket kanak-kanak.", "en": "A cinema sells adult and child tickets. Four adult tickets and three child tickets cost RM180, while two adult tickets and five child tickets cost RM160. By using the matrix method, calculate the price of one adult ticket and one child ticket.", "A": [[4, 3], [2, 5]], "B": [180, 160], "det": 14, "adj": [[5, -3], [-2, 4]], "prod": [420, 280], "sol": [30, 20], "vars": ["x", "y"], "labels": ["Harga tiket dewasa", "Harga tiket kanak-kanak"]}, {"bm": "Sebuah kedai sukan menjual baju sukan dan topi. Tiga helai baju sukan dan dua buah topi berharga RM140, manakala dua helai baju sukan dan tiga buah topi berharga RM130. Dengan menggunakan kaedah matriks, hitung harga sehelai baju sukan dan sebuah topi.", "en": "A sports shop sells sports shirts and caps. Three sports shirts and two caps cost RM140, while two sports shirts and three caps cost RM130. By using the matrix method, calculate the price of one sports shirt and one cap.", "A": [[3, 2], [2, 3]], "B": [140, 130], "det": 5, "adj": [[3, -2], [-2, 3]], "prod": [160, 110], "sol": [32, 22], "vars": ["x", "y"], "labels": ["Harga sehelai baju sukan", "Harga sebuah topi"]}, {"bm": "Sebuah kedai hadiah menjual jambangan bunga dan kotak coklat. Empat jambangan bunga dan sebuah kotak coklat berharga RM220, manakala dua jambangan bunga dan tiga kotak coklat berharga RM180. Dengan menggunakan kaedah matriks, hitung harga sebuah jambangan bunga dan sebuah kotak coklat.", "en": "A gift shop sells flower bouquets and chocolate boxes. Four flower bouquets and one chocolate box cost RM220, while two flower bouquets and three chocolate boxes cost RM180. By using the matrix method, calculate the price of one flower bouquet and one chocolate box.", "A": [[4, 1], [2, 3]], "B": [220, 180], "det": 10, "adj": [[3, -1], [-2, 4]], "prod": [480, 280], "sol": [48, 28], "vars": ["x", "y"], "labels": ["Harga sebuah jambangan bunga", "Harga sebuah kotak coklat"]}];
+
+let selectedClass="", selectedStudent="", qIndex=0, totalScore=0, startTime=null, locked=false;
+let perQuestionScores=[0,0,0,0,0];
+
+function classes(){return [...new Set(students.map(s=>s.class))].sort();}
+
+function renderLogin(){
+  document.getElementById("app").innerHTML=`
+    <span class="badge">PRACTICE • MATRIX METHOD</span>
+    <h1>Praktis Matriks: Penyelesaian Masalah</h1>
+    <p class="sub">5 soalan format SPM. Tunjukkan semua langkah kerja dalam bentuk matriks.</p>
+    <div class="notice">
+      <b>Arahan:</b> Lengkapkan setiap baris langkah kerja. Susunan jawapan mengikuti kaedah matriks:
+      persamaan matriks → matriks songsang → hasil darab → penyelesaian akhir.
+    </div>
+    <div class="row">
+      <div><label>Kelas</label><select id="classSel" onchange="loadNames()"><option value="">-- Pilih kelas --</option>${classes().map(c=>`<option>${c}</option>`).join("")}</select></div>
+      <div><label>Nama</label><select id="nameSel" onchange="toggleStart()"><option value="">-- Pilih nama --</option></select></div>
+    </div>
+    <div class="center" style="margin-top:18px"><button id="startBtn" class="primary" disabled onclick="startQuiz()">Mula Praktis →</button></div>`;
+}
+
+function loadNames(){
+  selectedClass=document.getElementById("classSel").value;
+  const list=students.filter(s=>s.class===selectedClass).sort((a,b)=>a.name.localeCompare(b.name));
+  document.getElementById("nameSel").innerHTML='<option value="">-- Pilih nama --</option>'+list.map(s=>`<option>${s.name}</option>`).join("");
+  toggleStart();
+}
+function toggleStart(){selectedStudent=document.getElementById("nameSel").value;document.getElementById("startBtn").disabled=!(selectedClass&&selectedStudent);}
+function startQuiz(){qIndex=0;totalScore=0;perQuestionScores=[0,0,0,0,0];startTime=new Date();renderQuestion();}
+
+function m2(prefix){
+  return `<div class="matrix2">
+    <input id="${prefix}00" inputmode="numeric"><input id="${prefix}01" inputmode="numeric">
+    <input id="${prefix}10" inputmode="numeric"><input id="${prefix}11" inputmode="numeric">
+  </div>`;
+}
+function v2(prefix){
+  return `<div class="vector2"><input id="${prefix}0" inputmode="numeric"><input id="${prefix}1" inputmode="numeric"></div>`;
+}
+function exprV(prefix){
+  return `<div class="exprvec"><input id="${prefix}0" placeholder="contoh: -8 + (-12)"><input id="${prefix}1" placeholder="contoh: -16 + 36"></div>`;
+}
+
+function renderQuestion(){
+  locked=false;
+  const q=questions[qIndex];
+  document.getElementById("app").innerHTML=`
+    <div class="topbar"><span>${selectedStudent} • ${selectedClass}</span><span>Markah: ${totalScore} / 30</span></div>
+    <div class="progress"><div style="width:${(qIndex/5)*100}%"></div></div>
+
+    <h2>Soalan ${qIndex+1}</h2>
+    <div class="qtext">${q.bm}</div>
+    <div class="qtext en">${q.en}</div>
+
+    <div class="work">
+      <div class="work-title">Langkah kerja matriks [6 markah]</div>
+
+      <div class="step">
+        <h3>Langkah 1 — Tulis dua persamaan linear [1 markah]</h3>
+        <div class="eqrow">
+          <input id="e1a" inputmode="numeric"> <span class="smallvar">${q.vars[0]}</span>
+          <span>+</span>
+          <input id="e1b" inputmode="numeric"> <span class="smallvar">${q.vars[1]}</span>
+          <span>=</span>
+          <input id="e1c" inputmode="numeric">
+        </div>
+        <div class="eqrow">
+          <input id="e2a" inputmode="numeric"> <span class="smallvar">${q.vars[0]}</span>
+          <span>+</span>
+          <input id="e2b" inputmode="numeric"> <span class="smallvar">${q.vars[1]}</span>
+          <span>=</span>
+          <input id="e2c" inputmode="numeric">
+        </div>
+        <div id="fb0" class="feedback"></div>
+      </div>
+
+      <div class="mathline">
+        <span class="eq">2.</span>
+        ${m2("A")}
+        <span class="eq">×</span>
+        <div class="varvec"><div>${q.vars[0]}</div><div>${q.vars[1]}</div></div>
+        <span class="eq">=</span>
+        ${v2("B")}
+      </div>
+      <div id="fb1" class="feedback"></div>
+
+      <div class="mathline">
+        <span class="eq">3.</span>
+        <div class="varvec"><div>${q.vars[0]}</div><div>${q.vars[1]}</div></div>
+        <span class="eq">=</span>
+        <div class="frac"><span class="top">1</span><span class="bottom"><input id="det" style="width:78px" placeholder="det A"></span></div>
+        <span class="eq">×</span>
+        ${m2("INV")}
+        <span class="eq">×</span>
+        ${v2("B2")}
+      </div>
+      <div id="fb2" class="feedback"></div>
+
+      <div class="mathline">
+        <span class="eq">4.</span>
+        <div class="varvec"><div>${q.vars[0]}</div><div>${q.vars[1]}</div></div>
+        <span class="eq">=</span>
+        <div class="frac"><span class="top">1</span><span class="bottom"><input id="det2" style="width:78px" placeholder="det A"></span></div>
+        <span class="eq">×</span>
+        ${exprV("E")}
+      </div>
+      <div id="fb3" class="feedback"></div>
+
+      <div class="mathline">
+        <span class="eq">5.</span>
+        <div class="varvec"><div>${q.vars[0]}</div><div>${q.vars[1]}</div></div>
+        <span class="eq">=</span>
+        <div class="frac"><span class="top">1</span><span class="bottom"><input id="det3" style="width:78px" placeholder="det A"></span></div>
+        <span class="eq">×</span>
+        ${v2("P")}
+      </div>
+      <div id="fb4" class="feedback"></div>
+
+      <div class="mathline">
+        <span class="eq">6.</span>
+        <div class="varvec"><div>${q.vars[0]}</div><div>${q.vars[1]}</div></div>
+        <span class="eq">=</span>
+        ${v2("S")}
+        <span class="eq">→</span>
+        <div class="answerline">
+          <div><label>${q.vars[0]} =</label><input id="xans"></div>
+          <div><label>${q.vars[1]} =</label><input id="yans"></div>
+        </div>
+      </div>
+      <div id="fb5" class="feedback"></div>
+    </div>
+
+    <div class="actions">
+      <button id="checkBtn" class="primary" onclick="checkQuestion()">Semak Soalan</button>
+      <button id="nextBtn" class="primary" style="display:none" onclick="nextQuestion()">${qIndex===4?"Hantar Markah":"Soalan Seterusnya →"}</button>
+    </div>`;
+}
+
+function n(id){const v=parseFloat(document.getElementById(id).value);return Number.isFinite(v)?v:null;}
+function same(a,b){return a!==null && Math.abs(a-b)<1e-9;}
+function normExpr(s){return String(s||"").replace(/\s+/g,"").replace(/−/g,"-").replace(/×/g,"*").toLowerCase();}
+
+function expressionValue(s){
+  const cleaned = String(s||"").replace(/−/g,"-").replace(/×/g,"*").replace(/\s+/g,"");
+  if(!/^[0-9+\-*/().]+$/.test(cleaned)) return null;
+  try{
+    const val = Function('"use strict";return ('+cleaned+')')();
+    return Number.isFinite(val) ? val : null;
+  }catch(e){return null;}
+}
+
+function show(id,ok,msg=""){
+  const el=document.getElementById(id);
+  el.className="feedback "+(ok?"ok":"bad");
+  el.textContent=ok?"✓ Betul":("✗ "+(msg||"Semak semula langkah ini."));
+}
+
+function checkQuestion(){
+  if(locked)return;
+  const q=questions[qIndex]; let s=0;
+
+  // Step 1: two linear equations
+  const step0 =
+    same(n("e1a"),q.A[0][0]) && same(n("e1b"),q.A[0][1]) && same(n("e1c"),q.B[0]) &&
+    same(n("e2a"),q.A[1][0]) && same(n("e2b"),q.A[1][1]) && same(n("e2c"),q.B[1]);
+  show("fb0",step0,"Dua persamaan linear belum tepat."); if(step0)s++;
+
+  // Step 2: matrix equation
+  const step1 =
+    same(n("A00"),q.A[0][0])&&same(n("A01"),q.A[0][1])&&
+    same(n("A10"),q.A[1][0])&&same(n("A11"),q.A[1][1])&&
+    same(n("B0"),q.B[0])&&same(n("B1"),q.B[1]);
+  show("fb1",step1,"Matriks pekali atau matriks pemalar belum tepat."); if(step1)s++;
+
+  // Step 3: inverse setup with original constant vector
+  const step2 =
+    same(n("det"),q.det)&&
+    same(n("INV00"),q.adj[0][0])&&same(n("INV01"),q.adj[0][1])&&
+    same(n("INV10"),q.adj[1][0])&&same(n("INV11"),q.adj[1][1])&&
+    same(n("B20"),q.B[0])&&same(n("B21"),q.B[1]);
+  show("fb2",step2,"Semak penentu, matriks adjoin dan matriks pemalar."); if(step2)s++;
+
+  // Step 4: expanded multiplication expressions; accept any numerically equivalent expression
+  const e0=expressionValue(document.getElementById("E0").value);
+  const e1=expressionValue(document.getElementById("E1").value);
+  const step3 = same(n("det2"),q.det) && same(e0,q.prod[0]) && same(e1,q.prod[1]);
+  show("fb3",step3,"Nilai hasil darab baris matriks dengan matriks pemalar belum tepat."); if(step3)s++;
+
+  // Step 5: simplified product vector
+  const step4 = same(n("det3"),q.det)&&same(n("P0"),q.prod[0])&&same(n("P1"),q.prod[1]);
+  show("fb4",step4,"Semak vektor hasil darab sebelum dibahagi dengan penentu."); if(step4)s++;
+
+  // Step 6: final vector and x,y
+  const step5 =
+    same(n("S0"),q.sol[0])&&same(n("S1"),q.sol[1])&&
+    same(n("xans"),q.sol[0])&&same(n("yans"),q.sol[1]);
+  show("fb5",step5,"Semak nilai akhir x dan y."); if(step5)s++;
+
+  perQuestionScores[qIndex]=s;
+  totalScore+=s; locked=true;
+  document.querySelectorAll("input").forEach(x=>x.disabled=true);
+  document.getElementById("checkBtn").style.display="none";
+  document.getElementById("nextBtn").style.display="inline-block";
+}
+
+function nextQuestion(){qIndex++;if(qIndex<5)renderQuestion();else submitResult();}
+
+async function submitResult(){
+  const percent=Math.round(totalScore/30*100);
+  const duration=Math.round((new Date()-startTime)/1000);
+  const payload={
+    type:"matrix_quiz",
+    name:selectedStudent,class:selectedClass,
+    q1:perQuestionScores[0],q2:perQuestionScores[1],q3:perQuestionScores[2],q4:perQuestionScores[3],q5:perQuestionScores[4],
+    total_score:totalScore,total:30,percent:percent,
+    duration_seconds:duration,topic:"Praktis Matriks - Kaedah Matriks"
+  };
+
+  let sent=false;
+  if(WEB_APP_URL && !WEB_APP_URL.startsWith("PASTE_")){
+    try{
+      await fetch(WEB_APP_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(payload)});
+      sent=true;
+    }catch(e){}
+  }
+
+  document.getElementById("app").innerHTML=`
+    <div class="center">
+      <span class="badge">SELESAI</span>
+      <h1>Praktis Matriks Selesai</h1>
+      <div class="score">${totalScore} / 30</div>
+      <h2>${percent}%</h2>
+      <p class="sub">${sent?"Markah telah dihantar ke Google Sheet Matriks.":"Markah telah dikira. Masukkan Web App URL baharu untuk menyimpan rekod."}</p>
+      <button class="primary" onclick="renderLogin()">Kembali</button>
+    </div>`;
+}
+
+renderLogin();
+</script>
+</body>
+</html>
