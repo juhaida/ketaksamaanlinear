@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UASA Matematik Tingkatan 1 - Revision Paper 2023</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#16202a;--muted:#5f6b76;--primary:#145da0;--good:#18794e;--bad:#c62828;}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+.wrap{max-width:900px;margin:auto;padding:14px} .hero{background:linear-gradient(135deg,#145da0,#0c3d68);color:#fff;padding:20px;border-radius:18px;margin-bottom:14px}
+.hero h1{font-size:1.35rem;margin:0 0 6px} .hero p{margin:3px 0;opacity:.95}
+.panel,.card{background:var(--card);border:1px solid #dfe7ef;border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 2px 7px rgba(0,0,0,.04)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px} label.title{font-weight:700;font-size:.9rem;display:block;margin-bottom:5px}
+select,button{width:100%;padding:12px;border-radius:11px;border:1px solid #cbd5df;font-size:1rem;background:#fff}
+button{border:none;background:var(--primary);color:white;font-weight:800;cursor:pointer} button.secondary{background:#5f6b76} button.danger{background:#b3261e}
+button:disabled{opacity:.55;cursor:not-allowed}
+.qtitle{font-weight:800;font-size:1rem;line-height:1.5} .en{color:var(--muted);font-style:italic;font-size:.91rem;margin:5px 0 10px}
+.opt{display:flex;gap:9px;align-items:flex-start;border:1px solid #dce5ed;border-radius:11px;padding:10px;margin:7px 0;cursor:pointer}
+.opt:hover{background:#f7fbff} .opt input{margin-top:3px;transform:scale(1.15)}
+.diagram-wrap{display:flex;justify-content:center;margin:10px 0 8px} .diagram{display:block;width:auto;max-width:100%;height:auto;max-height:270px;border:1px solid #dfe7ef;border-radius:10px;background:#fff;padding:5px;object-fit:contain}
+.diagram.tall{max-height:320px;max-width:330px} .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1;margin:0 .12em}
+.frac .top{border-bottom:1.5px solid currentColor;padding:0 .15em .08em} .frac .bottom{padding:.08em .15em 0} .math{white-space:nowrap}
+.result{font-size:1.25rem;font-weight:900;text-align:center;padding:18px;border-radius:14px;background:#eef7ff}
+.small{font-size:.88rem;color:var(--muted)} table{width:100%;border-collapse:collapse;font-size:.9rem} th,td{padding:9px;border-bottom:1px solid #e2e8ef;text-align:left} th{background:#eef4f8}
+.review-good{border-left:5px solid var(--good)} .review-bad{border-left:5px solid var(--bad)}
+.formula-box{margin:10px 0 12px;border:1px solid #b9d7ee;background:#f3f9fd;border-radius:11px;padding:10px 12px}
+.formula-box summary{cursor:pointer;font-weight:800;color:#0c4f82}
+.formula-content{margin-top:8px;line-height:1.55;font-size:.94rem}
+.formula-content .note{color:#5f6b76;font-size:.88rem;margin-top:5px}
+@media(max-width:620px){.grid{grid-template-columns:1fr} .wrap{padding:9px} .card{padding:13px} .hero{padding:16px} .diagram{max-height:220px} .diagram.tall{max-height:280px;max-width:280px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero"><h1>UASA Matematik Tingkatan 1 – Revision Paper 2023</h1><p>Bahagian A • 20 soalan • 20 markah</p><p>Pilih kelas dan nama sebelum menjawab.</p></section>
+
+<section class="panel">
+<div class="grid">
+<div><label class="title">Kelas</label><select id="kelas"><option value="">-- Pilih kelas --</option></select></div>
+<div><label class="title">Nama pelajar</label><select id="nama" disabled><option value="">-- Pilih nama --</option></select></div>
+</div>
+<div class="small" style="margin-top:8px">Markah dan masa menjawab akan direkod apabila murid menghantar jawapan.</div>
+</section>
+
+<div id="quiz"></div>
+
+<section class="panel">
+<button id="submitBtn" onclick="submitQuiz()">Hantar Jawapan & Semak Markah</button>
+<div id="resultBox" style="display:none;margin-top:12px"></div>
+<div id="saveStatus" class="small" style="display:none;margin-top:8px;text-align:center"></div>
+<div class="grid" style="margin-top:10px">
+<button class="secondary" onclick="retryQuiz()">Cuba Semula</button>
+<button class="secondary" onclick="exportCSV()">Eksport Rekod Peranti (CSV)</button>
+</div>
+</section>
+
+</div>
+
+<script>
+const SET_NAME="UASA Matematik Tingkatan 1 - Revision Paper 2023";
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz6QK1m9Xt4I3NGWFB5J7vwpBIkUkmBnM9xiQOfNQ6JwC5WkpeR_zeHYJ1ZHWF78zFI/exec";
+const STUDENTS={"1DIAMOND": ["LIM JING XIN", "WONG LIEK KAI", "PONG YIN XIN", "FONG JIN RU", "THONG SZE YANG", "LIEW RUO QI", "ALLY ZULFADHLI BIN MOHD ZAHID", "RIA ZARA BINTI MOHD HAZWAN", "MUHAMMAD IRFAN NAUFAL BIN NOORHAFIZAN", "NAFIZ MURSYID BIN MOHD NOR KHAIRIL", "MUHAMMAD AISY RIZQIN BIN MUHAMMAD GHAZALI", "NURUL FAIQAH HUSNA BINTI MOHD FARID", "AMNI QAISARA BINTI MOHD FAIRUS", "NUR HANI DARINA BINTI KAMARUL ARIFFIN", "MUHAMMAD FITRI HAMIZAN BIN ZAMEER AKMAL", "HAWA DAMIA NURAIN BINTI MOHD HUSAINI", "MUHAMMAD AIDID AMERUL BIN MUHAMMAD NAZRI", "NUR SYAFA ADILA BINTI ISMAIL", "MOHAMAD SYAHMIRUL BIN MOHD SHAHNIZA", "AWADAH NUR RIZQAH BINTI MOHD IKHRAM", "MUHAMMAD DANISH SHAZRIL BIN ABDULLAH", "MUHAMMAD HAZIQ FAIZ BIN HASHIM", "MUHAMMAD ABDULLAH SALAM ALI BIN GHAZALY ALI", "MUHAMMAD RYAN ZAFRIL BIN MOHD NIZEM", "NUR HUSNA FAQIHAH BINTI ISHAK", "FATIN AQILAH NAFISAH BINTI MOHD SHUKOR", "MUHAMMAD AMIR KAZIM BIN SUDARMAN", "CHONG JING XIN"], "1EMERALD": ["YONG SHENG XIANG", "KIEW RUI BIN", "TAN XUAN QI", "ADAM EEHAN BIN HARNIE SHA FARDLY", "HSU HAO XUAN", "LAI TECK FOCK", "SIM YUK SHAN", "NUR FATHIAH SAKINA BINTI MOHAMAD FIRDHAUS", "TEOH XIN CI", "NUR AMNI ELLISYA BINTI SYAIFUL IZWAN", "QASEH QAISARA BINTI SAZALI", "RADIN RAYYAN HAFIZ", "ANISSA SOFIA BINTI MOHAMAD HAIRULNIZAM", "MUHAMMAD FAIZ ZAKWAN BIN MOHD NAJIB", "MUHAMMAD YOUNES BIN MOHD YAZID", "NUR AINA MAISARAH BINTI KHAIRUL AZMI", "NURISYA AFIRA BINTI ABDULLAH", "SITI NUR RAQIAH BINTI ABDULLAH", "AISYAH BINTI MUHAMAD MUSTAKIM", "NURIN INSYIRAH BINTI NIZARUDIN", "MUHAMMAD HADI JAZLI BIN MD ALMUTAKIL", "MUHAMMAD AIMANSHAH BIN AZIZUL", "MUHAMMAD NASRAWI BIN MOHAMMAD FETRIE", "DARSHANASRI A/P KRISHNAN", "NUR ELFFIFARISAH QOYYIMAH BINTI MOHD RAIS", "KAMIL IMRAN BIN JEFRY"], "1RUBY": ["LIONG SHENG KANG", "AFNI ELVINA BINTI ARAFI", "NUR DELISHA AMANI BINTI MOHD NOOR RAMDAN", "WONG KA HUI", "UMAIRAH QAISARA BINTI IZHAR", "NUR ELYANA BINTI ABDULLAH", "THAM ZHI HONG", "MUHAMMAD QAWI NAUFAL BIN MUHAMMAD SAFUAN", "SAHET NAUFAL BIN MD NASIR", "SYLVESTER SHEN KAI BING", "CHONG JIA JIA", "MUHAMMAD HAQQEM BIN KHAIRULIZAM", "NURHAQESSYA BINTI SYAHAFIZ", "SITI NUR ASYIKIN BINTI IRWIN", "TAKESH A/L R.G. BABU", "MUHAMMAD DANISH HAZIQ BIN NORARMIZAN", "MUHAMMAD ILHAM MUHAYYAD BIN MESWAN", "MUHAMMAD UMAR BIN KAMARUL ZAMAN", "CHONG LE XUAN", "DINESH A/L LECHUMANAN", "MOHAMAD AISY ADWA BIN MOHD FIRDAUS", "MUHAMAD SYAMIL ASYRAFF BIN HISHAM", "WONG KIAN RONG", "ADAM DAZLY BIN SHAHALWI", "LEONG ZI QI", "NUR KHAIRA QALISYA BINTI MOHD KHAIR", "NUR IRIS HUMAIRA BINTI MOHD NOOR", "MOHAMMAD SYAHRIZAD RAYYAN BIN SAHRUDIN"], "1SAPPHIRE": ["LOY XIN TIAN", "UMAIRAH QALISYA BINTI IZHAR", "CHONG XIAO NING", "INTAN NUR SYAFIQAH BINTI MUHAMMAD FIRDAUS", "NERONDY SHAHLAN", "ADAM DAZRYN BIN SHAHALWI", "MUHAMMAD QALIFF ASHRAFF BIN MD SYAH", "YAP ZHI JIE", "CHONG YI XIN", "LEONG YEE ROU", "PUTERI NUR DAMIA BINTI ZULTIKA", "RAISHA SUTRA BINTI RAFIUDDIN", "WONG JIA JIA", "MOHAMAD DANIEL DANESH BIN MOSLIM", "MUHAMMAD ADAM ISKANDAR BIN MOHD SANI", "SOLEHUDDINULHAFIZ BIN MOHD SHAFIEE", "MUHAMMAD ADAM ARIEF BIN OSMAN", "RAYQAL ISKANDAR BIN RIZAL", "GAN CHIK CHEN", "CHANG JIE QI", "NUR HAZIQAH NASRIN BINTI ABDULLAH", "JUSTIN PANG HAO JUN", "MOHAMAD ZUHAER BIN MOHAMAD NIZAM", "MUHAMMAD SUFIY BIN SALAHUDIN", "LAM JUN YI"]};
+const IMAGES={"q5": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNjAgMjYwIj4KPHN0eWxlPnRleHR7Zm9udC1mYW1pbHk6QXJpYWw7ZmlsbDojMTExfS5ze3N0cm9rZTojMTExO3N0cm9rZS13aWR0aDozO2ZpbGw6bm9uZX0ucntzdHJva2U6Izc3NztzdHJva2Utd2lkdGg6MTQ7ZmlsbDpub25lfTwvc3R5bGU+CjxwYXRoIGNsYXNzPSJzIiBkPSJNOTAgNzAgTDIyMCA3MCBMMjg1IDI1IEwxNTUgMjUgWiBNOTAgNzAgTDkwIDIwMCBMMjIwIDIwMCBMMjIwIDcwIE0yMjAgMjAwIEwyODUgMTU1IEwyODUgMjUiLz4KPGxpbmUgY2xhc3M9InIiIHgxPSI5MCIgeTE9IjEyNSIgeDI9IjIyMCIgeTI9IjEyNSIvPjxsaW5lIGNsYXNzPSJyIiB4MT0iMjIwIiB5MT0iMTI1IiB4Mj0iMjg1IiB5Mj0iODAiLz4KPGxpbmUgY2xhc3M9InIiIHgxPSI5MCIgeTE9IjE1NSIgeDI9IjIyMCIgeTI9IjE1NSIvPjxsaW5lIGNsYXNzPSJyIiB4MT0iMjIwIiB5MT0iMTU1IiB4Mj0iMjg1IiB5Mj0iMTEwIi8+Cjx0ZXh0IHg9IjI5MiIgeT0iNzYiIGZvbnQtc2l6ZT0iMTgiPlJlYmVuPC90ZXh0Pjx0ZXh0IHg9IjI5MiIgeT0iOTgiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtc3R5bGU9Iml0YWxpYyI+UmliYm9uPC90ZXh0Pgo8L3N2Zz4=", "q11": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MjAgMTUwIj4KPHN0eWxlPnRleHR7Zm9udC1mYW1pbHk6QXJpYWw7ZmlsbDojMTExfS5ze3N0cm9rZTojMTExO3N0cm9rZS13aWR0aDoyLjU7ZmlsbDpub25lfS50e2ZvbnQtc2l6ZToyMHB4fTwvc3R5bGU+CjxsaW5lIGNsYXNzPSJzIiB4MT0iNTUiIHkxPSI5NSIgeDI9IjQ3NSIgeTI9Ijk1Ii8+PHBhdGggZD0iTTU1IDk1IGwxMyAtNyB2MTR6IiBmaWxsPSIjMTExIi8+PHBhdGggZD0iTTQ3NSA5NSBsLTEzIC03IHYxNHoiIGZpbGw9IiMxMTEiLz4KPGxpbmUgY2xhc3M9InMiIHgxPSI4NSIgeTE9IjY4IiB4Mj0iMjc1IiB5Mj0iNjgiLz48cGF0aCBkPSJNODUgNjggbDEzIC03IHYxNHoiIGZpbGw9IiMxMTEiLz48Y2lyY2xlIGN4PSIyNzUiIGN5PSI2OCIgcj0iNiIgZmlsbD0iIzExMSIvPgo8ZyBjbGFzcz0icyI+PGxpbmUgeDE9Ijg1IiB5MT0iODQiIHgyPSI4NSIgeTI9IjEwNiIvPjxsaW5lIHgxPSIxODAiIHkxPSI4NCIgeDI9IjE4MCIgeTI9IjEwNiIvPjxsaW5lIHgxPSIyNzUiIHkxPSI4NCIgeDI9IjI3NSIgeTI9IjEwNiIvPjxsaW5lIHgxPSIzNzAiIHkxPSI4NCIgeDI9IjM3MCIgeTI9IjEwNiIvPjxsaW5lIHgxPSI0NjUiIHkxPSI4NCIgeDI9IjQ2NSIgeTI9IjEwNiIvPjwvZz4KPHRleHQgY2xhc3M9InQiIHg9IjcyIiB5PSIxMzAiPuKIkjM8L3RleHQ+PHRleHQgY2xhc3M9InQiIHg9IjE2NyIgeT0iMTMwIj7iiJIyPC90ZXh0Pjx0ZXh0IGNsYXNzPSJ0IiB4PSIyNjIiIHk9IjEzMCI+4oiSMTwvdGV4dD48dGV4dCBjbGFzcz0idCIgeD0iMzY0IiB5PSIxMzAiPjA8L3RleHQ+PHRleHQgY2xhc3M9InQiIHg9IjQ1OSIgeT0iMTMwIj4xPC90ZXh0Pgo8L3N2Zz4=", "q12": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MjAgMzIwIj4KPHN0eWxlPnRleHR7Zm9udC1mYW1pbHk6QXJpYWw7ZmlsbDojMTExfS5ze3N0cm9rZTojMTExO3N0cm9rZS13aWR0aDoyLjV9LnR7Zm9udC1zaXplOjIwcHh9LmFyY3tzdHJva2U6IzExMTtzdHJva2Utd2lkdGg6MS44O2ZpbGw6bm9uZX08L3N0eWxlPgo8bGluZSBjbGFzcz0icyIgeDE9IjIwNSIgeTE9IjE1NSIgeDI9IjIwNSIgeTI9IjI4NSIvPjxsaW5lIGNsYXNzPSJzIiB4MT0iMjA1IiB5MT0iMTU1IiB4Mj0iMzE1IiB5Mj0iMTU1Ii8+CjxsaW5lIGNsYXNzPSJzIiB4MT0iMjA1IiB5MT0iMTU1IiB4Mj0iMTM1IiB5Mj0iNDUiLz48bGluZSBjbGFzcz0icyIgeDE9IjIwNSIgeTE9IjE1NSIgeDI9IjI3NSIgeTI9Ijc1Ii8+PGxpbmUgY2xhc3M9InMiIHgxPSIyMDUiIHkxPSIxNTUiIHgyPSIyNjAiIHkyPSIyNzAiLz4KPHRleHQgY2xhc3M9InQiIHg9IjE1NSIgeT0iMTU1Ij4yeDwvdGV4dD48dGV4dCBjbGFzcz0idCIgeD0iMjEwIiB5PSIxMDEiPng8L3RleHQ+PHRleHQgY2xhc3M9InQiIHg9IjI2MCIgeT0iMTQwIj40NcKwPC90ZXh0Pjx0ZXh0IGNsYXNzPSJ0IiB4PSIyMzIiIHk9IjE4MCI+eTwvdGV4dD48dGV4dCBjbGFzcz0idCIgeD0iMjA4IiB5PSIyMzUiPjMwwrA8L3RleHQ+CjxwYXRoIGNsYXNzPSJhcmMiIGQ9Ik0yMDUgMTMwIEEyNSAyNSAwIDAgMSAyMzAgMTU1Ii8+Cjwvc3ZnPg==", "q13": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgMjQwIj4KPHN0eWxlPnRleHR7Zm9udC1mYW1pbHk6QXJpYWw7ZmlsbDojMTExfS5ze3N0cm9rZTojMTExO3N0cm9rZS13aWR0aDoyLjg7ZmlsbDpub25lfS50e2ZvbnQtc2l6ZToyMHB4O2ZvbnQtc3R5bGU6aXRhbGljfTwvc3R5bGU+CjxsaW5lIGNsYXNzPSJzIiB4MT0iNjUiIHkxPSI1NSIgeDI9IjQxMCIgeTI9IjU1Ii8+PGxpbmUgY2xhc3M9InMiIHgxPSIxMTUiIHkxPSI1NSIgeDI9IjI1MCIgeTI9IjE5MCIvPjxsaW5lIGNsYXNzPSJzIiB4MT0iNDEwIiB5MT0iNTUiIHgyPSIyNTAiIHkyPSIxOTAiLz4KPGxpbmUgY2xhc3M9InMiIHgxPSIxNzciIHkxPSIxMTEiIHgyPSIxOTAiIHkyPSI5OCIvPjxsaW5lIGNsYXNzPSJzIiB4MT0iMzIyIiB5MT0iMTEzIiB4Mj0iMzM1IiB5Mj0iMTI2Ii8+Cjx0ZXh0IGNsYXNzPSJ0IiB4PSIxMDgiIHk9IjQzIj5LPC90ZXh0Pjx0ZXh0IGNsYXNzPSJ0IiB4PSI0MTgiIHk9IjQzIj5MPC90ZXh0Pjx0ZXh0IGNsYXNzPSJ0IiB4PSIyNDciIHk9IjIyMCI+TTwvdGV4dD4KPHRleHQgeD0iMjM1IiB5PSIxNzUiIGZvbnQtc2l6ZT0iMjEiPjEyNMKwPC90ZXh0Pjx0ZXh0IHg9IjEwNSIgeT0iODgiIGZvbnQtc2l6ZT0iMjEiPng8L3RleHQ+Cjwvc3ZnPg==", "q15": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgMzAwIj4KPHN0eWxlPi5ze3N0cm9rZTojMTExO3N0cm9rZS13aWR0aDozO2ZpbGw6bm9uZX08L3N0eWxlPjxyZWN0IGNsYXNzPSJzIiB4PSI1NSIgeT0iNTUiIHdpZHRoPSIxOTAiIGhlaWdodD0iMTkwIi8+CjxsaW5lIGNsYXNzPSJzIiB4MT0iMTUwIiB5MT0iNTUiIHgyPSIxNTAiIHkyPSIyNDUiLz48bGluZSBjbGFzcz0icyIgeDE9IjU1IiB5MT0iMTUwIiB4Mj0iMjQ1IiB5Mj0iMTUwIi8+PC9zdmc+", "q16": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgMjgwIj4KPHN0eWxlPnRleHR7Zm9udC1mYW1pbHk6QXJpYWw7ZmlsbDojMTExfS5ze3N0cm9rZTojMTExO3N0cm9rZS13aWR0aDoyLjU7ZmlsbDpub25lfS50e2ZvbnQtc2l6ZToyMHB4fTwvc3R5bGU+CjxyZWN0IGNsYXNzPSJzIiB4PSI1NSIgeT0iNDAiIHdpZHRoPSIzOTAiIGhlaWdodD0iMjAwIi8+PGVsbGlwc2UgY2xhc3M9InMiIGN4PSIyNTAiIGN5PSIxNDAiIHJ4PSI5NSIgcnk9IjgwIi8+Cjx0ZXh0IGNsYXNzPSJ0IiB4PSI2MiIgeT0iMzQiPs6+PC90ZXh0Pjx0ZXh0IGNsYXNzPSJ0IiB4PSIxNzUiIHk9Ijc1Ij5SPC90ZXh0Pgo8dGV4dCBjbGFzcz0idCIgeD0iMjE4IiB5PSIxMTAiPjI2PC90ZXh0Pjx0ZXh0IGNsYXNzPSJ0IiB4PSIyMTgiIHk9IjE1MCI+Mjk8L3RleHQ+PHRleHQgY2xhc3M9InQiIHg9IjIxOCIgeT0iMTkwIj4zMTwvdGV4dD4KPHRleHQgY2xhc3M9InQiIHg9Ijk1IiB5PSIxMzAiPjI0PC90ZXh0Pjx0ZXh0IGNsYXNzPSJ0IiB4PSI5NSIgeT0iMjA1Ij4yODwvdGV4dD48dGV4dCBjbGFzcz0idCIgeD0iMzU1IiB5PSIxMDUiPjI3PC90ZXh0Pjx0ZXh0IGNsYXNzPSJ0IiB4PSIzNTUiIHk9IjE1MCI+MzA8L3RleHQ+PHRleHQgY2xhc3M9InQiIHg9IjM1NSIgeT0iMjAwIj4zMjwvdGV4dD4KPC9zdmc+", "q18": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MjAgMzcwIj4KPHN0eWxlPnRleHR7Zm9udC1mYW1pbHk6QXJpYWw7ZmlsbDojMTExfS5heGlze3N0cm9rZTojMTExO3N0cm9rZS13aWR0aDoyfS5ncmlke3N0cm9rZTojYmJiO3N0cm9rZS13aWR0aDoxfS5ibXtmaWxsOiNlOWU5ZTk7c3Ryb2tlOiMxMTE7c3Ryb2tlLXdpZHRoOjEuNX0uYml7ZmlsbDp1cmwoI2hhdGNoKTtzdHJva2U6IzExMTtzdHJva2Utd2lkdGg6MS41fS50e2ZvbnQtc2l6ZToxN3B4fTwvc3R5bGU+CjxkZWZzPjxwYXR0ZXJuIGlkPSJoYXRjaCIgd2lkdGg9IjgiIGhlaWdodD0iOCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgcGF0dGVyblRyYW5zZm9ybT0icm90YXRlKDQ1KSI+PGxpbmUgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjgiIHN0cm9rZT0iIzY2NiIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9wYXR0ZXJuPjwvZGVmcz4KPGxpbmUgY2xhc3M9ImF4aXMiIHgxPSI3MCIgeTE9IjMwMCIgeDI9IjQ3MCIgeTI9IjMwMCIvPjxsaW5lIGNsYXNzPSJheGlzIiB4MT0iNzAiIHkxPSIzMDAiIHgyPSI3MCIgeTI9IjUwIi8+CjxnIGNsYXNzPSJncmlkIj48bGluZSB4MT0iNzAiIHkxPSIyNDAiIHgyPSI0NzAiIHkyPSIyNDAiLz48bGluZSB4MT0iNzAiIHkxPSIxODAiIHgyPSI0NzAiIHkyPSIxODAiLz48bGluZSB4MT0iNzAiIHkxPSIxMjAiIHgyPSI0NzAiIHkyPSIxMjAiLz48bGluZSB4MT0iNzAiIHkxPSI2MCIgeDI9IjQ3MCIgeTI9IjYwIi8+PC9nPgo8dGV4dCBjbGFzcz0idCIgeD0iMzUiIHk9IjMwNSI+MDwvdGV4dD48dGV4dCBjbGFzcz0idCIgeD0iMzAiIHk9IjI0NSI+MjA8L3RleHQ+PHRleHQgY2xhc3M9InQiIHg9IjMwIiB5PSIxODUiPjQwPC90ZXh0Pjx0ZXh0IGNsYXNzPSJ0IiB4PSIzMCIgeT0iMTI1Ij42MDwvdGV4dD48dGV4dCBjbGFzcz0idCIgeD0iMzAiIHk9IjY1Ij44MDwvdGV4dD4KPHJlY3QgY2xhc3M9ImJtIiB4PSIxMTAiIHk9IjE4MCIgd2lkdGg9IjM0IiBoZWlnaHQ9IjEyMCIvPjxyZWN0IGNsYXNzPSJiaSIgeD0iMTQ1IiB5PSIxNTAiIHdpZHRoPSIzNCIgaGVpZ2h0PSIxNTAiLz4KPHJlY3QgY2xhc3M9ImJtIiB4PSIyMjUiIHk9IjEyMCIgd2lkdGg9IjM0IiBoZWlnaHQ9IjE4MCIvPjxyZWN0IGNsYXNzPSJiaSIgeD0iMjYwIiB5PSIxODAiIHdpZHRoPSIzNCIgaGVpZ2h0PSIxMjAiLz4KPHJlY3QgY2xhc3M9ImJtIiB4PSIzNDAiIHk9IjE1MCIgd2lkdGg9IjM0IiBoZWlnaHQ9IjE1MCIvPjxyZWN0IGNsYXNzPSJiaSIgeD0iMzc1IiB5PSIxNTAiIHdpZHRoPSIzNCIgaGVpZ2h0PSIxNTAiLz4KPHRleHQgY2xhc3M9InQiIHg9IjExMiIgeT0iMzI1Ij5GYXJlZXo8L3RleHQ+PHRleHQgY2xhc3M9InQiIHg9IjIzMCIgeT0iMzI1Ij5GYWlydXM8L3RleHQ+PHRleHQgY2xhc3M9InQiIHg9IjM0NyIgeT0iMzI1Ij5GaWtyaWU8L3RleHQ+CjxyZWN0IGNsYXNzPSJibSIgeD0iNDg1IiB5PSI5NSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ii8+PHRleHQgY2xhc3M9InQiIHg9IjUxOCIgeT0iMTE0Ij5CYWhhc2EgTWVsYXl1PC90ZXh0Pgo8cmVjdCBjbGFzcz0iYmkiIHg9IjQ4NSIgeT0iMTM1IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiLz48dGV4dCBjbGFzcz0idCIgeD0iNTE4IiB5PSIxNTQiPkJhaGFzYSBJbmdnZXJpczwvdGV4dD4KPC9zdmc+", "q19": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MjAgMzYwIj4KPHN0eWxlPnRleHR7Zm9udC1mYW1pbHk6QXJpYWw7ZmlsbDojMTExfS5ze3N0cm9rZTojMTExO3N0cm9rZS13aWR0aDoyLjI7ZmlsbDpub25lfS50e2ZvbnQtc2l6ZToxOXB4fTwvc3R5bGU+CjxjaXJjbGUgY2xhc3M9InMiIGN4PSIyMDUiIGN5PSIxODAiIHI9IjEyMCIvPgo8bGluZSBjbGFzcz0icyIgeDE9IjIwNSIgeTE9IjE4MCIgeDI9Ijg1IiB5Mj0iMTgwIi8+CjxsaW5lIGNsYXNzPSJzIiB4MT0iMjA1IiB5MT0iMTgwIiB4Mj0iMTY3IiB5Mj0iNjYiLz4KPGxpbmUgY2xhc3M9InMiIHgxPSIyMDUiIHkxPSIxODAiIHgyPSIzMDUiIHkyPSIxMTMiLz4KPGxpbmUgY2xhc3M9InMiIHgxPSIyMDUiIHkxPSIxODAiIHgyPSIzMjIiIHkyPSIyMDYiLz4KPHRleHQgY2xhc3M9InQiIHg9IjEwNyIgeT0iMTMzIj5Sb2NrPC90ZXh0Pjx0ZXh0IGNsYXNzPSJ0IiB4PSIxMDAiIHk9IjE1OSI+NzLCsDwvdGV4dD4KPHRleHQgY2xhc3M9InQiIHg9IjIwNiIgeT0iOTIiPkJhbGFkYTwvdGV4dD48dGV4dCBjbGFzcz0idCIgeD0iMjExIiB5PSIxMTYiPjkwwrA8L3RleHQ+Cjx0ZXh0IGNsYXNzPSJ0IiB4PSIyODkiIHk9IjE1OCI+SmF6ejwvdGV4dD48dGV4dCBjbGFzcz0idCIgeD0iMjg1IiB5PSIxODIiPjMwwrA8L3RleHQ+Cjx0ZXh0IGNsYXNzPSJ0IiB4PSIxOTAiIHk9IjI2MCI+UG9wPC90ZXh0Pgo8L3N2Zz4=", "q20": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNjAgMzIwIj4KPHN0eWxlPnRleHR7Zm9udC1mYW1pbHk6QXJpYWw7ZmlsbDojMTExfS5ze3N0cm9rZTojMTExO3N0cm9rZS13aWR0aDozO2ZpbGw6bm9uZX0udHtmb250LXNpemU6MjBweH08L3N0eWxlPgo8cG9seWdvbiBjbGFzcz0icyIgcG9pbnRzPSIxODAsMzUgODAsMjcwIDI4MCwyNzAiLz4KPHRleHQgY2xhc3M9InQiIHg9IjI4NiIgeT0iMTY1Ij4xMyBjbTwvdGV4dD48dGV4dCBjbGFzcz0idCIgeD0iMTQ1IiB5PSIzMDAiPjEwIGNtPC90ZXh0Pgo8L3N2Zz4="};
+const QUESTIONS=[{"q": "Antara berikut, yang manakah disusun dengan tertib menurun?", "en": "Which of the following is arranged in descending order?", "opts": ["<span class=\"frac\"><span class=\"top\">1</span><span class=\"bottom\">8</span></span>, 0.8, −1<span class=\"frac\"><span class=\"top\">1</span><span class=\"bottom\">8</span></span>, −8", "0.8, <span class=\"frac\"><span class=\"top\">1</span><span class=\"bottom\">8</span></span>, −1<span class=\"frac\"><span class=\"top\">1</span><span class=\"bottom\">8</span></span>, −8", "−0.8, −1<span class=\"frac\"><span class=\"top\">1</span><span class=\"bottom\">8</span></span>, <span class=\"frac\"><span class=\"top\">1</span><span class=\"bottom\">8</span></span>, 0.8", "−8, −1<span class=\"frac\"><span class=\"top\">1</span><span class=\"bottom\">8</span></span>, 0.8, <span class=\"frac\"><span class=\"top\">1</span><span class=\"bottom\">8</span></span>"], "a": 1}, {"q": "Antara berikut, yang manakah <b>bukan</b> faktor bagi 39?", "en": "Which of the following is <b>not</b> a factor of 39?", "opts": ["1", "3", "9", "13"], "a": 2}, {"q": "Apakah gandaan sepunya terkecil (GSTK) bagi 15 dan 20?", "en": "What is the lowest common multiple (LCM) of 15 and 20?", "opts": ["5", "30", "40", "60"], "a": 3}, {"q": "<span class='math'>(−0.5)<sup>3</sup></span> =", "en": "", "opts": ["<span class=\"frac\"><span class=\"top\">1</span><span class=\"bottom\">4</span></span>", "−<span class=\"frac\"><span class=\"top\">1</span><span class=\"bottom\">4</span></span>", "<span class=\"frac\"><span class=\"top\">1</span><span class=\"bottom\">8</span></span>", "−<span class=\"frac\"><span class=\"top\">1</span><span class=\"bottom\">8</span></span>"], "a": 3}, {"q": "Rajah menunjukkan sebuah kotak hadiah berbentuk kubus. Luas tapak kotak ialah 196 cm². Emmie ingin meletakkan reben sebanyak 2 lilitan seperti dalam rajah. Berapakah panjang reben yang diperlukan?", "en": "The diagram shows a cube-shaped gift box. The area of its base is 196 cm². Emmie puts 2 wraps of ribbon as shown. What length of ribbon is needed?", "img": "q5", "opts": ["112 cm", "56 cm", "28 cm", "14 cm"], "a": 0}, {"q": "Ungkapkan nisbah 18 : 24 dalam bentuk termudah.", "en": "Express the ratio 18 : 24 in its simplest form.", "opts": ["3 : 4", "6 : 8", "9 : 12", "36 : 48"], "a": 0}, {"q": "Sebuah bakul boleh memuatkan sebanyak 29 biji oren. Berapa bakul diperlukan untuk memuatkan 174 biji oren?", "en": "A basket can hold 29 oranges. How many baskets are needed to hold 174 oranges?", "opts": ["4", "5", "6", "7"], "a": 2}, {"q": "<span class=\"frac\"><span class=\"top\">6rt² × 5rs²</span><span class=\"bottom\">3r²s</span></span> =", "en": "", "opts": ["10st²", "(10st)²", "10t²", "10r²s²t²"], "a": 0}, {"q": "Ammar mempunyai <i>p</i> batang pensel. Aqil mempunyai 3 batang pensel kurang daripada Ammar. Jumlah pensel mereka ialah 11. Persamaan linear yang betul ialah", "en": "Ammar has <i>p</i> pencils. Aqil has 3 fewer pencils. Together they have 11. The correct linear equation is", "opts": ["2p + 3 = 11", "p − 3 = 11", "2p − 3 = 11", "p + 3 = 11"], "a": 2}, {"q": "<span class=\"math\">2x + y = 12</span> dan <span class=\"frac\"><span class=\"top\">x</span><span class=\"bottom\">4</span></span> + <span class=\"frac\"><span class=\"top\">y</span><span class=\"bottom\">2</span></span> = 3. Antara berikut, yang manakah memuaskan kedua-dua persamaan?", "en": "Which values satisfy both linear equations?", "opts": ["x = 2, y = 8", "x = 3, y = 6", "x = 2, y = 4", "x = 4, y = 4"], "a": 3}, {"q": "Rajah menunjukkan satu garis nombor. Antara berikut, yang manakah mewakili garis nombor itu?", "en": "The diagram shows a number line. Which inequality represents it?", "img": "q11", "opts": ["x < −1", "x > −3", "x ≤ −1", "x ≥ −3"], "a": 2}, {"q": "Dalam rajah, <i>y</i> dan 30° ialah sudut penggenap. Cari nilai <i>x</i>.", "en": "In the diagram, <i>y</i> and 30° are complementary angles. Find <i>x</i>.", "img": "q12", "opts": ["75°", "95°", "225°", "285°"], "a": 0}, {"q": "Rajah menunjukkan segi tiga sama kaki KLM. Cari nilai <i>x</i>.", "en": "The diagram shows an isosceles triangle KLM. Find <i>x</i>.", "img": "q13", "opts": ["28°", "56°", "124°", "152°"], "a": 3}, {"q": "Antara pasangan maklumat berikut, yang manakah salah?", "en": "Which pair of information is false?", "opts": ["Sisi empat — 4 sisi, 2 pepenjuru", "Heksagon — 6 sisi, 9 pepenjuru", "Oktagon — 8 sisi, 16 pepenjuru", "Nonagon — 9 sisi, 27 pepenjuru"], "a": 2}, {"q": "Rajah menunjukkan 4 buah segi empat sama yang disusun membentuk sebuah segi empat sama lebih besar. Setiap segi empat sama kecil mempunyai luas 36 cm². Cari perimeter rajah.", "en": "Four equal squares form a larger square. Each small square has area 36 cm². Find the perimeter.", "img": "q15", "opts": ["24 cm", "48 cm", "72 cm", "144 cm"], "a": 1}, {"q": "Rajah menunjukkan set semesta ξ dan set R. Senaraikan semua unsur bagi R′.", "en": "The diagram shows universal set ξ and set R. List all elements of R′.", "img": "q16", "opts": ["{24, 26}", "{26, 29, 31}", "{27, 30, 32}", "{24, 27, 28, 30, 32}"], "a": 3}, {"q": "Diberi P = {gandaan 3 antara 10 dan 35}. Cari n(P).", "en": "Given P = {multiples of 3 between 10 and 35}. Find n(P).", "opts": ["7", "8", "9", "10"], "a": 1}, {"q": "Carta palang menunjukkan markah Bahasa Melayu dan Bahasa Inggeris bagi tiga murid. Berapakah beza jumlah markah kedua-dua mata pelajaran itu?", "en": "The bar chart shows Bahasa Melayu and English marks for three students. What is the difference between the two totals?", "img": "q18", "opts": ["0", "10", "20", "30"], "a": 1}, {"q": "Carta pai menunjukkan genre muzik yang digemari oleh 300 orang murid. Hitung bilangan murid yang menggemari genre Pop.", "en": "The pie chart shows music genres preferred by 300 students. Calculate the number who prefer Pop.", "img": "q19", "opts": ["140", "150", "160", "75"], "a": 0}, {"q": "Rajah menunjukkan segi tiga sama kaki. Cari tinggi segi tiga tersebut.", "en": "The diagram shows an isosceles triangle. Find its height.", "img": "q20", "opts": ["12 cm", "13 cm", "144 cm", "169 cm"], "a": 0}];
+const STORE_KEY="uasa_t1_revision_2023_records_v1";
+
+const FORMULA_GUIDES={
+  3:`<b>GSTK / LCM</b><br>
+     Senaraikan gandaan bagi setiap nombor sehingga jumpa gandaan sepunya yang paling kecil.<br>
+     <span class="note">Contoh kaedah: Gandaan 15 = 15, 30, 45, 60, ...</span>`,
+  4:`<b>Kuasa</b><br>
+     a<sup>3</sup> = a × a × a<br>
+     <span class="note">Ingat tanda negatif apabila nombor negatif didarab tiga kali.</span>`,
+  5:`<b>Kubus</b><br>
+     Luas tapak = sisi × sisi, jadi sisi = √(luas tapak).<br>
+     Panjang reben = jumlah panjang laluan reben bagi satu kotak × bilangan kotak.`,
+  6:`<b>Nisbah termudah</b><br>
+     Bahagikan kedua-dua nombor nisbah dengan <b>FSTB / HCF</b> yang sama.`,
+  7:`<b>Bilangan bekas</b><br>
+     Bilangan bakul = jumlah oren ÷ kapasiti sebuah bakul.`,
+  8:`<b>Hukum indeks & algebra</b><br>
+     a<sup>m</sup> × a<sup>n</sup> = a<sup>m+n</sup><br>
+     a<sup>m</sup> ÷ a<sup>n</sup> = a<sup>m−n</sup><br>
+     Darab pekali dengan pekali, kemudian gabungkan pemboleh ubah yang sama.`,
+  9:`<b>Membina persamaan linear</b><br>
+     Jika Ammar mempunyai p pensel, Aqil mempunyai <b>p − 3</b> pensel.<br>
+     Jumlah kedua-duanya = 11.`,
+  10:`<b>Persamaan linear serentak</b><br>
+      Gantikan nilai x dan y bagi setiap pilihan ke dalam <b>kedua-dua persamaan</b>.<br>
+      Pilihan yang betul mesti memuaskan kedua-duanya.`,
+  11:`<b>Garis nombor & ketaksamaan</b><br>
+      Bulatan penuh bermaksud nilai itu <b>termasuk</b> (≤ atau ≥).<br>
+      Anak panah ke kiri bermaksud nilai lebih kecil; ke kanan bermaksud lebih besar.`,
+  12:`<b>Jumlah sudut pada garis / sudut berkaitan</b><br>
+      Sudut penggenap (complementary) berjumlah <b>90°</b>.<br>
+      Sudut pada garis lurus berjumlah <b>180°</b>.`,
+  13:`<b>Segi tiga sama kaki</b><br>
+      Dua sudut tapak adalah sama.<br>
+      Jumlah sudut dalam segi tiga = <b>180°</b>.`,
+  14:`<b>Bilangan pepenjuru poligon</b><br>
+      Bilangan pepenjuru = <span class="frac"><span class="top">n(n−3)</span><span class="bottom">2</span></span><br>
+      n = bilangan sisi.`,
+  15:`<b>Segi empat sama</b><br>
+      Luas = sisi², jadi sisi = √(luas).<br>
+      Perimeter segi empat sama besar = 4 × sisi segi empat sama besar.`,
+  16:`<b>Pelengkap set</b><br>
+      R′ = semua unsur dalam set semesta ξ yang <b>bukan</b> berada dalam set R.`,
+  17:`<b>Mengira bilangan unsur set</b><br>
+      Senaraikan semua gandaan 3 yang memenuhi julat diberi, kemudian kira bilangannya.`,
+  18:`<b>Beza jumlah markah</b><br>
+      Jumlah BM = tambah semua markah BM.<br>
+      Jumlah BI = tambah semua markah BI.<br>
+      Beza = |Jumlah BM − Jumlah BI|.`,
+  19:`<b>Carta pai</b><br>
+      Jumlah sudut satu bulatan = <b>360°</b>.<br>
+      Bilangan murid = <span class="frac"><span class="top">sudut sektor</span><span class="bottom">360°</span></span> × jumlah murid.`,
+  20:`<b>Teorem Pythagoras</b><br>
+      c² = a² + b²<br>
+      Untuk segi tiga sama kaki, tinggi membahagikan tapak kepada dua bahagian sama panjang.<br>
+      <span class="note">c ialah sisi paling panjang / hipotenus.</span>`
+};
+
+let startTime=Date.now();
+
+const $=id=>document.getElementById(id);
+function secText(s){s=Math.max(0,Math.round(s||0));return `${Math.floor(s/60)}m ${s%60}s`;}
+function init(){
+  Object.keys(STUDENTS).forEach(c=>{let o=document.createElement('option');o.value=c;o.textContent=c;$('kelas').appendChild(o);});
+  $('kelas').addEventListener('change',()=>{
+    let c=$('kelas').value,n=$('nama');n.innerHTML='<option value="">-- Pilih nama --</option>';
+    if(c) STUDENTS[c].forEach(x=>{let o=document.createElement('option');o.value=x;o.textContent=x;n.appendChild(o);});
+    n.disabled=!c;
+  });
+  renderQuiz();
+}
+function renderQuiz(){
+  $('quiz').innerHTML=QUESTIONS.map((q,i)=>{
+    let img=q.img?`<div class="diagram-wrap"><img class="diagram ${q.img==='q18'?'tall':''}" src="${IMAGES[q.img]}" alt="Rajah soalan ${i+1}"></div>`:'';
+    let opts=q.opts.map((o,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${j}"><span><b>${String.fromCharCode(65+j)}.</b> ${o}</span></label>`).join('');
+    let guide=FORMULA_GUIDES[i+1]?`<details class="formula-box"><summary>📘 Panduan Formula</summary><div class="formula-content">${FORMULA_GUIDES[i+1]}</div></details>`:'';
+    return `<section class="card" id="card${i}"><div class="qtitle">${i+1}. ${q.q}</div>${q.en?`<div class="en">${q.en}</div>`:''}${img}${guide}${opts}</section>`;
+  }).join('');
+}
+function getRecords(){try{return JSON.parse(localStorage.getItem(STORE_KEY)||'[]')}catch(e){return []}}
+function saveRecords(r){localStorage.setItem(STORE_KEY,JSON.stringify(r));}
+async function submitQuiz(){
+  const kelas=$('kelas').value,nama=$('nama').value;
+  if(!kelas||!nama){alert('Sila pilih kelas dan nama pelajar dahulu.');return;}
+
+  let unanswered=[],score=0;
+  QUESTIONS.forEach((q,i)=>{
+    let checked=document.querySelector(`input[name="q${i}"]:checked`);
+    if(!checked) unanswered.push(i+1);
+    else if(+checked.value===q.a) score++;
+  });
+
+  if(unanswered.length){
+    alert('Sila jawab semua soalan. Belum dijawab: '+unanswered.join(', '));
+    return;
+  }
+
+  const seconds=Math.max(1,Math.round((Date.now()-startTime)/1000));
+
+  // Simpan salinan pada peranti
+  let records=getRecords();
+  const attempts=records.filter(r=>r.set===SET_NAME&&r.class===kelas&&r.name===nama).length+1;
+  records.push({
+    set:SET_NAME,
+    ts:new Date().toISOString(),
+    class:kelas,
+    name:nama,
+    score,
+    total:20,
+    percent:score*5,
+    seconds,
+    attempt:attempts
+  });
+  saveRecords(records);
+
+  showResult(score,seconds);
+  renderReview();
+
+  const status=$('saveStatus');
+  status.style.display='block';
+  status.style.color='#5f6b76';
+  status.textContent='Sedang menyimpan markah ke Google Sheet...';
+
+  try{
+    const payload={
+      action:'submit',
+      set:SET_NAME,
+      kelas:kelas,
+      nama:nama,
+      markah:score,
+      jumlah:20,
+      masaSaat:seconds
+    };
+
+    const res=await fetch(SCRIPT_URL,{
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(payload)
+    });
+
+    const data=await res.json();
+    if(!data.ok) throw new Error(data.message||'Gagal menyimpan markah.');
+
+    status.style.color='#18794e';
+    status.textContent='✓ Markah berjaya disimpan ke Google Sheet.';
+  }catch(err){
+    status.style.color='#c62828';
+    status.textContent='Markah pada peranti sudah disimpan, tetapi penghantaran ke Google Sheet gagal. '+err.message;
+  }
+
+  window.scrollTo({top:$('resultBox').offsetTop-80,behavior:'smooth'});
+}
+function showResult(score,seconds){
+  let box=$('resultBox');box.style.display='block';box.innerHTML=`<div class="result">Markah: ${score} / 20 (${score*5}%)<br><span style="font-size:.9rem;font-weight:600">Masa: ${secText(seconds)}</span></div>`;
+}
+function renderReview(){
+  QUESTIONS.forEach((q,i)=>{
+    let card=$('card'+i),checked=document.querySelector(`input[name="q${i}"]:checked`),v=+checked.value;
+    card.classList.remove('review-good','review-bad');card.classList.add(v===q.a?'review-good':'review-bad');
+    card.querySelectorAll('.opt').forEach((el,j)=>{
+      el.style.background=j===q.a?'#eaf7ef':(j===v&&v!==q.a?'#fdecec':'');
+    });
+  });
+}
+function retryQuiz(){
+  document.querySelectorAll('input[type=radio]').forEach(x=>x.checked=false);
+  document.querySelectorAll('.card').forEach(c=>{c.classList.remove('review-good','review-bad');c.querySelectorAll('.opt').forEach(o=>o.style.background='');});
+  $('resultBox').style.display='none'; $('saveStatus').style.display='none'; startTime=Date.now(); window.scrollTo({top:0,behavior:'smooth'});
+}
+function exportCSV(){
+  let rs=getRecords().filter(r=>r.set===SET_NAME);if(!rs.length){alert('Belum ada rekod.');return;}
+  let rows=[['Tarikh','Set','Kelas','Nama','Markah','Jumlah','Peratus','Masa(s)','Percubaan'],...rs.map(r=>[r.ts,r.set,r.class,r.name,r.score,r.total,r.percent,r.seconds,r.attempt])];
+  let csv='\uFEFF'+rows.map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  let blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='rekod_uasa_t1_revision_2023.csv';a.click();URL.revokeObjectURL(a.href);
+}
+init();
+</script>
+</body>
+</html>
