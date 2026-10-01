@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ranking Matematik Tingkatan 1</title>
+<style>
+:root{
+  --gold:#d4a017;
+  --silver:#aeb4bd;
+  --bronze:#b87333;
+  --ink:#17212b;
+  --muted:#687481;
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --line:#e1e8ef;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+}
+.wrap{
+  max-width:960px;
+  margin:auto;
+  padding:14px;
+}
+.hero{
+  background:linear-gradient(135deg,#0b3d68,#145da0);
+  color:#fff;
+  border-radius:20px;
+  padding:18px;
+  text-align:center;
+  box-shadow:0 5px 18px rgba(0,0,0,.12);
+}
+.hero h1{margin:0 0 6px;font-size:1.45rem}
+.hero p{margin:3px 0;opacity:.95;font-size:.92rem}
+.update{
+  margin-top:8px;
+  font-size:.8rem;
+  opacity:.85;
+}
+.podium{
+  display:grid;
+  grid-template-columns:1fr 1.15fr 1fr;
+  gap:10px;
+  align-items:end;
+  margin:16px 0;
+}
+.place{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  text-align:center;
+  padding:14px 10px 12px;
+  box-shadow:0 3px 10px rgba(0,0,0,.06);
+}
+.place.first{min-height:245px;border-top:6px solid var(--gold)}
+.place.second{min-height:220px;border-top:6px solid var(--silver)}
+.place.third{min-height:205px;border-top:6px solid var(--bronze)}
+.trophy{font-size:56px;line-height:1;margin:4px 0 8px}
+.first .trophy{font-size:68px}
+.name{font-weight:900;font-size:1rem;line-height:1.25}
+.class{font-size:.82rem;color:var(--muted);margin-top:4px}
+.score{font-weight:900;font-size:1.2rem;margin-top:8px}
+.time{font-size:.78rem;color:var(--muted);margin-top:3px}
+.ribbon{
+  display:inline-block;
+  margin-top:8px;
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:.78rem;
+  font-weight:800;
+}
+.first .ribbon{background:#fff4c7;color:#8b6500}
+.second .ribbon{background:#eef1f4;color:#59616a}
+.third .ribbon{background:#f6e3d3;color:#8b4d1d}
+
+.list{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 3px 10px rgba(0,0,0,.05);
+}
+.row{
+  display:grid;
+  grid-template-columns:52px 1fr 100px 90px;
+  gap:8px;
+  align-items:center;
+  padding:12px 14px;
+  border-bottom:1px solid var(--line);
+}
+.row:last-child{border-bottom:none}
+.rank{
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:#fff6d8;
+  font-weight:900;
+  color:#926b00;
+}
+.student{min-width:0}
+.student .nm{
+  font-weight:800;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.student .cl{
+  font-size:.78rem;
+  color:var(--muted);
+  margin-top:2px;
+}
+.marks{
+  text-align:center;
+  font-weight:900;
+}
+.tm{
+  text-align:right;
+  font-size:.8rem;
+  color:var(--muted);
+}
+.notice{
+  text-align:center;
+  color:var(--muted);
+  font-size:.85rem;
+  margin:12px 4px;
+}
+.error{
+  background:#fff1f1;
+  color:#9b1c1c;
+  border:1px solid #f3c6c6;
+  border-radius:12px;
+  padding:12px;
+  margin:14px 0;
+  display:none;
+}
+.loading{
+  text-align:center;
+  padding:24px;
+  color:var(--muted);
+}
+
+.tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:14px 0;
+}
+.tab{
+  border:none;
+  border-radius:12px;
+  padding:12px 10px;
+  background:#e7eef5;
+  color:#27465f;
+  font-weight:900;
+  cursor:pointer;
+  font-size:.95rem;
+}
+.tab.active{
+  background:#145da0;
+  color:#fff;
+}
+.section-title{
+  text-align:center;
+  font-size:1.05rem;
+  font-weight:900;
+  margin:12px 0 3px;
+}
+.small-note{
+  text-align:center;
+  color:var(--muted);
+  font-size:.8rem;
+  margin-bottom:10px;
+}
+.class-filter-wrap{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:12px;
+  display:grid;
+  grid-template-columns:110px 1fr;
+  gap:10px;
+  align-items:center;
+  margin:12px 0;
+}
+.class-filter-wrap label{
+  font-weight:800;
+  font-size:.88rem;
+}
+.class-filter-wrap select{
+  width:100%;
+  padding:10px;
+  border:1px solid #ccd7e0;
+  border-radius:10px;
+  background:#fff;
+  font-weight:700;
+}
+.class-title{
+  text-align:center;
+  font-size:1rem;
+  font-weight:900;
+  margin:10px 0 0;
+}
+
+@media(max-width:650px){
+  .wrap{padding:8px}
+  .hero{border-radius:15px;padding:14px 10px}
+  .hero h1{font-size:1.15rem}
+  .podium{gap:6px;margin:10px 0}
+  .place{padding:10px 5px}
+  .place.first{min-height:225px}
+  .place.second{min-height:205px}
+  .place.third{min-height:195px}
+  .trophy{font-size:44px}
+  .first .trophy{font-size:54px}
+  .name{font-size:.82rem}
+  .class{font-size:.72rem}
+  .score{font-size:1rem}
+  .ribbon{font-size:.68rem;padding:4px 7px}
+  .row{grid-template-columns:44px 1fr 72px 64px;padding:10px 8px}
+  .rank{width:34px;height:34px}
+  .student .nm{font-size:.83rem}
+  .student .cl,.tm{font-size:.7rem}
+  .marks{font-size:.83rem}.class-filter-wrap{grid-template-columns:1fr}.tabs{gap:6px}.tab{font-size:.82rem;padding:10px 6px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <h1>🏆 RANKING MATEMATIK TINGKATAN 1</h1>
+    <p>20 pelajar terbaik keseluruhan tingkatan</p>
+    <p>Maksimum 5 pelajar terbaik daripada setiap kelas</p>
+    <div class="update" id="lastUpdate">Memuatkan ranking...</div>
+  </section>
+
+  <div class="tabs">
+    <button class="tab active" id="tabOverall" onclick="showView('overall')">🏆 By Tingkatan</button>
+    <button class="tab" id="tabClass" onclick="showView('class')">🏫 By Class</button>
+  </div>
+
+  <div id="errorBox" class="error"></div>
+  <div id="loading" class="loading">Sedang mendapatkan ranking terkini...</div>
+
+  <section id="rankingArea" style="display:none">
+    <div id="overallView">
+      <div class="section-title">20 Terbaik Keseluruhan Tingkatan 1</div>
+      <div class="small-note">Maksimum 5 pelajar daripada setiap kelas.</div>
+      <div class="podium" id="podium"></div>
+      <div class="list" id="rankingList"></div>
+    </div>
+
+    <div id="classView" style="display:none">
+      <div class="section-title">5 Terbaik Mengikut Kelas</div>
+      <div class="class-filter-wrap">
+        <label for="classFilter">Pilih kelas</label>
+        <select id="classFilter" onchange="renderClassRanking()">
+          <option value="1DIAMOND">1DIAMOND</option>
+          <option value="1EMERALD">1EMERALD</option>
+          <option value="1RUBY">1RUBY</option>
+          <option value="1SAPPHIRE">1SAPPHIRE</option>
+        </select>
+      </div>
+      <div class="class-title" id="classTitle"></div>
+      <div class="podium" id="classPodium"></div>
+      <div class="list" id="classRankingList"></div>
+    </div>
+
+    <div class="notice">
+      Ranking menggunakan markah terbaik setiap murid. Jika markah sama, masa menjawab yang lebih singkat didahulukan.
+    </div>
+  </section>
+</div>
+
+<script>
+/* =====================================================
+   GANTIKAN URL DI BAWAH DENGAN URL APPS SCRIPT /exec
+   ===================================================== */
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz6QK1m9Xt4I3NGWFB5J7vwpBIkUkmBnM9xiQOfNQ6JwC5WkpeR_zeHYJ1ZHWF78zFI/exec';
+
+/* Nama set mesti sama dengan nama set yang digunakan
+   ketika markah dihantar ke Google Sheet. */
+const SET_NAME = 'UASA Matematik Tingkatan 1 - Revision Paper 2023';
+let OVERALL_DATA = [];
+let BY_CLASS_DATA = {};
+
+function secText(s){
+  s=Math.max(0,Math.round(Number(s)||0));
+  return `${Math.floor(s/60)}m ${s%60}s`;
+}
+
+function podiumCard(item, place){
+  const cfg = {
+    1:{cls:'first', trophy:'🏆', ribbon:'JUARA'},
+    2:{cls:'second',trophy:'🥈',ribbon:'NAIB JUARA'},
+    3:{cls:'third', trophy:'🥉',ribbon:'TEMPAT KETIGA'}
+  }[place];
+
+  return `
+    <div class="place ${cfg.cls}">
+      <div class="trophy">${cfg.trophy}</div>
+      <div class="name">${item.nama}</div>
+      <div class="class">${item.kelas}</div>
+      <div class="score">${item.markah}/${item.jumlah}</div>
+      <div class="time">${secText(item.masaSaat)}</div>
+      <div class="ribbon">${cfg.ribbon}</div>
+    </div>`;
+}
+
+function normalRow(item){
+  return `
+    <div class="row">
+      <div class="rank">${item.rank}</div>
+      <div class="student">
+        <div class="nm">${item.nama}</div>
+        <div class="cl">${item.kelas}</div>
+      </div>
+      <div class="marks">${item.markah}/${item.jumlah}</div>
+      <div class="tm">${secText(item.masaSaat)}</div>
+    </div>`;
+}
+
+function renderRanking(items){
+  renderPodiumTo(items,'podium','rankingList');
+}
+
+
+function showView(view){
+  const overall = document.getElementById('overallView');
+  const byClass = document.getElementById('classView');
+  const tOverall = document.getElementById('tabOverall');
+  const tClass = document.getElementById('tabClass');
+
+  if(view==='class'){
+    overall.style.display='none';
+    byClass.style.display='block';
+    tOverall.classList.remove('active');
+    tClass.classList.add('active');
+    renderClassRanking();
+  }else{
+    overall.style.display='block';
+    byClass.style.display='none';
+    tOverall.classList.add('active');
+    tClass.classList.remove('active');
+  }
+}
+
+function renderPodiumTo(items,podiumId,listId){
+  const podium = document.getElementById(podiumId);
+  const list = document.getElementById(listId);
+
+  if(!items.length){
+    podium.innerHTML='';
+    list.innerHTML='<div class="loading">Belum ada rekod markah.</div>';
+    return;
+  }
+
+  let top='';
+  if(items[1]) top+=podiumCard(items[1],2); else top+='<div></div>';
+  if(items[0]) top+=podiumCard(items[0],1); else top+='<div></div>';
+  if(items[2]) top+=podiumCard(items[2],3); else top+='<div></div>';
+
+  podium.innerHTML=top;
+  list.innerHTML=items.slice(3).map(normalRow).join('');
+}
+
+function renderClassRanking(){
+  const cls = document.getElementById('classFilter').value;
+  const items = BY_CLASS_DATA[cls] || [];
+  document.getElementById('classTitle').textContent = cls + ' — Top 5';
+  renderPodiumTo(items,'classPodium','classRankingList');
+}
+
+async function loadRanking(){
+  const loading=document.getElementById('loading');
+  const area=document.getElementById('rankingArea');
+  const err=document.getElementById('errorBox');
+
+  try{
+    err.style.display='none';
+
+    const overallUrl = SCRIPT_URL
+      + '?action=ranking20'
+      + '&set=' + encodeURIComponent(SET_NAME);
+
+    const classUrl = SCRIPT_URL
+      + '?action=rankingByClass'
+      + '&set=' + encodeURIComponent(SET_NAME);
+
+    const [overallRes,classRes] = await Promise.all([
+      fetch(overallUrl,{cache:'no-store'}),
+      fetch(classUrl,{cache:'no-store'})
+    ]);
+
+    const overallData = await overallRes.json();
+    const classData = await classRes.json();
+
+    if(!overallData.ok) throw new Error(overallData.message || 'Gagal mendapatkan ranking tingkatan.');
+    if(!classData.ok) throw new Error(classData.message || 'Gagal mendapatkan ranking kelas.');
+
+    OVERALL_DATA = overallData.top20 || [];
+    BY_CLASS_DATA = classData.byClass || {};
+
+    renderRanking(OVERALL_DATA);
+    renderClassRanking();
+
+    loading.style.display='none';
+    area.style.display='block';
+
+    const d=new Date();
+    document.getElementById('lastUpdate').textContent =
+      'Dikemas kini: ' + d.toLocaleString('ms-MY');
+
+  }catch(e){
+    loading.style.display='none';
+    err.style.display='block';
+    err.textContent='Ranking tidak dapat dimuatkan. ' + e.message;
+  }
+}
+
+loadRanking();
+
+/* Segarkan ranking setiap 60 saat */
+setInterval(loadRanking,60000);
+</script>
+</body>
+</html>
