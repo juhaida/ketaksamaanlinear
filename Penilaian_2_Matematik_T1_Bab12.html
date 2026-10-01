@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Penilaian 2 Matematik Tingkatan 1 - Bab 12 Pengendalian Data</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#18232d;--muted:#63717e;--primary:#145da0;--primary2:#0c3d68;--good:#18794e;--bad:#c62828;--line:#dce6ef;}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+.wrap{max-width:920px;margin:auto;padding:12px}
+.hero{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;padding:20px;border-radius:18px;box-shadow:0 5px 16px rgba(0,0,0,.1)}
+.hero h1{margin:0 0 6px;font-size:1.4rem}
+.hero p{margin:3px 0;opacity:.95}
+.panel,.activity{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label.title{font-weight:800;font-size:.9rem;display:block;margin-bottom:5px}
+select,input[type="number"],input[type="text"]{width:100%;padding:11px;border:1px solid #cbd7e2;border-radius:10px;background:#fff;font-size:1rem}
+.progress-wrap{margin:14px 0 2px;background:#dfe8f0;border-radius:999px;overflow:hidden;height:12px}
+.progress{height:100%;width:20%;background:linear-gradient(90deg,#4ea8de,#145da0);transition:.3s}
+.steptext{font-size:.82rem;color:var(--muted);text-align:right;margin-top:4px}
+.activity{display:none}
+.activity.active{display:block}
+.act-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.badge{width:38px;height:38px;border-radius:50%;background:#145da0;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900}
+.act-title{font-size:1.08rem;font-weight:900}
+.subtitle{color:var(--muted);font-size:.88rem;margin-top:2px}
+.qbox{border:1px solid #e2e9ef;border-radius:12px;padding:12px;margin:10px 0;background:#fbfdff}
+.qtext{font-weight:800;line-height:1.45;margin-bottom:8px}
+.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.choice{border:1px solid #cad6e0;background:#fff;border-radius:11px;padding:10px;cursor:pointer;text-align:center;font-weight:700}
+.choice.selected{border:2px solid #145da0;background:#edf6ff}
+.choice.correct{border-color:#18794e;background:#eaf7ef}
+.choice.wrong{border-color:#c62828;background:#fdecec}
+.freq-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.freq-card{border:1px solid #dce5ed;border-radius:12px;padding:10px;text-align:center}
+.freq-card b{display:block;margin-bottom:7px}
+.guide{margin:10px 0;border:1px solid #b9d7ee;background:#f2f9fe;border-radius:11px;padding:9px 11px}
+.guide summary{cursor:pointer;font-weight:800;color:#0c4f82}
+.svg-wrap{display:flex;justify-content:center;margin:10px 0}
+.svg-wrap svg{max-width:100%;height:auto;max-height:260px}
+.nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+button{width:100%;padding:12px;border:none;border-radius:11px;background:#145da0;color:#fff;font-size:1rem;font-weight:900;cursor:pointer}
+button.secondary{background:#667684}
+button:disabled{opacity:.5;cursor:not-allowed}
+.result{font-size:1.3rem;font-weight:900;text-align:center;background:#eef7ff;border-radius:14px;padding:18px}
+.small{font-size:.84rem;color:var(--muted)}
+.status{text-align:center;margin-top:8px;font-size:.86rem}
+.review-good{border-left:5px solid var(--good)}
+.review-bad{border-left:5px solid var(--bad)}
+table{width:100%;border-collapse:collapse}
+th,td{border-bottom:1px solid #e1e8ee;padding:9px;text-align:center}
+th{background:#eef4f8}
+@media(max-width:620px){
+ .wrap{padding:8px} .hero{padding:15px} .hero h1{font-size:1.15rem}
+ .panel,.activity{padding:12px} .grid2,.choice-grid{grid-template-columns:1fr} .freq-grid{grid-template-columns:repeat(2,1fr)}
+ .nav{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<iframe name="gsheet_sink" id="gsheet_sink" style="display:none"></iframe>
+<div class="wrap">
+<section class="hero">
+  <h1>Penilaian 2 Matematik Tingkatan 1</h1>
+  <p><b>Bab 12: Pengendalian Data</b></p>
+  <p>5 aktiviti interaktif • 20 markah</p>
+</section>
+
+<section class="panel">
+  <div class="grid2">
+    <div><label class="title">Kelas</label><select id="kelas"><option value="">-- Pilih kelas --</option></select></div>
+    <div><label class="title">Nama Pelajar</label><select id="nama" disabled><option value="">-- Pilih nama --</option></select></div>
+  </div>
+  <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+  <div class="steptext" id="stepText">Aktiviti 1 daripada 5</div>
+</section>
+
+<section class="activity active" data-step="1">
+  <div class="act-head"><div class="badge">1</div><div><div class="act-title">Detektif Statistik</div><div class="subtitle">Kenal pasti soalan statistik dan kaedah pengumpulan data.</div></div></div>
+
+  <div class="qbox" id="a1q1">
+    <div class="qtext">1. Yang manakah merupakan <b>soalan statistik</b>?</div>
+    <div class="choice-grid">
+      <div class="choice" data-group="a1q1" data-val="A">Berapakah tinggi Amir?</div>
+      <div class="choice" data-group="a1q1" data-val="B">Berapakah tinggi murid dalam Kelas 1 Amanah?</div>
+      <div class="choice" data-group="a1q1" data-val="C">Adakah Amir hadir hari ini?</div>
+      <div class="choice" data-group="a1q1" data-val="D">Berapakah umur Cikgu Ali?</div>
+    </div>
+  </div>
+
+  <div class="qbox" id="a1q2">
+    <div class="qtext">2. Kaedah paling sesuai untuk mengetahui <b>program TV kegemaran murid</b> ialah...</div>
+    <div class="choice-grid">
+      <div class="choice" data-group="a1q2" data-val="A">Eksperimen</div>
+      <div class="choice" data-group="a1q2" data-val="B">Soal selidik</div>
+      <div class="choice" data-group="a1q2" data-val="C">Mengukur</div>
+      <div class="choice" data-group="a1q2" data-val="D">Menimbang</div>
+    </div>
+  </div>
+
+  <div class="qbox" id="a1q3">
+    <div class="qtext">3. Kaedah sesuai untuk merekod <b>bilangan kereta yang melalui persimpangan setiap jam</b> ialah...</div>
+    <div class="choice-grid">
+      <div class="choice" data-group="a1q3" data-val="A">Pemerhatian</div>
+      <div class="choice" data-group="a1q3" data-val="B">Eksperimen</div>
+      <div class="choice" data-group="a1q3" data-val="C">Temu bual</div>
+      <div class="choice" data-group="a1q3" data-val="D">Anggaran</div>
+    </div>
+  </div>
+
+  <div class="qbox" id="a1q4">
+    <div class="qtext">4. Kaedah sesuai untuk mengkaji <b>suhu air panas yang menyejuk setiap lima minit</b> ialah...</div>
+    <div class="choice-grid">
+      <div class="choice" data-group="a1q4" data-val="A">Tinjauan</div>
+      <div class="choice" data-group="a1q4" data-val="B">Eksperimen</div>
+      <div class="choice" data-group="a1q4" data-val="C">Temu bual</div>
+      <div class="choice" data-group="a1q4" data-val="D">Soal selidik</div>
+    </div>
+  </div>
+</section>
+
+<section class="activity" data-step="2">
+  <div class="act-head"><div class="badge">2</div><div><div class="act-title">Klasifikasi Pantas</div><div class="subtitle">Bezakan data kategori, numerik diskret dan numerik selanjar.</div></div></div>
+  <div class="qbox">
+    <table>
+      <thead><tr><th>Data</th><th>Pilih jenis data</th></tr></thead>
+      <tbody>
+        <tr><td>Warna kereta</td><td><select id="c1"><option value="">-- Pilih --</option><option>Kategori</option><option>Numerik diskret</option><option>Numerik selanjar</option></select></td></tr>
+        <tr><td>Bilangan pelancong ke muzium setiap bulan</td><td><select id="c2"><option value="">-- Pilih --</option><option>Kategori</option><option>Numerik diskret</option><option>Numerik selanjar</option></select></td></tr>
+        <tr><td>Panjang cacing tanah</td><td><select id="c3"><option value="">-- Pilih --</option><option>Kategori</option><option>Numerik diskret</option><option>Numerik selanjar</option></select></td></tr>
+        <tr><td>Bahasa bertutur di rumah</td><td><select id="c4"><option value="">-- Pilih --</option><option>Kategori</option><option>Numerik diskret</option><option>Numerik selanjar</option></select></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <details class="guide"><summary>💡 Panduan</summary><div class="small">Data kategori menghuraikan ciri. Data numerik diskret ialah bilangan dalam unit keseluruhan. Data numerik selanjar diukur pada skala berterusan.</div></details>
+</section>
+
+<section class="activity" data-step="3">
+  <div class="act-head"><div class="badge">3</div><div><div class="act-title">Bina Jadual Kekerapan</div><div class="subtitle">Kira kekerapan saiz kemeja-T.</div></div></div>
+  <div class="qbox">
+    <div class="qtext">Data saiz kemeja-T:</div>
+    <div style="background:#eef5fb;border-radius:10px;padding:12px;line-height:1.8;text-align:center;font-weight:800">
+      XL &nbsp; L &nbsp; XL &nbsp; M &nbsp; M &nbsp; L &nbsp; M &nbsp; L &nbsp; M<br>
+      M &nbsp; M &nbsp; M &nbsp; XL &nbsp; XL &nbsp; L &nbsp; XL &nbsp; L &nbsp; M<br>
+      M &nbsp; L &nbsp; M &nbsp; L &nbsp; L &nbsp; S &nbsp; M &nbsp; M &nbsp; L
+    </div>
+  </div>
+  <div class="freq-grid">
+    <div class="freq-card"><b>S</b><input id="fS" type="number" min="0" inputmode="numeric"></div>
+    <div class="freq-card"><b>M</b><input id="fM" type="number" min="0" inputmode="numeric"></div>
+    <div class="freq-card"><b>L</b><input id="fL" type="number" min="0" inputmode="numeric"></div>
+    <div class="freq-card"><b>XL</b><input id="fXL" type="number" min="0" inputmode="numeric"></div>
+  </div>
+</section>
+
+<section class="activity" data-step="4">
+  <div class="act-head"><div class="badge">4</div><div><div class="act-title">Pilih Perwakilan Data</div><div class="subtitle">Pilih graf atau carta yang paling sesuai.</div></div></div>
+
+  <div class="qbox" id="a4q1">
+    <div class="qtext">1. Membandingkan bilangan murid bagi aktiviti masa lapang yang berbeza:</div>
+    <div class="choice-grid">
+      <div class="choice" data-group="a4q1" data-val="A">Carta palang</div>
+      <div class="choice" data-group="a4q1" data-val="B">Graf garis</div>
+      <div class="choice" data-group="a4q1" data-val="C">Plot titik</div>
+      <div class="choice" data-group="a4q1" data-val="D">Histogram</div>
+    </div>
+  </div>
+
+  <div class="qbox" id="a4q2">
+    <div class="qtext">2. Menunjukkan perubahan suhu pesakit dari jam 1 hingga jam 10:</div>
+    <div class="choice-grid">
+      <div class="choice" data-group="a4q2" data-val="A">Carta pai</div>
+      <div class="choice" data-group="a4q2" data-val="B">Graf garis</div>
+      <div class="choice" data-group="a4q2" data-val="C">Carta palang</div>
+      <div class="choice" data-group="a4q2" data-val="D">Jadual sahaja</div>
+    </div>
+  </div>
+
+  <div class="qbox" id="a4q3">
+    <div class="qtext">3. Menunjukkan bahagian setiap warna kereta daripada jumlah keseluruhan:</div>
+    <div class="choice-grid">
+      <div class="choice" data-group="a4q3" data-val="A">Carta pai</div>
+      <div class="choice" data-group="a4q3" data-val="B">Graf garis</div>
+      <div class="choice" data-group="a4q3" data-val="C">Plot titik</div>
+      <div class="choice" data-group="a4q3" data-val="D">Poligon kekerapan</div>
+    </div>
+  </div>
+
+  <div class="qbox" id="a4q4">
+    <div class="qtext">4. Menunjukkan taburan masa rawatan pergigian 17–25 minit dan melihat nilai ekstrem:</div>
+    <div class="choice-grid">
+      <div class="choice" data-group="a4q4" data-val="A">Plot titik</div>
+      <div class="choice" data-group="a4q4" data-val="B">Carta pai</div>
+      <div class="choice" data-group="a4q4" data-val="C">Carta palang berpasangan</div>
+      <div class="choice" data-group="a4q4" data-val="D">Graf garis</div>
+    </div>
+  </div>
+</section>
+
+<section class="activity" data-step="5">
+  <div class="act-head"><div class="badge">5</div><div><div class="act-title">Tafsir & Nilai Data</div><div class="subtitle">Baca graf, buat inferens dan kenal pasti amalan beretika.</div></div></div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 600 320" aria-label="Graf garis pembuangan sampah">
+      <style>.ax{stroke:#111;stroke-width:2}.gr{stroke:#d2dce5;stroke-width:1}.ln{stroke:#d43f8d;stroke-width:4;fill:none}.pt{fill:#d43f8d}.tx{font:16px Arial;fill:#222}</style>
+      <line class="ax" x1="70" y1="260" x2="545" y2="260"/><line class="ax" x1="70" y1="260" x2="70" y2="45"/>
+      <line class="gr" x1="70" y1="205" x2="545" y2="205"/><line class="gr" x1="70" y1="150" x2="545" y2="150"/><line class="gr" x1="70" y1="95" x2="545" y2="95"/>
+      <text class="tx" x="35" y="265">0</text><text class="tx" x="35" y="210">1</text><text class="tx" x="35" y="155">2</text><text class="tx" x="35" y="100">3</text>
+      <polyline class="ln" points="100,155 180,145 260,100 340,120 420,145 500,180"/>
+      <g class="pt"><circle cx="100" cy="155" r="5"/><circle cx="180" cy="145" r="5"/><circle cx="260" cy="100" r="5"/><circle cx="340" cy="120" r="5"/><circle cx="420" cy="145" r="5"/><circle cx="500" cy="180" r="5"/></g>
+      <g class="tx"><text x="82" y="286">2010</text><text x="162" y="286">2011</text><text x="242" y="286">2012</text><text x="322" y="286">2013</text><text x="402" y="286">2014</text><text x="482" y="286">2015</text></g>
+      <text class="tx" x="205" y="25" style="font-weight:bold">Pembuangan Sampah</text>
+      <text class="tx" x="240" y="312">Tahun</text><text class="tx" x="8" y="60">ribu tan</text>
+    </svg>
+  </div>
+
+  <div class="qbox" id="a5q1">
+    <div class="qtext">1. Tahun manakah menunjukkan jisim sampah paling tinggi?</div>
+    <div class="choice-grid">
+      <div class="choice" data-group="a5q1" data-val="A">2010</div><div class="choice" data-group="a5q1" data-val="B">2012</div>
+      <div class="choice" data-group="a5q1" data-val="C">2014</div><div class="choice" data-group="a5q1" data-val="D">2015</div>
+    </div>
+  </div>
+
+  <div class="qbox" id="a5q2">
+    <div class="qtext">2. Inferens yang paling sesuai berdasarkan trend selepas 2012 ialah...</div>
+    <div class="choice-grid">
+      <div class="choice" data-group="a5q2" data-val="A">Jisim sampah semakin meningkat</div>
+      <div class="choice" data-group="a5q2" data-val="B">Jisim sampah semakin berkurangan</div>
+      <div class="choice" data-group="a5q2" data-val="C">Jisim sampah sentiasa sama</div>
+      <div class="choice" data-group="a5q2" data-val="D">Tiada pola</div>
+    </div>
+  </div>
+
+  <div class="qbox" id="a5q3">
+    <div class="qtext">3. Untuk mewakilkan data secara beretika, skala pada graf sepatutnya...</div>
+    <div class="choice-grid">
+      <div class="choice" data-group="a5q3" data-val="A">Tidak seragam</div>
+      <div class="choice" data-group="a5q3" data-val="B">Bermula pada nombor rawak</div>
+      <div class="choice" data-group="a5q3" data-val="C">Seragam dan bermula daripada 0</div>
+      <div class="choice" data-group="a5q3" data-val="D">Diubah supaya beza nampak besar</div>
+    </div>
+  </div>
+
+  <div class="qbox" id="a5q4">
+    <div class="qtext">4. Data yang dipaparkan dalam perwakilan data secara beretika mestilah...</div>
+    <div class="choice-grid">
+      <div class="choice" data-group="a5q4" data-val="A">Tepat</div>
+      <div class="choice" data-group="a5q4" data-val="B">Diubah sedikit</div>
+      <div class="choice" data-group="a5q4" data-val="C">Dipilih yang menarik sahaja</div>
+      <div class="choice" data-group="a5q4" data-val="D">Tanpa label</div>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="nav">
+    <button class="secondary" id="prevBtn" onclick="moveStep(-1)" disabled>← Sebelumnya</button>
+    <button id="nextBtn" onclick="moveStep(1)">Seterusnya →</button>
+  </div>
+  <button id="submitBtn" style="display:none;margin-top:10px" onclick="submitAssessment()">Hantar Penilaian</button>
+  <div id="resultBox" style="display:none;margin-top:12px"></div>
+  <div id="saveStatus" class="status" style="display:none"></div>
+  <button class="secondary" id="retryBtn" style="display:none;margin-top:10px" onclick="retryAssessment()">Cuba Semula</button>
+</section>
+</div>
+
+<script>
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz6QK1m9Xt4I3NGWFB5J7vwpBIkUkmBnM9xiQOfNQ6JwC5WkpeR_zeHYJ1ZHWF78zFI/exec";
+const SET_NAME="PENILAIAN 2 - BAB 12 PENGENDALIAN DATA";
+const STUDENTS={"1DIAMOND": ["ALLY ZULFADHLI BIN MOHD ZAHID", "AMNI QAISARA BINTI MOHD FAIRUS", "ANGEL LAYCOOL BAJIK ANAK ROBERT", "AWADAH NUR RIZQAH BINTI MOHD IKHRAM", "CHONG JING XIN", "FATIN AQILAH NAFISAH BINTI MOHD SHUKOR", "FONG JIN RU", "HAWA DAMIA NURAIN BINTI MOHD HUSAINI", "LIEW RUO QI", "LIM JING XIN", "MOHAMAD SYAHMIRUL BIN MOHD SHAHNIZA", "MUHAMMAD ABDULLAH SALAM ALI BIN GHAZALY ALI", "MUHAMMAD AIDID AMERUL BIN MUHAMMAD NAZRI", "MUHAMMAD AISY RIZQIN BIN MUHAMMAD GHAZALI", "MUHAMMAD AMIR KAZIM BIN SUDARMAN", "MUHAMMAD AQIFF HAKIMI BIN SHARUL IZUAN", "MUHAMMAD DANISH SHAZRIL BIN ABDULLAH", "MUHAMMAD FITRI HAMIZAN BIN ZAMEER AKMAL", "MUHAMMAD HAZIQ FAIZ BIN HASHIM", "MUHAMMAD IRFAN NAUFAL BIN NOORHAFIZAN", "MUHAMMAD RYAN ZAFRIL BIN MOHD NIZEM", "NAFIZ MURSYID BIN MOHD NOR KHAIRIL", "NUR HANI DARINA BINTI KAMARUL ARIFFIN", "NUR HUSNA FAQIHAH BINTI ISHAK", "NUR SYAFA ADILA BINTI ISMAIL", "NURUL FAIQAH HUSNA BINTI MOHD FARID", "PONG YIN XIN", "RIA ZARA BINTI MOHD HAZWAN", "THONG SZE YANG", "WONG LIEK KAI"], "1EMERALD": ["YONG SHENG XIANG", "KIEW RUI BIN", "TAN XUAN QI", "ADAM EEHAN BIN HARNIE SHA FARDLY", "HSU HAO XUAN", "LAI TECK FOCK", "SIM YUK SHAN", "NUR FATHIAH SAKINA BINTI MOHAMAD FIRDHAUS", "TEOH XIN CI", "NUR AMNI ELLISYA BINTI SYAIFUL IZWAN", "QASEH QAISARA BINTI SAZALI", "RADIN RAYYAN HAFIZ", "ANISSA SOFIA BINTI MOHAMAD HAIRULNIZAM", "MUHAMMAD FAIZ ZAKWAN BIN MOHD NAJIB", "MUHAMMAD YOUNES BIN MOHD YAZID", "NUR AINA MAISARAH BINTI KHAIRUL AZMI", "NURISYA AFIRA BINTI ABDULLAH", "SITI NUR RAQIAH BINTI ABDULLAH", "AISYAH BINTI MUHAMAD MUSTAKIM", "NURIN INSYIRAH BINTI NIZARUDIN", "MUHAMMAD HADI JAZLI BIN MD ALMUTAKIL", "MUHAMMAD AIMANSHAH BIN AZIZUL", "MUHAMMAD NASRAWI BIN MOHAMMAD FETRIE", "DARSHANASRI A/P KRISHNAN", "NUR ELFFIFARISAH QOYYIMAH BINTI MOHD RAIS", "KAMIL IMRAN BIN JEFRY"], "1RUBY": ["LIONG SHENG KANG", "AFNI ELVINA BINTI ARAFI", "NUR DELISHA AMANI BINTI MOHD NOOR RAMDAN", "WONG KA HUI", "UMAIRAH QAISARA BINTI IZHAR", "NUR ELYANA BINTI ABDULLAH", "THAM ZHI HONG", "MUHAMMAD QAWI NAUFAL BIN MUHAMMAD SAFUAN", "SAHET NAUFAL BIN MD NASIR", "SYLVESTER SHEN KAI BING", "CHONG JIA JIA", "MUHAMMAD HAQQEM BIN KHAIRULIZAM", "NURHAQESSYA BINTI SYAHAFIZ", "SITI NUR ASYIKIN BINTI IRWIN", "TAKESH A/L R.G. BABU", "MUHAMMAD DANISH HAZIQ BIN NORARMIZAN", "MUHAMMAD ILHAM MUHAYYAD BIN MESWAN", "MUHAMMAD UMAR BIN KAMARUL ZAMAN", "CHONG LE XUAN", "DINESH A/L LECHUMANAN", "MOHAMAD AISY ADWA BIN MOHD FIRDAUS", "MUHAMAD SYAMIL ASYRAFF BIN HISHAM", "WONG KIAN RONG", "ADAM DAZLY BIN SHAHALWI", "LEONG ZI QI", "NUR KHAIRA QALISYA BINTI MOHD KHAIR", "NUR IRIS HUMAIRA BINTI MOHD NOOR", "MOHAMMAD SYAHRIZAD RAYYAN BIN SAHRUDIN"], "1SAPPHIRE": ["LOY XIN TIAN", "UMAIRAH QALISYA BINTI IZHAR", "CHONG XIAO NING", "INTAN NUR SYAFIQAH BINTI MUHAMMAD FIRDAUS", "NERONDY SHAHLAN", "ADAM DAZRYN BIN SHAHALWI", "MUHAMMAD QALIFF ASHRAFF BIN MD SYAH", "YAP ZHI JIE", "CHONG YI XIN", "LEONG YEE ROU", "PUTERI NUR DAMIA BINTI ZULTIKA", "RAISHA SUTRA BINTI RAFIUDDIN", "WONG JIA JIA", "MOHAMAD DANIEL DANESH BIN MOSLIM", "MUHAMMAD ADAM ISKANDAR BIN MOHD SANI", "SOLEHUDDINULHAFIZ BIN MOHD SHAFIEE", "MUHAMMAD ADAM ARIEF BIN OSMAN", "RAYQAL ISKANDAR BIN RIZAL", "GAN CHIK CHEN", "CHANG JIE QI", "NUR HAZIQAH NASRIN BINTI ABDULLAH", "JUSTIN PANG HAO JUN", "MOHAMAD ZUHAER BIN MOHAMAD NIZAM", "MUHAMMAD SUFIY BIN SALAHUDIN", "LAM JUN YI"]};
+let currentStep=1;
+let startTime=Date.now();
+const answers={};
+
+const correct={
+ a1q1:"B",a1q2:"B",a1q3:"A",a1q4:"B",
+ c1:"Kategori",c2:"Numerik diskret",c3:"Numerik selanjar",c4:"Kategori",
+ fS:1,fM:12,fL:9,fXL:5,
+ a4q1:"A",a4q2:"B",a4q3:"A",a4q4:"A",
+ a5q1:"B",a5q2:"B",a5q3:"C",a5q4:"A"
+};
+
+const $=id=>document.getElementById(id);
+
+function init(){
+  Object.keys(STUDENTS).forEach(c=>{let o=document.createElement('option');o.value=c;o.textContent=c;$('kelas').appendChild(o);});
+  $('kelas').addEventListener('change',()=>{
+    const c=$('kelas').value,n=$('nama');
+    n.innerHTML='<option value="">-- Pilih nama --</option>';
+    if(c) STUDENTS[c].forEach(x=>{let o=document.createElement('option');o.value=x;o.textContent=x;n.appendChild(o);});
+    n.disabled=!c;
+  });
+
+  document.querySelectorAll('.choice').forEach(ch=>{
+    ch.addEventListener('click',()=>{
+      const g=ch.dataset.group;
+      document.querySelectorAll(`.choice[data-group="${g}"]`).forEach(x=>x.classList.remove('selected'));
+      ch.classList.add('selected');
+      answers[g]=ch.dataset.val;
+    });
+  });
+  updateStep();
+}
+
+function updateStep(){
+  document.querySelectorAll('.activity').forEach(a=>a.classList.toggle('active',Number(a.dataset.step)===currentStep));
+  $('progress').style.width=(currentStep*20)+'%';
+  $('stepText').textContent=`Aktiviti ${currentStep} daripada 5`;
+  $('prevBtn').disabled=currentStep===1;
+  $('nextBtn').style.display=currentStep===5?'none':'block';
+  $('submitBtn').style.display=currentStep===5?'block':'none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function moveStep(d){
+  currentStep=Math.max(1,Math.min(5,currentStep+d));
+  updateStep();
+}
+
+function collectAndScore(){
+  ['c1','c2','c3','c4'].forEach(id=>answers[id]=$(id).value);
+  ['fS','fM','fL','fXL'].forEach(id=>answers[id]=Number($(id).value));
+
+  const missing=[];
+  ['a1q1','a1q2','a1q3','a1q4','a4q1','a4q2','a4q3','a4q4','a5q1','a5q2','a5q3','a5q4'].forEach(k=>{if(!answers[k])missing.push(k);});
+  ['c1','c2','c3','c4'].forEach(k=>{if(!answers[k])missing.push(k);});
+  ['fS','fM','fL','fXL'].forEach(k=>{if(!Number.isFinite(answers[k]))missing.push(k);});
+
+  if(missing.length) return {ok:false,missing};
+
+  let score=0;
+  Object.keys(correct).forEach(k=>{if(String(answers[k])===String(correct[k]))score++;});
+  return {ok:true,score};
+}
+
+function markReview(){
+  document.querySelectorAll('.choice').forEach(ch=>{
+    const g=ch.dataset.group;
+    if(ch.dataset.val===correct[g])ch.classList.add('correct');
+    else if(ch.classList.contains('selected'))ch.classList.add('wrong');
+  });
+  ['c1','c2','c3','c4'].forEach(id=>{
+    const el=$(id); el.style.borderColor=el.value===correct[id]?'#18794e':'#c62828';
+  });
+  ['fS','fM','fL','fXL'].forEach(id=>{
+    const el=$(id); el.style.borderColor=Number(el.value)===correct[id]?'#18794e':'#c62828';
+  });
+}
+
+function submitAssessment(){
+  if(!$('kelas').value||!$('nama').value){alert('Sila pilih kelas dan nama pelajar dahulu.');return;}
+  const r=collectAndScore();
+  if(!r.ok){alert('Masih ada jawapan yang belum lengkap. Sila semak semua 5 aktiviti.');return;}
+
+  const seconds=Math.max(1,Math.round((Date.now()-startTime)/1000));
+  const score=r.score;
+  markReview();
+
+  $('resultBox').style.display='block';
+  $('resultBox').innerHTML=`<div class="result">Markah Penilaian 2: ${score} / 20 (${score*5}%)<br><span class="small">Masa: ${Math.floor(seconds/60)} minit ${seconds%60} saat</span></div>`;
+  $('retryBtn').style.display='block';
+
+  // Hantar ke Google Sheet menggunakan form + hidden iframe
+  const status=$('saveStatus');
+  status.style.display='block'; status.style.color='#63717e'; status.textContent='Sedang menghantar markah ke Google Sheet...';
+
+  const form=document.createElement('form');
+  form.method='POST'; form.action=SCRIPT_URL; form.target='gsheet_sink'; form.style.display='none';
+  const payload={action:'submit',set:SET_NAME,kelas:$('kelas').value,nama:$('nama').value,markah:String(score),jumlah:'20',masaSaat:String(seconds)};
+  Object.entries(payload).forEach(([k,v])=>{const inp=document.createElement('input');inp.type='hidden';inp.name=k;inp.value=v;form.appendChild(inp);});
+  document.body.appendChild(form); form.submit();
+  setTimeout(()=>{status.style.color='#18794e';status.textContent='✓ Markah telah dihantar ke Google Sheet.';form.remove();},900);
+}
+
+function retryAssessment(){
+  Object.keys(answers).forEach(k=>delete answers[k]);
+  document.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected','correct','wrong'));
+  document.querySelectorAll('select[id^="c"]').forEach(x=>{x.value='';x.style.borderColor='';});
+  ['fS','fM','fL','fXL'].forEach(id=>{$(id).value='';$(id).style.borderColor='';});
+  $('resultBox').style.display='none';$('saveStatus').style.display='none';$('retryBtn').style.display='none';
+  currentStep=1;startTime=Date.now();updateStep();
+}
+
+init();
+</script>
+</body>
+</html>
