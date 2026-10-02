@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Penilaian 2 Matematik Tingkatan 1 - 5 Aktiviti Perwakilan Data</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#17212b;--muted:#667481;--primary:#145da0;--good:#18794e;--bad:#c62828;--line:#dce6ef}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+.wrap{max-width:960px;margin:auto;padding:10px}.hero{background:linear-gradient(135deg,#145da0,#0c3d68);color:#fff;border-radius:18px;padding:18px;box-shadow:0 5px 16px rgba(0,0,0,.1)}
+.hero h1{margin:0 0 5px;font-size:1.35rem}.hero p{margin:3px 0}
+.panel,.activity{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;margin:12px 0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}label.title{display:block;font-weight:800;font-size:.88rem;margin-bottom:5px}
+select,input[type=number]{width:100%;padding:10px;border:1px solid #cbd7e2;border-radius:10px;background:#fff;font-size:1rem}
+.progress-wrap{height:12px;background:#dfe8f0;border-radius:99px;overflow:hidden;margin-top:12px}.progress{height:100%;width:20%;background:linear-gradient(90deg,#4ea8de,#145da0);transition:.3s}
+.steptext{text-align:right;font-size:.8rem;color:var(--muted);margin-top:4px}.activity{display:none}.activity.active{display:block}
+.act-head{display:flex;gap:10px;align-items:center;margin-bottom:10px}.badge{width:40px;height:40px;border-radius:50%;background:#145da0;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900}
+.act-title{font-size:1.08rem;font-weight:900}.subtitle{font-size:.86rem;color:var(--muted);margin-top:2px}
+.data-box{background:#eef5fb;border-radius:12px;padding:12px;margin:10px 0;line-height:1.8;text-align:center;font-weight:800}
+.task{border:1px solid #e0e8ef;border-radius:12px;padding:12px;margin:10px 0}.task h3{font-size:.98rem;margin:0 0 8px}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse}th,td{border:1px solid #dce5ed;padding:8px;text-align:center}th{background:#eef4f8}
+.chartbox{border:1px solid #dce5ed;border-radius:12px;padding:10px;margin:10px 0;background:#fff;overflow:auto}
+.bar-grid{display:flex;align-items:flex-end;justify-content:space-around;gap:10px;height:240px;border-left:2px solid #222;border-bottom:2px solid #222;padding:10px 8px 0;margin:30px 20px 40px 44px;position:relative}
+.bar-col{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;flex:1;min-width:55px}.bar{width:65%;background:#5ba3d0;border:1px solid #255d7d;min-height:2px;transition:.3s}
+.bar-label{position:absolute;bottom:-28px;font-size:.78rem;font-weight:700;white-space:nowrap}.bar-value{font-size:.75rem;margin-bottom:3px}
+.axis-y{position:absolute;left:-42px;top:0;height:100%;display:flex;flex-direction:column;justify-content:space-between;font-size:.72rem;color:#555}
+.dotline{position:relative;margin:25px 20px 45px;height:170px;border-bottom:2px solid #222}.dot-col{position:absolute;bottom:0;transform:translateX(-50%);display:flex;flex-direction:column-reverse;align-items:center}
+.dot{width:12px;height:12px;border-radius:50%;background:#145da0;margin:2px}.tick{position:absolute;bottom:-28px;transform:translateX(-50%);font-size:.78rem}
+.stem{max-width:520px;margin:auto}.stem td:first-child{font-weight:900;width:90px;background:#f6f9fb}.stem input{min-width:170px}
+.tally{font-family:monospace;font-weight:900;letter-spacing:2px;font-size:1.1rem}
+.pie-wrap{display:grid;grid-template-columns:260px 1fr;gap:15px;align-items:center}#pieSvg{width:260px;height:260px}
+.pie-inputs{display:grid;grid-template-columns:1fr 100px;gap:8px;align-items:center}.legend-dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px}
+.guide{margin:10px 0;border:1px solid #b9d7ee;background:#f2f9fe;border-radius:11px;padding:9px 11px}.guide summary{font-weight:800;color:#0c4f82;cursor:pointer}
+.nav{display:grid;grid-template-columns:1fr 1fr;gap:10px}button{width:100%;padding:12px;border:none;border-radius:11px;background:#145da0;color:#fff;font-size:1rem;font-weight:900;cursor:pointer}button.secondary{background:#687986}button:disabled{opacity:.5}
+.result{text-align:center;background:#eef7ff;border-radius:14px;padding:18px;font-size:1.25rem;font-weight:900}.small{font-size:.82rem;color:var(--muted)}.status{text-align:center;font-size:.85rem;margin-top:8px}
+.correct{border-color:var(--good)!important;background:#eef9f2!important}.wrong{border-color:var(--bad)!important;background:#fff1f1!important}
+@media(max-width:650px){.grid2,.pie-wrap{grid-template-columns:1fr}.wrap{padding:7px}.panel,.activity{padding:11px}.hero{padding:14px}.bar-grid{margin-left:38px;margin-right:5px}#pieSvg{width:230px;height:230px;margin:auto}}
+</style>
+</head>
+<body>
+<iframe name="gsheet_sink" style="display:none"></iframe>
+<div class="wrap">
+<section class="hero">
+<h1>Penilaian 2 Matematik Tingkatan 1</h1>
+<p><b>Bab 12: Pengendalian Data</b></p>
+<p>5 aktiviti pembinaan perwakilan data • 20 markah</p>
+</section>
+
+<section class="panel">
+<div class="grid2">
+<div><label class="title">Kelas</label><select id="kelas"><option value="">-- Pilih kelas --</option></select></div>
+<div><label class="title">Nama Pelajar</label><select id="nama" disabled><option value="">-- Pilih nama --</option></select></div>
+</div>
+<div class="progress-wrap"><div class="progress" id="progress"></div></div>
+<div class="steptext" id="stepText">Aktiviti 1 daripada 5</div>
+</section>
+
+<section class="activity active" data-step="1">
+<div class="act-head"><div class="badge">1</div><div><div class="act-title">Bina Carta Bar</div><div class="subtitle">Masukkan kekerapan yang betul supaya carta bar terbina secara automatik.</div></div></div>
+<div class="task">
+<h3>Data: Cara murid datang ke sekolah</h3>
+<table><tr><th>Pengangkutan</th><th>Kereta</th><th>Bas sekolah</th><th>Bas awam</th><th>Basikal</th><th>Berjalan kaki</th></tr><tr><th>Kekerapan</th><td>8</td><td>10</td><td>7</td><td>2</td><td>5</td></tr></table>
+</div>
+<div class="task">
+<h3>Isi nilai untuk membina carta bar</h3>
+<div class="grid2">
+<label>Kereta<input id="b1" type="number" min="0" oninput="drawBar()"></label>
+<label>Bas sekolah<input id="b2" type="number" min="0" oninput="drawBar()"></label>
+<label>Bas awam<input id="b3" type="number" min="0" oninput="drawBar()"></label>
+<label>Basikal<input id="b4" type="number" min="0" oninput="drawBar()"></label>
+<label>Berjalan kaki<input id="b5" type="number" min="0" oninput="drawBar()"></label>
+</div>
+</div>
+<div class="chartbox"><div class="bar-grid" id="barGrid"><div class="axis-y"><span>10</span><span>8</span><span>6</span><span>4</span><span>2</span><span>0</span></div></div></div>
+<details class="guide"><summary>💡 Panduan Carta Bar</summary><div class="small">Paksi mengufuk mewakili kategori. Paksi mencancang mewakili kekerapan. Lebar palang dan ruang antara palang perlu seragam.</div></details>
+</section>
+
+<section class="activity" data-step="2">
+<div class="act-head"><div class="badge">2</div><div><div class="act-title">Bina Plot Titik</div><div class="subtitle">Kira berapa titik perlu diletakkan pada setiap nilai.</div></div></div>
+<div class="data-box">3 &nbsp; 4 &nbsp; 8 &nbsp; 7 &nbsp; 11 &nbsp; 6 &nbsp; 5 &nbsp; 7 &nbsp; 6 &nbsp; 3 &nbsp; 9 &nbsp; 6 &nbsp; 5 &nbsp; 11 &nbsp; 8</div>
+<div class="task">
+<h3>Masukkan bilangan titik bagi setiap nilai</h3>
+<div class="grid2" id="dotInputs"></div>
+</div>
+<div class="chartbox"><div class="dotline" id="dotLine"></div></div>
+<details class="guide"><summary>💡 Panduan Plot Titik</summary><div class="small">Setiap satu data diwakili oleh satu titik di atas nilai pada garis nombor. Jika nilai berulang, susun titik secara menegak.</div></details>
+</section>
+
+<section class="activity" data-step="3">
+<div class="act-head"><div class="badge">3</div><div><div class="act-title">Bina Plot Batang-dan-Daun</div><div class="subtitle">Pisahkan digit puluh sebagai batang dan digit sa sebagai daun.</div></div></div>
+<div class="data-box">60, 56, 69, 32, 63, 58, 71, 86, 52, 64, 50, 67, 82, 63, 75, 50, 69, 78, 77, 59</div>
+<div class="task table-wrap">
+<table class="stem">
+<tr><th>Batang</th><th>Daun (susun menaik, pisahkan dengan ruang)</th></tr>
+<tr><td>3</td><td><input id="s3" type="text"></td></tr>
+<tr><td>4</td><td><input id="s4" type="text"></td></tr>
+<tr><td>5</td><td><input id="s5" type="text"></td></tr>
+<tr><td>6</td><td><input id="s6" type="text"></td></tr>
+<tr><td>7</td><td><input id="s7" type="text"></td></tr>
+<tr><td>8</td><td><input id="s8" type="text"></td></tr>
+</table>
+</div>
+<details class="guide"><summary>💡 Panduan Batang-dan-Daun</summary><div class="small">Contoh: 56 → batang 5, daun 6. Daun mesti disusun dari nilai terkecil ke terbesar. Kekunci: 5 | 6 bermaksud 56.</div></details>
+</section>
+
+<section class="activity" data-step="4">
+<div class="act-head"><div class="badge">4</div><div><div class="act-title">Bina Jadual Kekerapan & Gundalan</div><div class="subtitle">Daripada data mentah, lengkapkan gundalan dan kekerapan.</div></div></div>
+<div class="data-box">2 &nbsp; 2 &nbsp; 0 &nbsp; 4 &nbsp; 1 &nbsp; 1 &nbsp; 1 &nbsp; 0 &nbsp; 2 &nbsp; 2 &nbsp; 1 &nbsp; 1 &nbsp; 3 &nbsp; 0 &nbsp; 0 &nbsp; 2 &nbsp; 4 &nbsp; 2 &nbsp; 3 &nbsp; 3</div>
+<div class="task table-wrap">
+<table>
+<tr><th>Bilangan anak</th><th>Gundalan</th><th>Kekerapan</th></tr>
+<tr><td>0</td><td><input id="t0" type="text" placeholder="Contoh: ||||"></td><td><input id="k0" type="number" min="0"></td></tr>
+<tr><td>1</td><td><input id="t1" type="text"></td><td><input id="k1" type="number" min="0"></td></tr>
+<tr><td>2</td><td><input id="t2" type="text"></td><td><input id="k2" type="number" min="0"></td></tr>
+<tr><td>3</td><td><input id="t3" type="text"></td><td><input id="k3" type="number" min="0"></td></tr>
+<tr><td>4</td><td><input id="t4" type="text"></td><td><input id="k4" type="number" min="0"></td></tr>
+</table>
+</div>
+<details class="guide"><summary>💡 Panduan Gundalan</summary><div class="small">Kumpulan lima boleh ditulis sebagai <b>||||/</b>. Sistem menerima |, / dan ruang. Contoh kekerapan 6 boleh ditulis <b>||||/ |</b>.</div></details>
+</section>
+
+<section class="activity" data-step="5">
+<div class="act-head"><div class="badge">5</div><div><div class="act-title">Bina Carta Pai</div><div class="subtitle">Hitung sudut sektor dan lihat carta pai terbina secara automatik.</div></div></div>
+<div class="task">
+<h3>Jualan kereta mengikut warna</h3>
+<table><tr><th>Warna</th><th>Merah</th><th>Kuning</th><th>Putih</th><th>Biru</th></tr><tr><th>Bilangan kereta</th><td>9</td><td>12</td><td>10</td><td>5</td></tr></table>
+</div>
+<div class="pie-wrap">
+<svg id="pieSvg" viewBox="0 0 300 300"></svg>
+<div>
+<div class="pie-inputs">
+<label><span class="legend-dot" style="background:#d95c5c"></span>Merah</label><input id="p1" type="number" min="0" max="360" oninput="drawPie()">
+<label><span class="legend-dot" style="background:#e0bf44"></span>Kuning</label><input id="p2" type="number" min="0" max="360" oninput="drawPie()">
+<label><span class="legend-dot" style="background:#b9c4ce"></span>Putih</label><input id="p3" type="number" min="0" max="360" oninput="drawPie()">
+<label><span class="legend-dot" style="background:#4a86c5"></span>Biru</label><input id="p4" type="number" min="0" max="360" oninput="drawPie()">
+</div>
+<div class="small" style="margin-top:8px">Masukkan sudut sektor dalam darjah (°).</div>
+</div>
+</div>
+<details class="guide"><summary>💡 Formula Carta Pai</summary><div class="small">Sudut sektor = (kekerapan ÷ jumlah kekerapan) × 360°. Jumlah semua sudut mestilah 360°.</div></details>
+</section>
+
+<section class="panel">
+<div class="nav">
+<button class="secondary" id="prevBtn" onclick="moveStep(-1)" disabled>← Sebelumnya</button>
+<button id="nextBtn" onclick="moveStep(1)">Seterusnya →</button>
+</div>
+<button id="submitBtn" style="display:none;margin-top:10px" onclick="submitAssessment()">Hantar Penilaian</button>
+<div id="resultBox" style="display:none;margin-top:12px"></div>
+<div id="saveStatus" class="status" style="display:none"></div>
+<button class="secondary" id="retryBtn" style="display:none;margin-top:10px" onclick="retryAssessment()">Cuba Semula</button>
+</section>
+</div>
+
+<script>
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz6QK1m9Xt4I3NGWFB5J7vwpBIkUkmBnM9xiQOfNQ6JwC5WkpeR_zeHYJ1ZHWF78zFI/exec";
+const SET_NAME="PENILAIAN 2 - BAB 12 PERWAKILAN DATA";
+const STUDENTS={"1DIAMOND": ["ALLY ZULFADHLI BIN MOHD ZAHID", "AMNI QAISARA BINTI MOHD FAIRUS", "ANGEL LAYCOOL BAJIK ANAK ROBERT", "AWADAH NUR RIZQAH BINTI MOHD IKHRAM", "CHONG JING XIN", "FATIN AQILAH NAFISAH BINTI MOHD SHUKOR", "FONG JIN RU", "HAWA DAMIA NURAIN BINTI MOHD HUSAINI", "LIEW RUO QI", "LIM JING XIN", "MOHAMAD SYAHMIRUL BIN MOHD SHAHNIZA", "MUHAMMAD ABDULLAH SALAM ALI BIN GHAZALY ALI", "MUHAMMAD AIDID AMERUL BIN MUHAMMAD NAZRI", "MUHAMMAD AISY RIZQIN BIN MUHAMMAD GHAZALI", "MUHAMMAD AMIR KAZIM BIN SUDARMAN", "MUHAMMAD AQIFF HAKIMI BIN SHARUL IZUAN", "MUHAMMAD DANISH SHAZRIL BIN ABDULLAH", "MUHAMMAD FITRI HAMIZAN BIN ZAMEER AKMAL", "MUHAMMAD HAZIQ FAIZ BIN HASHIM", "MUHAMMAD IRFAN NAUFAL BIN NOORHAFIZAN", "MUHAMMAD RYAN ZAFRIL BIN MOHD NIZEM", "NAFIZ MURSYID BIN MOHD NOR KHAIRIL", "NUR HANI DARINA BINTI KAMARUL ARIFFIN", "NUR HUSNA FAQIHAH BINTI ISHAK", "NUR SYAFA ADILA BINTI ISMAIL", "NURUL FAIQAH HUSNA BINTI MOHD FARID", "PONG YIN XIN", "RIA ZARA BINTI MOHD HAZWAN", "THONG SZE YANG", "WONG LIEK KAI"], "1EMERALD": ["YONG SHENG XIANG", "KIEW RUI BIN", "TAN XUAN QI", "ADAM EEHAN BIN HARNIE SHA FARDLY", "HSU HAO XUAN", "LAI TECK FOCK", "SIM YUK SHAN", "NUR FATHIAH SAKINA BINTI MOHAMAD FIRDHAUS", "TEOH XIN CI", "NUR AMNI ELLISYA BINTI SYAIFUL IZWAN", "QASEH QAISARA BINTI SAZALI", "RADIN RAYYAN HAFIZ", "ANISSA SOFIA BINTI MOHAMAD HAIRULNIZAM", "MUHAMMAD FAIZ ZAKWAN BIN MOHD NAJIB", "MUHAMMAD YOUNES BIN MOHD YAZID", "NUR AINA MAISARAH BINTI KHAIRUL AZMI", "NURISYA AFIRA BINTI ABDULLAH", "SITI NUR RAQIAH BINTI ABDULLAH", "AISYAH BINTI MUHAMAD MUSTAKIM", "NURIN INSYIRAH BINTI NIZARUDIN", "MUHAMMAD HADI JAZLI BIN MD ALMUTAKIL", "MUHAMMAD AIMANSHAH BIN AZIZUL", "MUHAMMAD NASRAWI BIN MOHAMMAD FETRIE", "DARSHANASRI A/P KRISHNAN", "NUR ELFFIFARISAH QOYYIMAH BINTI MOHD RAIS", "KAMIL IMRAN BIN JEFRY"], "1RUBY": ["LIONG SHENG KANG", "AFNI ELVINA BINTI ARAFI", "NUR DELISHA AMANI BINTI MOHD NOOR RAMDAN", "WONG KA HUI", "UMAIRAH QAISARA BINTI IZHAR", "NUR ELYANA BINTI ABDULLAH", "THAM ZHI HONG", "MUHAMMAD QAWI NAUFAL BIN MUHAMMAD SAFUAN", "SAHET NAUFAL BIN MD NASIR", "SYLVESTER SHEN KAI BING", "CHONG JIA JIA", "MUHAMMAD HAQQEM BIN KHAIRULIZAM", "NURHAQESSYA BINTI SYAHAFIZ", "SITI NUR ASYIKIN BINTI IRWIN", "TAKESH A/L R.G. BABU", "MUHAMMAD DANISH HAZIQ BIN NORARMIZAN", "MUHAMMAD ILHAM MUHAYYAD BIN MESWAN", "MUHAMMAD UMAR BIN KAMARUL ZAMAN", "CHONG LE XUAN", "DINESH A/L LECHUMANAN", "MOHAMAD AISY ADWA BIN MOHD FIRDAUS", "MUHAMAD SYAMIL ASYRAFF BIN HISHAM", "WONG KIAN RONG", "ADAM DAZLY BIN SHAHALWI", "LEONG ZI QI", "NUR KHAIRA QALISYA BINTI MOHD KHAIR", "NUR IRIS HUMAIRA BINTI MOHD NOOR", "MOHAMMAD SYAHRIZAD RAYYAN BIN SAHRUDIN"], "1SAPPHIRE": ["LOY XIN TIAN", "UMAIRAH QALISYA BINTI IZHAR", "CHONG XIAO NING", "INTAN NUR SYAFIQAH BINTI MUHAMMAD FIRDAUS", "NERONDY SHAHLAN", "ADAM DAZRYN BIN SHAHALWI", "MUHAMMAD QALIFF ASHRAFF BIN MD SYAH", "YAP ZHI JIE", "CHONG YI XIN", "LEONG YEE ROU", "PUTERI NUR DAMIA BINTI ZULTIKA", "RAISHA SUTRA BINTI RAFIUDDIN", "WONG JIA JIA", "MOHAMAD DANIEL DANESH BIN MOSLIM", "MUHAMMAD ADAM ISKANDAR BIN MOHD SANI", "SOLEHUDDINULHAFIZ BIN MOHD SHAFIEE", "MUHAMMAD ADAM ARIEF BIN OSMAN", "RAYQAL ISKANDAR BIN RIZAL", "GAN CHIK CHEN", "CHANG JIE QI", "NUR HAZIQAH NASRIN BINTI ABDULLAH", "JUSTIN PANG HAO JUN", "MOHAMAD ZUHAER BIN MOHAMAD NIZAM", "MUHAMMAD SUFIY BIN SALAHUDIN", "LAM JUN YI"]};
+let currentStep=1,startTime=Date.now();
+const $=id=>document.getElementById(id);
+
+const barCorrect=[8,10,7,2,5];
+const dotValues=[3,4,5,6,7,8,9,10,11];
+const dotCorrect={3:2,4:1,5:2,6:3,7:2,8:2,9:1,10:0,11:2};
+const stemCorrect={s3:"2",s4:"",s5:"0 0 2 6 8 9",s6:"0 3 3 4 7 9 9",s7:"1 5 7 8",s8:"2 6"};
+const freqCorrect=[4,5,6,3,2];
+const pieCorrect=[90,120,100,50];
+
+function init(){
+ Object.keys(STUDENTS).forEach(c=>{let o=document.createElement('option');o.value=c;o.textContent=c;$('kelas').appendChild(o)});
+ $('kelas').addEventListener('change',()=>{let c=$('kelas').value,n=$('nama');n.innerHTML='<option value="">-- Pilih nama --</option>';if(c)STUDENTS[c].forEach(x=>{let o=document.createElement('option');o.value=x;o.textContent=x;n.appendChild(o)});n.disabled=!c});
+ buildDotInputs();drawBar();drawDots();drawPie();updateStep();
+}
+function updateStep(){
+ document.querySelectorAll('.activity').forEach(x=>x.classList.toggle('active',Number(x.dataset.step)===currentStep));
+ $('progress').style.width=(currentStep*20)+'%';$('stepText').textContent=`Aktiviti ${currentStep} daripada 5`;
+ $('prevBtn').disabled=currentStep===1;$('nextBtn').style.display=currentStep===5?'none':'block';$('submitBtn').style.display=currentStep===5?'block':'none';
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function moveStep(d){currentStep=Math.max(1,Math.min(5,currentStep+d));updateStep()}
+
+function drawBar(){
+ const g=$('barGrid');g.querySelectorAll('.bar-col').forEach(x=>x.remove());
+ const labs=['Kereta','Bas sekolah','Bas awam','Basikal','Berjalan kaki'];
+ for(let i=0;i<5;i++){let v=Number($('b'+(i+1)).value)||0;let c=document.createElement('div');c.className='bar-col';c.innerHTML=`<div class="bar-value">${v||''}</div><div class="bar" style="height:${Math.min(v,10)*10}%"></div><div class="bar-label">${labs[i]}</div>`;g.appendChild(c)}
+}
+function buildDotInputs(){
+ const box=$('dotInputs');box.innerHTML='';
+ dotValues.forEach(v=>{box.innerHTML+=`<label>${v}<input id="d${v}" type="number" min="0" oninput="drawDots()"></label>`});
+}
+function drawDots(){
+ const line=$('dotLine');line.innerHTML='';
+ dotValues.forEach((v,i)=>{let left=5+i*(90/(dotValues.length-1));let n=Number($('d'+v)?.value)||0;let col=document.createElement('div');col.className='dot-col';col.style.left=left+'%';for(let j=0;j<n;j++)col.innerHTML+='<span class="dot"></span>';line.appendChild(col);let tick=document.createElement('span');tick.className='tick';tick.style.left=left+'%';tick.textContent=v;line.appendChild(tick)})
+}
+function polar(cx,cy,r,a){let rad=(a-90)*Math.PI/180;return {x:cx+r*Math.cos(rad),y:cy+r*Math.sin(rad)}}
+function arcPath(cx,cy,r,a0,a1){let s=polar(cx,cy,r,a1),e=polar(cx,cy,r,a0),large=a1-a0<=180?0:1;return `M ${cx} ${cy} L ${s.x} ${s.y} A ${r} ${r} 0 ${large} 0 ${e.x} ${e.y} Z`}
+function drawPie(){
+ const vals=[1,2,3,4].map(i=>Number($('p'+i).value)||0),colors=['#d95c5c','#e0bf44','#b9c4ce','#4a86c5'];let a=0,s='';
+ vals.forEach((v,i)=>{if(v>0){s+=`<path d="${arcPath(150,150,115,a,a+v)}" fill="${colors[i]}" stroke="#fff" stroke-width="2"></path>`;a+=v}});
+ if(a<360)s+=`<path d="${arcPath(150,150,115,a,360)}" fill="#eef2f5" stroke="#fff" stroke-width="2"></path>`;
+ $('pieSvg').innerHTML=s;
+}
+function normStem(s){return String(s||'').trim().replace(/\s+/g,' ')}
+function tallyCount(s){return (String(s||'').match(/[|/]/g)||[]).length}
+function checkComplete(){
+ let ids=['b1','b2','b3','b4','b5','s3','s4','s5','s6','s7','s8','t0','t1','t2','t3','t4','k0','k1','k2','k3','k4','p1','p2','p3','p4'];
+ dotValues.forEach(v=>ids.push('d'+v));
+ return ids.every(id=>$(id).value!=='' || id==='s4');
+}
+function submitAssessment(){
+ if(!$('kelas').value||!$('nama').value){alert('Sila pilih kelas dan nama pelajar.');return}
+ if(!checkComplete()){alert('Masih ada ruang jawapan yang belum diisi.');return}
+ let score=0;
+ // 4 marks each activity
+ if([1,2,3,4,5].every((n,i)=>Number($('b'+n).value)===barCorrect[i]))score+=4;
+ if(dotValues.every(v=>Number($('d'+v).value)===dotCorrect[v]))score+=4;
+ if(Object.keys(stemCorrect).every(id=>normStem($(id).value)===stemCorrect[id]))score+=4;
+ let tallyOK=[0,1,2,3,4].every(i=>tallyCount($('t'+i).value)===freqCorrect[i]);
+ let freqOK=[0,1,2,3,4].every(i=>Number($('k'+i).value)===freqCorrect[i]);
+ if(tallyOK&&freqOK)score+=4;
+ if([1,2,3,4].every((n,i)=>Number($('p'+n).value)===pieCorrect[i]))score+=4;
+
+ const seconds=Math.max(1,Math.round((Date.now()-startTime)/1000));
+ $('resultBox').style.display='block';$('resultBox').innerHTML=`<div class="result">Markah: ${score} / 20 (${score*5}%)<br><span class="small">Masa: ${Math.floor(seconds/60)} minit ${seconds%60} saat</span></div>`;
+ $('retryBtn').style.display='block';
+
+ // visual feedback by activity
+ [1,2,3,4,5].forEach((n,i)=>$('b'+n).classList.toggle('correct',Number($('b'+n).value)===barCorrect[i]));
+ dotValues.forEach(v=>$('d'+v).classList.toggle('correct',Number($('d'+v).value)===dotCorrect[v]));
+ Object.keys(stemCorrect).forEach(id=>$(id).classList.toggle('correct',normStem($(id).value)===stemCorrect[id]));
+ [0,1,2,3,4].forEach(i=>{$('t'+i).classList.toggle('correct',tallyCount($('t'+i).value)===freqCorrect[i]);$('k'+i).classList.toggle('correct',Number($('k'+i).value)===freqCorrect[i])});
+ [1,2,3,4].forEach((n,i)=>$('p'+n).classList.toggle('correct',Number($('p'+n).value)===pieCorrect[i]));
+
+ const st=$('saveStatus');st.style.display='block';st.style.color='#667481';st.textContent='Sedang menghantar markah ke Google Sheet...';
+ const f=document.createElement('form');f.method='POST';f.action=SCRIPT_URL;f.target='gsheet_sink';f.style.display='none';
+ const payload={action:'submit',set:SET_NAME,kelas:$('kelas').value,nama:$('nama').value,markah:String(score),jumlah:'20',masaSaat:String(seconds)};
+ Object.entries(payload).forEach(([k,v])=>{let inp=document.createElement('input');inp.type='hidden';inp.name=k;inp.value=v;f.appendChild(inp)});document.body.appendChild(f);f.submit();
+ setTimeout(()=>{st.style.color='#18794e';st.textContent='✓ Markah telah dihantar ke Google Sheet.';f.remove()},900);
+}
+function retryAssessment(){
+ document.querySelectorAll('input').forEach(x=>{x.value='';x.classList.remove('correct','wrong')});$('resultBox').style.display='none';$('saveStatus').style.display='none';$('retryBtn').style.display='none';
+ currentStep=1;startTime=Date.now();drawBar();drawDots();drawPie();updateStep();
+}
+init();
+</script>
+</body>
+</html>
