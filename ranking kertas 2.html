@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Top 20 Aras Rendah Kertas 2</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:transparent;font-family:Arial,Helvetica,sans-serif;color:#1f2937}
+.card{width:min(800px,97vw);margin:8px auto;background:#fffaf0;border:1px solid #ead9b8;border-left:7px solid #d99a1d;border-radius:16px;box-shadow:0 8px 24px rgba(60,45,20,.12);padding:18px}
+.top{display:flex;justify-content:space-between;gap:10px;align-items:center}.title{font-size:21px;font-weight:900}.scope{font-size:11px;color:#7b6c4f}
+.status{font-size:11px;color:#8a7449;margin:6px 0 10px}.tablewrap{max-height:720px;overflow:auto}
+table{width:100%;border-collapse:collapse}th,td{padding:8px 6px;border-bottom:1px dashed #e3d9c4;text-align:left;font-size:13px}
+th{position:sticky;top:0;background:#fffaf0;color:#8a7449;font-size:11px}.r{width:45px;font-weight:900}.k{width:100px}.m{width:90px;text-align:right;font-weight:900}.t{width:90px;text-align:right}.name{font-weight:800}
+.empty{text-align:center;padding:24px;color:#8c7b5d}.footer{text-align:right;font-size:10px;color:#8c7b5d;margin-top:8px}
+@media(max-width:600px){.card{padding:12px}.title{font-size:17px}th,td{font-size:11px;padding:7px 4px}.k{width:75px}.m{width:65px}.t{display:none}}
+</style>
+</head>
+<body><div class="card">
+<div class="top"><div class="title">🏆 Top 20 • Kertas 2 Aras Rendah</div><div class="scope">Semua kelas</div></div>
+<div id="status" class="status">Memuatkan ranking...</div>
+<div class="tablewrap"><table>
+<thead><tr><th class="r">Rank</th><th>Nama</th><th class="k">Kelas</th><th class="m">Markah</th><th class="t">Masa</th></tr></thead>
+<tbody id="body"><tr><td colspan="5" class="empty">Memuatkan data...</td></tr></tbody>
+</table></div>
+<div class="footer">Susunan: peratus tertinggi → markah → masa terpantas.</div>
+</div>
+<script>
+const WEB_APP_URL="PASTE_WEB_APP_URL_HERE";
+function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;")}
+function medal(i){return i===0?"🥇":i===1?"🥈":i===2?"🥉":String(i+1)}
+function fmt(s){s=Number(s||0);return `${Math.floor(s/60)}m ${s%60}s`}
+function jsonp(url){
+ return new Promise((resolve,reject)=>{
+   const cb="cb_"+Date.now()+"_"+Math.floor(Math.random()*99999);
+   const s=document.createElement("script");
+   const timer=setTimeout(()=>{cleanup();reject(new Error("timeout"))},10000);
+   function cleanup(){clearTimeout(timer);delete window[cb];if(s.parentNode)s.remove()}
+   window[cb]=d=>{cleanup();resolve(d)};
+   s.onerror=()=>{cleanup();reject(new Error("network"))};
+   s.src=url+(url.includes("?")?"&":"?")+"mode=top20&callback="+cb+"&t="+Date.now();
+   document.body.appendChild(s);
+ });
+}
+async function load(){
+ const body=document.getElementById("body"),st=document.getElementById("status");
+ st.textContent="Mengemas kini ranking...";
+ try{
+   const rows=await jsonp(WEB_APP_URL);
+   if(!Array.isArray(rows)||!rows.length){body.innerHTML='<tr><td colspan="5" class="empty">Belum ada rekod markah.</td></tr>';st.textContent="Tiada rekod.";return}
+   body.innerHTML=rows.map((r,i)=>`<tr><td class="r">${medal(i)}</td><td class="name">${esc(r.name)}</td><td class="k">${esc(r.class)}</td><td class="m">${Number(r.pct).toFixed(0)}%</td><td class="t">${fmt(r.duration_seconds)}</td></tr>`).join("");
+   st.textContent="Dikemas kini: "+new Date().toLocaleTimeString("ms-MY");
+ }catch(e){body.innerHTML='<tr><td colspan="5" class="empty">Ranking belum dapat dimuatkan.</td></tr>';st.textContent="Semak Web App URL / deployment."}
+}
+load();setInterval(load,15000);
+</script></body></html>
