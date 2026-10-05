@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Top 20 SKOR Matematik</title>
+<style>
+body{margin:0;background:transparent;font-family:Arial,Helvetica,sans-serif;color:#1f2937}
+.card{width:min(760px,96vw);margin:12px auto;background:#fffaf0;border:1px solid #ead9b8;border-left:7px solid #d99a1d;border-radius:16px;box-shadow:0 8px 24px rgba(60,45,20,.12);padding:22px 24px 18px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:13px}.title{font-size:23px;font-weight:800}.scope{font-size:13px;color:#7b6c4f}
+.status{font-size:12px;color:#8a7449;margin:4px 0 10px}.error{background:#fff1f0;color:#b42318;border:1px solid #f3b7b3;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:13px}
+.table-wrap{max-height:720px;overflow-y:auto;border-radius:10px}table{width:100%;border-collapse:collapse;table-layout:fixed}th{font-size:12px;color:#8a7449;padding:7px 8px;text-align:left;border-bottom:1px dashed #ddcfb4;position:sticky;top:0;background:#fffaf0;z-index:2}
+td{padding:9px 8px;border-bottom:1px dashed #e3d9c4;font-size:14px}.pos{width:52px;font-weight:800}.name{font-weight:700}.kelas{width:125px}.mark{width:105px;text-align:right;font-weight:900}.empty{text-align:center;padding:28px;color:#8c7b5d}
+.footer{margin-top:11px;text-align:right;font-size:11px;color:#8c7b5d}
+@media(max-width:600px){.card{padding:16px 14px}.title{font-size:18px}td{font-size:12px;padding:8px 5px}.kelas{width:88px}.mark{width:72px}.pos{width:38px}.table-wrap{max-height:640px}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="topbar">
+    <div class="title">🏆 Top 20 SKOR Matematik</div>
+    <div class="scope">Semua kelas</div>
+  </div>
+  <div id="status" class="status">Memuatkan ranking...</div>
+  <div id="errorBox" class="error" style="display:none"></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="pos">Rank</th><th>Nama</th><th class="kelas">Kelas</th><th class="mark">Markah</th></tr></thead>
+      <tbody id="rankingBody"><tr><td colspan="4" class="empty">Memuatkan data...</td></tr></tbody>
+    </table>
+  </div>
+  <div class="footer">Ranking berdasarkan peratus markah terbaik setiap murid.</div>
+</div>
+<script>
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyBZCWaoWnFYqWNUnQz96VKsrjVcRYXW43_RmhSpksioii1MwiaM2CiRn8iXlx_kzOA/exec";
+
+function esc(t){return String(t??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+function medal(i){return i===0?"🥇":i===1?"🥈":i===2?"🥉":String(i+1)}
+
+async function getBestScores(){
+  if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("PASTE_WEB_APP_URL_HERE")) throw new Error("URL Apps Script belum dimasukkan.");
+  const url=GOOGLE_SCRIPT_URL+(GOOGLE_SCRIPT_URL.includes("?")?"&":"?")+"t="+Date.now();
+  const res=await fetch(url,{cache:"no-store"});
+  if(!res.ok) throw new Error("Gagal membaca data daripada Google Sheet.");
+  const records=await res.json();
+  if(!Array.isArray(records)) throw new Error("Format data Apps Script tidak betul.");
+  const best={};
+  records.forEach(r=>{
+    const name=String(r.name??"").trim(), kelas=String(r.class??"").trim(), pct=Number(r.pct??0);
+    if(!name||!kelas||Number.isNaN(pct)) return;
+    const key=name+"||"+kelas;
+    if(!best[key]||pct>Number(best[key].pct)) best[key]={name,class:kelas,pct};
+  });
+  return Object.values(best).sort((a,b)=>b.pct-a.pct||a.name.localeCompare(b.name)).slice(0,20);
+}
+
+async function renderRanking(){
+  const body=document.getElementById("rankingBody"), status=document.getElementById("status"), err=document.getElementById("errorBox");
+  err.style.display="none"; status.textContent="Mengemas kini ranking...";
+  try{
+    const rows=await getBestScores();
+    if(!rows.length){body.innerHTML='<tr><td colspan="4" class="empty">Belum ada rekod markah.</td></tr>';status.textContent="Tiada rekod ditemui.";return;}
+    body.innerHTML=rows.map((r,i)=>`<tr><td class="pos">${medal(i)}</td><td class="name">${esc(r.name)}</td><td class="kelas">${esc(r.class)}</td><td class="mark">${Number(r.pct).toFixed(2)}%</td></tr>`).join("");
+    status.textContent="Dikemas kini: "+new Date().toLocaleTimeString("ms-MY");
+  }catch(e){
+    body.innerHTML='<tr><td colspan="4" class="empty">Ranking belum dapat dipaparkan.</td></tr>';
+    err.style.display="block";err.textContent=e.message;status.textContent="Gagal memuatkan ranking.";
+  }
+}
+renderRanking(); setInterval(renderRanking,10000);
+</script>
+</body>
+</html>
