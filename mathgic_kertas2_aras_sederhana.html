@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MATHGIC TOUCH • Kertas 2 Aras Sederhana</title>
+<style>
+:root{--b:#0f4c81;--b2:#1769aa;--ink:#172033;--muted:#667085;--line:#e4e7ec;--bg:#f4f7fb;--ok:#047857;--bad:#b42318;--warn:#b45309}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+.wrap{max-width:940px;margin:14px auto;padding:7px} .shell{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.07)}
+.hero{padding:22px;background:linear-gradient(135deg,var(--b),var(--b2));color:#fff} .hero h1{margin:8px 0 5px;font-size:28px} .hero p{margin:0;color:#e8f3ff}
+.badge{display:inline-block;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800}
+.content{padding:17px} .notice{background:#eff6ff;color:#1e3a8a;border-left:5px solid #3b82f6;padding:12px;border-radius:10px;line-height:1.5;font-size:14px}
+.login,.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px} label{display:block;font-size:13px;font-weight:800;margin:7px 0 4px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #cfd6df;border-radius:10px;font-size:16px;background:#fff} textarea{min-height:72px;resize:vertical}
+button{border:0;border-radius:999px;padding:11px 17px;font-weight:800;cursor:pointer} .primary{background:var(--b);color:#fff} .secondary{background:#e5e7eb;color:#111827}
+.topbar{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:9px} .timer{background:#111827;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900} .timer.warn{background:var(--warn)} .timer.danger{background:var(--bad)}
+.progress{height:9px;background:#e5e7eb;border-radius:99px;overflow:hidden} .progress div{height:100%;background:var(--b);width:0}
+.qcard{border:1px solid var(--line);border-radius:16px;padding:15px;margin-top:13px} .qhead{font-weight:900;color:var(--b);margin-bottom:3px} .source{font-size:11px;color:var(--muted);margin-bottom:9px} .stem,.sub{line-height:1.55;margin:9px 0} .sub{margin-top:15px} .marks{float:right;font-size:12px;color:#667085;font-weight:800}
+.base-row{display:flex;gap:8px;align-items:end} .grow{flex:1} .basebox{width:75px} .basebox input{text-align:center;font-weight:900}
+.graphbox{max-width:250px;margin:10px auto;border:1px solid #dbe5ef;border-radius:12px;padding:6px;background:#fff} .graphbox svg{display:block;width:100%;height:auto;margin:auto}
+.data{display:flex;justify-content:center;flex-wrap:wrap;margin:10px 0} .data span{padding:8px 10px;border:1px solid #111;min-width:42px;text-align:center}
+.dotplot{overflow-x:auto;padding:8px 0} .dotgrid{min-width:330px;display:grid;grid-template-columns:repeat(9,1fr);gap:4px;align-items:end}
+.dotcol{text-align:center} .dots{height:90px;display:flex;flex-direction:column-reverse;justify-content:flex-start;align-items:center;gap:3px;padding-bottom:5px;border-bottom:2px solid #111} .dot{width:14px;height:14px;border-radius:50%;background:#0f4c81}
+.dotbtns{display:flex;justify-content:center;gap:3px;margin-top:4px} .dotbtns button{padding:4px 7px;border-radius:6px;font-size:12px} .xlab{font-size:12px;font-weight:800;margin-top:3px}
+.tablewrap{overflow:auto} table{width:100%;border-collapse:collapse;min-width:560px} th,td{border:1px solid #d0d5dd;padding:7px;text-align:center;font-size:13px} th{background:#f8fafc}
+.feedback{margin-top:8px;font-weight:800;font-size:13px} .solution{display:none;margin-top:12px;background:#f8fafc;border-left:5px solid #64748b;padding:13px;border-radius:10px} .solution ol{margin:7px 0 0;padding-left:22px;line-height:1.6}
+.correct{background:#f0fdf4;border-color:#86efac} .wrong{background:#fff7f7;border-color:#fecaca}
+.actions{text-align:right;margin-top:15px} .result{text-align:center;margin-top:16px;padding:18px;background:#f8fafc;border-radius:14px} .big{font-size:44px;font-weight:900;color:var(--b)}
+@media(max-width:650px){.wrap{padding:4px}.hero{padding:16px}.hero h1{font-size:21px}.content{padding:10px}.login,.grid{grid-template-columns:1fr}.qcard{padding:11px;font-size:14px}.marks{float:none;display:block;margin-top:4px}.basebox{width:66px}.graphbox{max-width:300px}table{min-width:520px}}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="shell">
+<div class="hero"><span class="badge">MATHGIC TOUCH • TINGKATAN 5</span><h1>Latihan Soalan Online Mengikut Aras</h1><p>Kertas 2 • Aras Sederhana • 5 soalan lengkap • 25 minit</p></div>
+<div class="content" id="app"></div>
+</div></div>
+
+<script>
+const WEB_APP_URL="https://script.google.com/macros/s/AKfycbx2vhCXFen3iif1OMYi3Hx9jj0yoB8iimjM9GTp2na4J6GtV5bRbwxsVlutJaxRbi_b1Q/exec";
+const students=[{"name": "SAM ZHI KHOI", "class": "EMERALD"}, {"name": "CHONG JIN TONG", "class": "DIAMOND"}, {"name": "VANNESA CHONG TING EN", "class": "EMERALD"}, {"name": "LIEW WEI XUN", "class": "SAPPHIRE"}, {"name": "SIM ZI HANG", "class": "SAPPHIRE"}, {"name": "MUHAMMAD ZEYN NIFAIL BIN ZAINAL", "class": "DIAMOND"}, {"name": "ZULAIKA BINTI SULAIMAN", "class": "DIAMOND"}, {"name": "KAMALIA DARWISYAH BINTI AZHAN", "class": "EMERALD"}, {"name": "MUHAMMAD SYAHMI ADHA BIN ZAMRI", "class": "DIAMOND"}, {"name": "MUHAMMAD ZAID BIN MUSTAPA", "class": "DIAMOND"}, {"name": "SAFIYA AUNI BINTI SAIFUL LIZAN", "class": "DIAMOND"}, {"name": "SELINA TAN QI ROU", "class": "DIAMOND"}, {"name": "WONG KA XUAN", "class": "EMERALD"}, {"name": "AQILAH SAIYEEDAH BINTI MD FABILAH", "class": "EMERALD"}, {"name": "NUR SYAMILA BINTI MOHD FARID", "class": "DIAMOND"}, {"name": "HEU CHIA NEE", "class": "EMERALD"}, {"name": "NUR ARISSYA AMEYLDA BINTI AZIZ", "class": "EMERALD"}, {"name": "CHAN WAI THONG", "class": "DIAMOND"}, {"name": "MUHAMMAD AL HAFIZ BIN MOHD SAIFULLIZAM", "class": "DIAMOND"}, {"name": "NUR AIN NADIRA BINTI SHAHRUDIN", "class": "EMERALD"}, {"name": "NUR'ALYA QISTINA BINTI MOHD HASRIME", "class": "DIAMOND"}, {"name": "PUTERI NUR ALEESYA BINTI MOHD AZHAN KWONG", "class": "DIAMOND"}, {"name": "HON THONG THONG", "class": "EMERALD"}, {"name": "AMIR WAFIEY BIN ZAINAL ABIDIN", "class": "DIAMOND"}, {"name": "MUHAMMAD DARWISY AHNA BIN MAZLAN", "class": "DIAMOND"}, {"name": "NOR AMIRA BINTI MOHAMMAD NAZIR", "class": "RUBY"}, {"name": "HUSNATUN SYIFA' BINTI MOHD HAFEZ", "class": "EMERALD"}, {"name": "SITI NURQURRATUAINIE BINTI MOHAMMAD HIRMAN", "class": "EMERALD"}, {"name": "MUHAMMAD DANIAL BIN MOHD MOKHTAR", "class": "DIAMOND"}, {"name": "MUHAMMAD RIZQ IQBAAL BIN FAIZAL", "class": "DIAMOND"}, {"name": "JUSTIN NELSON", "class": "EMERALD"}, {"name": "NUR QISTINA BALQIS BINTI AZHAR", "class": "DIAMOND"}, {"name": "RIDHUAN BIN ROSLEE", "class": "DIAMOND"}, {"name": "LIM YI XIAN", "class": "SAPPHIRE"}, {"name": "LIEW SIN JAJ", "class": "EMERALD"}, {"name": "NOR ATHIRAH BINTI MOHD IZAN", "class": "EMERALD"}, {"name": "NURUL SYAQIRAH BINTI MAZLAN", "class": "EMERALD"}, {"name": "IRIS NUR AISYAH BINTI MOHD HEFFE", "class": "EMERALD"}, {"name": "IZZI HALEEF BIN AZALI", "class": "DIAMOND"}, {"name": "AIERIL ZAQUAN BIN KUSNOS", "class": "EMERALD"}, {"name": "MUHAMMAD ADAM DANIAL BIN ABD AZIZ", "class": "EMERALD"}, {"name": "NUR DAWIRNA SAFFI BINTI ISHAK", "class": "EMERALD"}, {"name": "NUR ELISYA BINTI KHAIRUL AKMAL", "class": "EMERALD"}, {"name": "MUHAMMAD HARIS BIN JAMALUDIN", "class": "EMERALD"}, {"name": "ARMAN ARIF BIN MUHAMAD RAKBI", "class": "EMERALD"}, {"name": "MUBIN HARITH BIN MOHAMMAD MUBIN", "class": "EMERALD"}, {"name": "NG MEI XIN", "class": "SAPPHIRE"}, {"name": "AIN NATASHA BINTI MOHD ZAINAL ABIDIN", "class": "RUBY"}, {"name": "HUMAIRAH DANISHA BINTI ABDUL RAZAK", "class": "RUBY"}, {"name": "MUHAMMAD FITRI SYAH BIN MOHD NAJIB", "class": "RUBY"}, {"name": "NUR LIYANA BINTI KADERI", "class": "RUBY"}, {"name": "SITI NUR HAWA BINTI MD AZMI", "class": "RUBY"}, {"name": "AMIRA BINTI EIRHAN", "class": "EMERALD"}, {"name": "CHONG YU ZHE", "class": "SAPPHIRE"}, {"name": "HAN JO EN", "class": "RUBY"}, {"name": "SAIDATUL AKEMA BINTI MU'MININ", "class": "RUBY"}, {"name": "MUHAMMAD ZAINUL ZAKWAN BIN RAZALEE", "class": "EMERALD"}, {"name": "NURFARAH HANUM BINTI SALIM", "class": "EMERALD"}, {"name": "KHAIRUNISA BINTI ABDULLAH", "class": "EMERALD"}, {"name": "MUHAMMAD IZUDDIN BIN JANESDIN", "class": "RUBY"}, {"name": "CHONG JIA EN", "class": "SAPPHIRE"}, {"name": "CHEON ZI SHAN", "class": "RUBY"}, {"name": "MUHAMAD ALIF PUTRA BIN ZULKIFFLE", "class": "RUBY"}, {"name": "MUHAMMAD DINIE FIRDAUS BIN NORARMIZAN", "class": "RUBY"}, {"name": "SITI SOLEHA BINTI MARJUNI", "class": "RUBY"}, {"name": "MUHAMMAD ALIIF ZHORIIF BIN MOHD ABDULLAH", "class": "EMERALD"}, {"name": "MUHAMMAD ARIF HAKIMI BIN ABDULLAH", "class": "EMERALD"}, {"name": "MOHAMAD FAZRUL HAZIQ BIN MOHD AMIN", "class": "SAPPHIRE"}, {"name": "NUR HAZIRA SYAFIERA BINTI AL-HAFIZ", "class": "SAPPHIRE"}, {"name": "ADAM PUTERA BIN MOHAMAD SOLLEHAN", "class": "EMERALD"}, {"name": "MUHAMMAD THAQIF BIN AZMAN", "class": "EMERALD"}, {"name": "CHAI YU ZHE", "class": "ZIRCON"}, {"name": "CHANG JIA HENG", "class": "ZIRCON"}, {"name": "MUHAMMAD FAIQ BIN MOHD FARID", "class": "RUBY"}, {"name": "AL MAN SYAH RIZZAL BIN ABD SUKOR", "class": "SAPPHIRE"}, {"name": "AZLY FAHMI BIN AZRI SHAM", "class": "SAPPHIRE"}, {"name": "HAIQAL IKHWAN BIN NORHALIFI", "class": "SAPPHIRE"}, {"name": "NURUL AZREENA FATIHAH BINTI NORSHAM", "class": "SAPPHIRE"}, {"name": "PUTERI SHAHILA BINTI MOHD HALIM SHAH", "class": "SAPPHIRE"}, {"name": "NURDAYANA ELLYSYA BINTI ABDULLAH", "class": "RUBY"}, {"name": "AHMAD THAQIF IMRAN BIN NORAZMAN", "class": "SAPPHIRE"}, {"name": "CHAU RUI MENG", "class": "SAPPHIRE"}, {"name": "MUHAMMAD WAFIQ BIN MOHD FARID", "class": "RUBY"}, {"name": "CHOON LI XIN", "class": "SAPPHIRE"}, {"name": "LIM JOO YU", "class": "SAPPHIRE"}, {"name": "NAJIB IRFAN BIN NORDIN", "class": "SAPPHIRE"}, {"name": "WONG JIA HUI", "class": "SAPPHIRE"}, {"name": "NUR ALEEYA BINTI RAMLAN", "class": "RUBY"}, {"name": "NURSAFIYYAH BALQIS BINTI ZULKIFLY", "class": "RUBY"}, {"name": "NURUL IMAN ANISSA BINTI SHAHRIZAN", "class": "RUBY"}, {"name": "SOFIANA DEWI BINTI ABDULLAH", "class": "RUBY"}, {"name": "IRFAN ISKANDAR BIN MAT SAAT", "class": "EMERALD"}, {"name": "MUHAMMAD ADAM DANIAL BIN AZWHA", "class": "EMERALD"}, {"name": "ANIS ADHANUN SYIFAA BINTI SAMSUL BAHARI", "class": "SAPPHIRE"}, {"name": "MUHAMAD ZULHAIRIE BIN KHAIRULIZAM", "class": "SAPPHIRE"}, {"name": "MUHAMMAD ADAM DARWISY BIN MAZLIHAN", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HILMI BIN HAMZAH", "class": "SAPPHIRE"}, {"name": "DERREN LAI PIN CHAO", "class": "ZIRCON"}, {"name": "SACHIN A/L RAMAMURTHY", "class": "ZIRCON"}, {"name": "TAN JIAN YI", "class": "ZIRCON"}, {"name": "MUHAMAD FARISH HAIKAL BIN OSMAN", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HELMI BIN MAHADI", "class": "SAPPHIRE"}, {"name": "YONG LI LING", "class": "SAPPHIRE"}, {"name": "KHAIRUNNISA BINTI KOMARUDDIN", "class": "RUBY"}, {"name": "MOHAMAD FARIZUAN SHAHRUL BIN HAMDAN", "class": "RUBY"}, {"name": "NUR RABIAATUL ATIKA SYAHIRA BINTI MAZLAN", "class": "RUBY"}, {"name": "SITI NUR ALEYA BINTI MOHD NIZAM", "class": "RUBY"}, {"name": "MUHAMMAD RAHFIQ BIN RAHMAT", "class": "ZIRCON"}, {"name": "YAP ZHI LI", "class": "ZIRCON"}, {"name": "MUHAMMAD RIZMAN QUZAIMI BIN RAMLI", "class": "SAPPHIRE"}, {"name": "RIEFQIEE ADAMI BIN RIZAL", "class": "RUBY"}, {"name": "WONG YU GUAN", "class": "ZIRCON"}, {"name": "PUTRA ARMAND DARIUS BIN RAHMAT", "class": "SAPPHIRE"}, {"name": "CHEON ZI XUAN", "class": "ZIRCON"}, {"name": "CHANG JIA QI", "class": "SAPPHIRE"}, {"name": "MUHAMMAD DANISH RIFQI BIN MOHD NAZLI", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HAZEEQ INDRA BIN AZALI", "class": "ZIRCON"}, {"name": "FATIN NASUHA BINTI ZAHARI", "class": "RUBY"}, {"name": "MUHAMMAD ALIF DANIEL BIN MUJAHID", "class": "ZIRCON"}, {"name": "CHONG CHEE CHEN", "class": "SAPPHIRE"}, {"name": "CHIN JI HAO", "class": "ZIRCON"}, {"name": "CHONG JING SHENG", "class": "ZIRCON"}, {"name": "CHONG LIH MIN", "class": "ZIRCON"}, {"name": "CHONG LIH SEEN", "class": "ZIRCON"}];
+const DURATION=25*60;
+let nm="",cl="",startAt=0,deadline=0,timer=null,done=false;
+const dotCounts={10:0,11:0,12:0,13:0,14:0,15:0,16:0,17:0,18:0};
+
+function classes(){return [...new Set(students.map(x=>x.class))].sort()}
+function norm(v){return String(v??"").toLowerCase().replace(/\s+/g,"").replace(/,/g,"").replace(/rm/g,"").replace(/°/g,"")}
+function login(){
+ clearInterval(timer);
+ document.getElementById("app").innerHTML=`<div class="notice"><b>Arahan:</b> Pilih kelas dan nama. Jawab semua bahagian yang diberikan. Masa ialah <b>25 minit</b>. Jika masa tamat, sistem akan semak dan hantar rekod secara automatik. Selepas semakan, jalan kerja akan dipaparkan.</div>
+ <div class="login"><div><label>Kelas</label><select id="cl" onchange="loadNames()"><option value="">-- Pilih kelas --</option>${classes().map(x=>`<option>${x}</option>`).join("")}</select></div>
+ <div><label>Nama</label><select id="nm"><option value="">-- Pilih kelas dahulu --</option></select></div></div>
+ <div style="text-align:center;margin-top:14px"><button class="primary" onclick="begin()">Mula Latihan</button></div>`;
+}
+function loadNames(){
+ cl=document.getElementById("cl").value;
+ const a=students.filter(x=>x.class===cl).sort((a,b)=>a.name.localeCompare(b.name));
+ document.getElementById("nm").innerHTML='<option value="">-- Pilih nama --</option>'+a.map(x=>`<option>${x.name}</option>`).join("");
+}
+function begin(){
+ cl=document.getElementById("cl").value; nm=document.getElementById("nm").value;
+ if(!cl||!nm)return alert("Pilih kelas dan nama.");
+ done=false; startAt=Date.now(); deadline=startAt+DURATION*1000;
+ Object.keys(dotCounts).forEach(k=>dotCounts[k]=0);
+ renderQuiz(); startTimer();
+}
+function graphSvg(){
+ return `<svg viewBox="0 0 560 260" aria-label="Rajah 6">
+ <g stroke="#111" stroke-width="4" fill="none">
+ <line x1="80" y1="65" x2="275" y2="65"/><line x1="275" y1="65" x2="450" y2="65"/><line x1="80" y1="65" x2="275" y2="205"/>
+ <path d="M275 65 C245 95 245 170 275 205"/><path d="M275 65 C305 95 305 170 275 205"/>
+ <circle cx="450" cy="65" r="45"/>
+ </g>
+ <g font-size="22" font-weight="700"><text x="62" y="56">P</text><text x="264" y="52">Q</text><text x="462" y="55">R</text><text x="267" y="230">S</text></g>
+ </svg>`;
+}
+function renderDotPlot(){
+ document.getElementById("dotgrid").innerHTML=Object.keys(dotCounts).map(k=>`<div class="dotcol"><div class="dots">${'x'.repeat(dotCounts[k]).split('').map(()=>'<span class="dot"></span>').join('')}</div><div class="dotbtns"><button type="button" onclick="chgDot(${k},1)">+</button><button type="button" onclick="chgDot(${k},-1)">−</button></div><div class="xlab">${k}</div></div>`).join("");
+}
+function chgDot(k,d){dotCounts[k]=Math.max(0,Math.min(6,dotCounts[k]+d));renderDotPlot()}
+function renderQuiz(){
+ document.getElementById("app").innerHTML=`
+ <div class="topbar"><b>${nm} • ${cl}</b><span class="timer" id="tm">25:00</span></div><div class="progress"><div id="pg"></div></div>
+
+ <div class="qcard" id="c1"><div class="qhead">Soalan 1 • Asas Nombor</div><div class="source">2026 Terengganu Paper 2</div>
+ <div class="stem"><b>1 (a)</b> Diberi 4591 = 1p7q7<sub>8</sub>. Hitung nilai p + q.<br><em>Given 4591 = 1p7q7<sub>8</sub>. Calculate the value of p + q.</em><span class="marks">[2 markah / 2 marks]</span></div>
+ <input id="q1a" inputmode="numeric" placeholder="p + q">
+ <div class="sub"><b>(b)</b> Diberi Y<sub>5</sub> − 423<sub>5</sub> = 2434<sub>5</sub>. Cari nilai Y.<br><em>Given Y<sub>5</sub> − 423<sub>5</sub> = 2434<sub>5</sub>. Find the value of Y.</em><span class="marks">[2 markah / 2 marks]</span></div>
+ <div class="base-row"><div class="grow"><label>Nilai Y</label><input id="q1b_val" inputmode="numeric"></div><div class="basebox"><label>Asas</label><input id="q1b_base" inputmode="numeric" maxlength="1"></div></div>
+ <div class="feedback" id="f1"></div><div class="solution" id="s1"><b>Jalan kerja</b><ol><li>4591₁₀ = 10757₈, maka p=0 dan q=5. Jadi p+q=5.</li><li>Y₅ = 2434₅ + 423₅ = 3412₅.</li></ol></div></div>
+
+ <div class="qcard" id="c2"><div class="qhead">Soalan 2 • Rangkaian dalam Teori Graf</div><div class="source">2026 Kelantan Paper 2</div>
+ <div class="stem"><b>11 (a)</b> Rajah 6 menunjukkan satu graf yang mempunyai gelung pada R dan berbilang tepi antara Q dengan S.<br><em>Diagram 6 shows a graph with a loop at R and multiple edges between Q and S.</em></div>
+ <div class="graphbox">${graphSvg()}</div><div style="text-align:center;font-size:12px;color:#667085">Rajah 6 / Diagram 6</div>
+ <div class="sub">Nyatakan / State</div>
+ <div class="grid"><div><label>(i) Pasangan bucu berbentuk gelung</label><input id="q2i_loop" placeholder="Contoh: RR"></div><div><label>(i) Pasangan bucu berbentuk berbilang tepi</label><input id="q2i_multi" placeholder="Contoh: QS"></div><div><label>(ii) n(E)</label><input id="q2ii" inputmode="numeric"></div><div><label>(iii) bilangan darjah / sum of degrees</label><input id="q2iii" inputmode="numeric"></div></div>
+ <span class="marks">[3 markah / marks]</span>
+ <div class="feedback" id="f2"></div><div class="solution" id="s2"><b>Jalan kerja</b><ol><li>Gelung berada pada R → pasangan RR.</li><li>Berbilang tepi ialah antara Q dan S → QS.</li><li>Bilangan tepi n(E)=6.</li><li>Jumlah darjah = 2n(E)=12.</li></ol></div></div>
+
+ <div class="qcard" id="c3"><div class="qhead">Soalan 3 • Sukatan Serakan Data Tak Terkumpul</div><div class="source">2026 SBP Paper 2 17(a)(b)</div>
+ <div class="stem"><b>17</b> Kelab Matematik telah menjalankan beberapa aktiviti semasa karnival seperti pengumpulan botol plastik, jualan kupon, cabutan bertuah dan pameran.<br><em>The Mathematics Club carried out several activities during the carnival such as collecting plastic bottles, coupon sales, lucky draws and exhibitions.</em></div>
+ <div class="sub"><b>(a)</b> Data berikut menunjukkan bilangan botol plastik yang berjaya dikumpulkan oleh 10 orang ahli kelab.<br><em>The following data shows the number of plastic bottles collected by 10 club members.</em></div>
+ <div class="data">${[18,20,16,25,21,19,17,24,20,20].map(x=>`<span>${x}</span>`).join("")}</div>
+ <div class="grid"><div><label>(i) Julat / Range <span class="marks">[1]</span></label><input id="q3ai" inputmode="numeric"></div><div><label>(ii) Min / Mean <span class="marks">[2]</span></label><input id="q3aii" inputmode="decimal"></div></div>
+ <div class="sub"><b>(b)</b> Bilangan kupon yang berjaya dijual oleh 12 orang murid semasa karnival ditunjukkan di bawah.<br><em>The number of coupons sold by 12 students during the carnival is shown below.</em></div>
+ <div class="data">${[12,15,10,18,15,14,12,16,15,10,14,12].map(x=>`<span>${x}</span>`).join("")}</div>
+ <div class="sub"><b>(i)</b> Bina satu plot titik di Rajah 14 untuk mewakili data di atas.<br><em>Construct a dot plot in Diagram 14 to represent the data above.</em> <span class="marks">[2 markah / marks]</span></div>
+ <div class="dotplot"><div class="dotgrid" id="dotgrid"></div></div>
+ <div class="sub"><b>(ii)</b> Nyatakan mod dan median bagi bilangan kupon yang dijual.<br><em>State the mode and median number of coupons sold.</em> <span class="marks">[2 markah / marks]</span></div>
+ <div class="grid"><div><label>Mod / Mode</label><input id="q3bmode" placeholder="Contoh: 12, 15"></div><div><label>Median</label><input id="q3bmed" inputmode="decimal"></div></div>
+ <div class="feedback" id="f3"></div><div class="solution" id="s3"><b>Jalan kerja</b><ol><li>(a)(i) Julat = 25 − 16 = 9.</li><li>(a)(ii) Jumlah = 200, min = 200 ÷ 10 = 20.</li><li>(b)(i) Kekerapan: 10→2, 11→0, 12→3, 13→0, 14→2, 15→3, 16→1, 17→0, 18→1.</li><li>(b)(ii) Mod = 12 dan 15. Median = 14.</li></ol></div></div>
+
+ <div class="qcard" id="c4"><div class="qhead">Soalan 4 • Pengurusan Kewangan</div><div class="source">2026 Pulau Pinang Paper 2 16(b)</div>
+ <div class="stem"><b>(b)</b> Lee Chong Wah juga merupakan seorang akauntan, selain dia aktif sebagai pemain badminton. Pendapatan bulanan Lee ialah RM6 100, dan elaun yang diterima sebagai pemain badminton ialah RM1 500.<br><em>Lee Chong Wah is also an accountant, in addition to being an active badminton player. His income as an accountant is RM6 100 and he received allowance as badminton player is RM1 500.</em></div>
+ <div class="tablewrap"><table><thead><tr><th>Perkara / Item</th><th>Jumlah (RM) / Total</th></tr></thead><tbody>
+ <tr><td>Barang dapur / Groceries</td><td>1 200</td></tr><tr><td>Ansuran kereta / Car instalment</td><td>500</td></tr><tr><td>Sewa rumah / House rent</td><td>1 800</td></tr><tr><td>Bil utiliti / Utility bills</td><td>400</td></tr><tr><td>Peralatan badminton / Badminton equipment</td><td>600</td></tr><tr><td>Simpanan / Savings</td><td>1 000</td></tr><tr><td>Insurans / Insurance</td><td>800</td></tr><tr><td>Hiburan / Entertainment</td><td>1 050</td></tr>
+ </tbody></table></div>
+ <div class="sub"><b>(i)</b> Hitung aliran tunai Lee Chong Wah.<br><em>Calculate the cash flow of Lee Chong Wah.</em> <span class="marks">[2 markah / marks]</span></div><input id="q4i" inputmode="decimal" placeholder="RM">
+ <div class="sub"><b>(ii)</b> Dia bercadang untuk membeli raket badminton baru yang berharga RM9000 dalam tempoh 3 bulan bagi meningkatkan prestasinya dalam permainan. Tentukan sama ada dia mampu membelinya, jika tidak berikan satu cadangan supaya dia mencapai matlamatnya.<br><em>He plans to buy a new badminton racket cost RM9000 in 3 months to improve his performance. Determine whether he can achieve his goal, if not give a suggestion to help him to achieve the target.</em> <span class="marks">[2 markah / marks]</span></div>
+ <div class="grid"><div><label>Keputusan</label><select id="q4ii_status"><option value="">-- Pilih --</option><option value="tidak">Tidak mampu</option><option value="mampu">Mampu</option></select></div><div><label>Cadangan</label><input id="q4ii_suggest" placeholder="Cadangan ringkas"></div></div>
+ <div class="feedback" id="f4"></div><div class="solution" id="s4"><b>Jalan kerja</b><ol><li>Jumlah pendapatan = 6100 + 1500 = RM7600.</li><li>Jumlah komitmen/perbelanjaan termasuk simpanan = RM7350.</li><li>Aliran tunai = 7600 − 7350 = RM250.</li><li>Dalam 3 bulan, jumlah simpanan sedia ada + lebihan tunai = (1000 + 250) × 3 = RM3750, kurang daripada RM9000. Jadi tidak mampu. Cadangan: kurangkan perbelanjaan tidak perlu atau lanjutkan tempoh simpanan.</li></ol></div></div>
+
+ <div class="qcard" id="c5"><div class="qhead">Soalan 5 • Insurans</div><div class="source">2026 Johor Set 1 Paper 2</div>
+ <div class="stem"><b>7 (a)</b> Nyatakan salah satu risiko yang dilindungi oleh insurans hayat.<br><em>State one risk that is covered by life insurance.</em> <span class="marks">[1 markah / mark]</span></div><input id="q5a" placeholder="Jawapan">
+ <div class="sub"><b>(b)</b> Puan Aisyah merupakan seorang guru sekolah yang berusia 31 tahun. Beliau seorang yang sihat dan tidak merokok. Beliau membeli satu polisi insurans hayat RM200 000 daripada Tuah Insurans Sdn. Bhd. Jadual 3 menunjukkan kadar premium tahunan bagi setiap RM1 000 nilai muka insurans hayat boleh baharu tahunan yang ditawarkan oleh Tuah Insurans Sdn. Bhd.<br><em>Puan Aisyah is a 31 years old school teacher. She is a healthy person and does not smoke. She bought an insurance policy worth RM200 000 from Tuah Insurans Sdn. Bhd. Table 3 shows the annual premium rate for every RM1 000 face value of annual renewable life insurance offered by Tuah Insurans Sdn. Bhd.</em></div>
+ <div class="tablewrap"><table><thead><tr><th>Umur / Age</th><th>Lelaki bukan perokok</th><th>Lelaki perokok</th><th>Perempuan bukan perokok</th><th>Perempuan perokok</th></tr></thead><tbody><tr><td>30</td><td>1.82</td><td>2.40</td><td>1.14</td><td>1.41</td></tr><tr><td>31</td><td>1.89</td><td>2.46</td><td>1.21</td><td>1.48</td></tr><tr><td>32</td><td>1.95</td><td>2.52</td><td>1.27</td><td>1.55</td></tr></tbody></table></div>
+ <div class="stem">Puan Aisyah berminat untuk menambah polisi penyakit kritikal. Tuah Insurans Sdn. Bhd. menawarkan polisi penyakit kritikal dengan memberikan perlindungan sebanyak 25% nilai muka asas dan kadar premium bagi setiap RM1 000 ialah RM1.00 mengikut umur dan status kesihatan Puan Aisyah.<br><em>Puan Aisyah is interested to add a critical illness policy. Tuah Insurans Sdn. Bhd. offers a critical illness policy by providing protection of 25% of the basic face value and the premium rate for every RM1 000 is RM1.00 according to Puan Aisyah's age and health status.</em></div>
+ <div class="stem">Hitung jumlah premium tahunan yang perlu dibayar oleh Puan Aisyah, termasuk premium tambahan untuk penyakit kritikal.<br><em>Calculate the total annual premium to be paid by Puan Aisyah including the additional premium for critical illness.</em> <span class="marks">[3 markah / marks]</span></div>
+ <input id="q5b" inputmode="decimal" placeholder="RM">
+ <div class="feedback" id="f5"></div><div class="solution" id="s5"><b>Jalan kerja</b><ol><li>(a) Contoh risiko: kematian.</li><li>Premium asas = 200 × RM1.21 = RM242.</li><li>Perlindungan penyakit kritikal = 25% × RM200 000 = RM50 000.</li><li>Premium penyakit kritikal = 50 × RM1.00 = RM50.</li><li>Jumlah premium tahunan = RM242 + RM50 = RM292.</li></ol></div></div>
+
+ <div class="actions"><button class="primary" id="send" onclick="submitQuiz(false)">Semak & Hantar</button></div><div id="result"></div>`;
+ renderDotPlot();
+}
+function startTimer(){clearInterval(timer);timer=setInterval(()=>{if(done)return;let s=Math.max(0,Math.ceil((deadline-Date.now())/1000)),e=document.getElementById("tm");e.textContent=`${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;e.className="timer"+(s<=60?" danger":s<=300?" warn":"");if(s<=0){clearInterval(timer);submitQuiz(true)}},250)}
+function score1(){let s=0;if(norm(q1a.value)==="5")s+=2;if(norm(q1b_val.value)==="3412"&&norm(q1b_base.value)==="5")s+=2;return s}
+function score2(){let s=0;if(["rr","r,r","r-r"].includes(norm(q2i_loop.value)))s++;if(["qs","sq","q,s","s,q","q-s","s-q"].includes(norm(q2i_multi.value)))s++;if(norm(q2ii.value)==="6"&&norm(q2iii.value)==="12")s++;return s}
+function score3(){
+ let s=0;if(norm(q3ai.value)==="9")s++;if(norm(q3aii.value)==="20")s+=2;
+ const target={10:2,11:0,12:3,13:0,14:2,15:3,16:1,17:0,18:1};
+ if(Object.keys(target).every(k=>dotCounts[k]===target[k]))s+=2;
+ const mode=norm(q3bmode.value).replace(/dan/g,","); const has12=mode.includes("12"),has15=mode.includes("15");
+ if(has12&&has15&&norm(q3bmed.value)==="14")s+=2; return s;
+}
+function score4(){let s=0;if(norm(q4i.value)==="250")s+=2;if(q4ii_status.value==="tidak")s++;if(String(q4ii_suggest.value).trim().length>=3)s++;return s}
+function score5(){let s=0;const a=norm(q5a.value);if(a.includes("mati")||a.includes("kematian")||a.includes("death"))s++;if(norm(q5b.value)==="292")s+=3;return s}
+async function submitQuiz(auto){
+ if(done)return;done=true;clearInterval(timer);
+ const scores=[score1(),score2(),score3(),score4(),score5()],max=[4,3,7,4,4]; let score=scores.reduce((a,b)=>a+b,0),total=22;
+ scores.forEach((sc,i)=>{document.getElementById("s"+(i+1)).style.display="block";document.getElementById("c"+(i+1)).classList.add(sc===max[i]?"correct":"wrong");document.getElementById("f"+(i+1)).textContent=`Markah: ${sc}/${max[i]}`;});
+ document.querySelectorAll("input,select,textarea,button").forEach(x=>{if(x.id!=="send")x.disabled=true});
+ const pct=Math.round(score/total*100),dur=Math.min(DURATION,Math.round((Date.now()-startAt)/1000));
+ const rec={name:nm,class:cl,set:"KERTAS 2 ARAS SEDERHANA",score,total,pct,duration_seconds:dur,timed_out:auto};
+ try{await fetch(WEB_APP_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify(rec)})}catch(e){}
+ document.getElementById("send").disabled=true;
+ document.getElementById("result").innerHTML=`<div class="result"><b>${auto?"Masa tamat — dihantar automatik.":"Semakan selesai."}</b><div class="big">${score}/${total}</div><div>${pct}%</div><p>Jalan kerja dipaparkan di bawah setiap soalan.</p><button class="secondary" onclick="login()">Kembali</button></div>`;
+ document.getElementById("result").scrollIntoView({behavior:"smooth"});
+}
+login();
+</script>
+</body></html>
