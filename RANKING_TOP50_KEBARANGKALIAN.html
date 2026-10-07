@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Top 50 Kebarangkalian</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f7fb;font-family:Arial,Helvetica,sans-serif;color:#172033}
+.card{width:min(920px,97vw);margin:12px auto;background:#fff;border:1px solid #dbe7e5;border-left:7px solid #0f766e;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.08);padding:18px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.title{font-size:22px;font-weight:900;color:#0f766e}
+.scope{font-size:12px;color:#667085}
+.status{font-size:12px;color:#667085;margin:7px 0 10px}
+.error{display:none;background:#fff1f0;color:#b42318;border:1px solid #f2b8b5;border-radius:9px;padding:10px 12px;margin:8px 0;font-size:12px}
+.tablewrap{max-height:760px;overflow:auto;border-radius:10px}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th{position:sticky;top:0;background:#ecfdf5;color:#166534;font-size:11px;padding:8px 6px;text-align:left;border-bottom:1px solid #d1fae5}
+td{padding:9px 6px;border-bottom:1px dashed #dbe7e5;font-size:13px}
+.rank{width:48px;font-weight:900}
+.name{font-weight:800}
+.kelas{width:100px}
+.set{width:180px}
+.mark{width:80px;text-align:right;font-weight:900}
+.raw{width:75px;text-align:right}
+.empty{text-align:center;padding:25px;color:#667085}
+.footer{text-align:right;font-size:10px;color:#667085;margin-top:9px}
+@media(max-width:600px){
+ .card{padding:12px 9px}
+ .title{font-size:17px}
+ th,td{font-size:11px;padding:7px 4px}
+ .rank{width:38px}
+ .kelas{width:72px}
+ .mark{width:58px}
+ .raw{display:none}
+ .set{width:110px}
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="top">
+    <div class="title">🏆 Top 50 Kebarangkalian</div>
+    <div class="scope">Sheet: Kebarangkalian</div>
+  </div>
+
+  <div id="status" class="status">Memuatkan ranking...</div>
+  <div id="errorBox" class="error"></div>
+
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="rank">Rank</th>
+          <th>Nama</th>
+          <th class="kelas">Kelas</th>
+          <th class="set">Set</th>
+          <th class="raw">Skor</th>
+          <th class="mark">Peratus</th>
+        </tr>
+      </thead>
+      <tbody id="body">
+        <tr><td colspan="6" class="empty">Memuatkan data...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">Rekod terbaik setiap murid • Top 50 • dikemas kini automatik</div>
+</div>
+
+<script>
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyBZCWaoWnFYqWNUnQz96VKsrjVcRYXW43_RmhSpksioii1MwiaM2CiRn8iXlx_kzOA/exec";
+
+function esc(v){
+  return String(v??"")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;");
+}
+
+function medal(i){
+  return i===0 ? "🥇" :
+         i===1 ? "🥈" :
+         i===2 ? "🥉" :
+         String(i+1);
+}
+
+function jsonp(url){
+  return new Promise((resolve,reject)=>{
+    const cb =
+      "probRank_" +
+      Date.now() +
+      "_" +
+      Math.floor(Math.random()*100000);
+
+    const s = document.createElement("script");
+
+    const timer = setTimeout(()=>{
+      cleanup();
+      reject(new Error("Masa menunggu data tamat."));
+    },15000);
+
+    function cleanup(){
+      clearTimeout(timer);
+      try{ delete window[cb]; }catch(e){}
+      if(s.parentNode) s.remove();
+    }
+
+    window[cb] = data => {
+      cleanup();
+      resolve(data);
+    };
+
+    s.onerror = () => {
+      cleanup();
+      reject(new Error("Sambungan Apps Script gagal."));
+    };
+
+    s.src =
+      url +
+      "?sheet=Kebarangkalian" +
+      "&mode=top50" +
+      "&callback=" +
+      encodeURIComponent(cb) +
+      "&t=" +
+      Date.now();
+
+    document.body.appendChild(s);
+  });
+}
+
+async function loadRanking(){
+  const body = document.getElementById("body");
+  const status = document.getElementById("status");
+  const err = document.getElementById("errorBox");
+
+  err.style.display = "none";
+  status.textContent = "Mengemas kini ranking...";
+
+  try {
+    const rows = await jsonp(WEB_APP_URL);
+
+    if(!Array.isArray(rows)){
+      throw new Error(
+        rows && rows.message
+          ? rows.message
+          : "Format data ranking tidak sah."
+      );
+    }
+
+    if(!rows.length){
+      body.innerHTML =
+        '<tr><td colspan="6" class="empty">Belum ada rekod Kebarangkalian.</td></tr>';
+      status.textContent = "Tiada rekod ditemui.";
+      return;
+    }
+
+    body.innerHTML = rows.map((r,i)=>`
+      <tr>
+        <td class="rank">${medal(i)}</td>
+        <td class="name">${esc(r.name)}</td>
+        <td class="kelas">${esc(r.class)}</td>
+        <td class="set">${esc(r.set)}</td>
+        <td class="raw">${Number(r.score||0)}/${Number(r.total||0)}</td>
+        <td class="mark">${Number(r.pct||0).toFixed(0)}%</td>
+      </tr>
+    `).join("");
+
+    status.textContent =
+      "Dikemas kini: " +
+      new Date().toLocaleTimeString("ms-MY");
+
+  } catch(e) {
+    body.innerHTML =
+      '<tr><td colspan="6" class="empty">Ranking belum dapat dipaparkan.</td></tr>';
+
+    err.style.display = "block";
+    err.textContent =
+      e.message +
+      " Pastikan Apps Script telah deploy versi terbaru sebagai Web App dan akses = Anyone.";
+
+    status.textContent = "Gagal memuatkan ranking.";
+  }
+}
+
+loadRanking();
+setInterval(loadRanking,15000);
+</script>
+</body>
+</html>
