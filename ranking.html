@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    *{box-sizing:border-box}
+    body{font-family:Arial,sans-serif;margin:0;background:#f4f7fb;color:#172033}
+    .wrap{max-width:1050px;margin:auto;padding:18px}
+    .hero{background:linear-gradient(135deg,#0f4c81,#2563eb);color:white;padding:22px;border-radius:18px}
+    h1{margin:0 0 6px}
+    .card{background:white;margin-top:16px;padding:14px;border-radius:16px;box-shadow:0 4px 14px #0001;overflow:auto}
+    table{border-collapse:collapse;width:100%;min-width:760px}
+    th,td{padding:11px;border-bottom:1px solid #e5e7eb;text-align:left}
+    th{background:#eff6ff;position:sticky;top:0}
+    .rank{font-size:18px;font-weight:800;color:#0f4c81}
+    .pill{display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:700}
+    .wait{background:#fff7ed;color:#9a3412}
+    .done{background:#ecfdf5;color:#166534}
+    .tools{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    input{padding:10px;border:1px solid #cbd5e1;border-radius:10px;font-size:15px}
+    button,a{padding:10px 14px;border-radius:10px;border:0;text-decoration:none;font-weight:700;cursor:pointer}
+    button{background:#0f4c81;color:white}
+    a{background:#e2e8f0;color:#0f172a}
+    .note{font-size:13px;color:#64748b}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1>Ranking PJPK Tingkatan 3</h1>
+    <div>Jumlah penuh: 50 markah • B3 dan B4 dimasukkan selepas semakan guru.</div>
+  </div>
+
+  <div class="tools">
+    <input id="filter" placeholder="Cari nama / kelas" oninput="render()">
+    <button onclick="loadData()">Muat Semula</button>
+    <button onclick="shareWhatsApp()">Hantar Top 10 ke WhatsApp</button>
+    <a href="pajsk.html">Kembali ke Soalan</a>
+  </div>
+
+  <div class="card">
+    <div id="loading">Memuatkan ranking...</div>
+    <table id="tbl" style="display:none">
+      <thead>
+        <tr>
+          <th>Ranking</th>
+          <th>Nama</th>
+          <th>Kelas</th>
+          <th>Auto /46</th>
+          <th>Jumlah /50</th>
+          <th>Peratus</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <p class="note">Jika guru mengisi kolum <b>Manual_B3</b> dan <b>Manual_B4</b> dalam Google Sheet, jumlah dan ranking akan berubah secara automatik. Butang WhatsApp akan mengambil Top 10 ranking semasa.</p>
+  </div>
+</div>
+<script>
+let allRows=[];
+
+function loadData(){
+  document.getElementById('loading').style.display='block';
+  document.getElementById('tbl').style.display='none';
+
+  fetch('https://script.google.com/macros/s/AKfycby7106daJ7mIXwa5K4Qqr1R4HV52JD3Jc5DVwdd_TZssvP3Kc5QpesSiXvB0XcdScY/exec?action=ranking')
+    .then(r => r.json())
+    .then(res => {
+      if(!res.ok) throw new Error(res.error || 'Gagal memuatkan ranking');
+      allRows=res.data||[];
+      document.getElementById('loading').style.display='none';
+      document.getElementById('tbl').style.display='table';
+      render();
+    })
+    .catch(err => {
+      document.getElementById('loading').textContent='Gagal memuatkan ranking: '+err.message;
+    });
+}
+
+function esc(s){
+  return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+}
+
+function render(){
+  const q=(document.getElementById('filter').value||'').toLowerCase();
+  const rows=allRows.filter(r=>
+    String(r.nama).toLowerCase().includes(q) ||
+    String(r.kelas).toLowerCase().includes(q)
+  );
+
+  document.getElementById('tbody').innerHTML=rows.map(r=>{
+    const complete=r.status==='Lengkap';
+    return `<tr>
+      <td class="rank">${r.rank}</td>
+      <td>${esc(r.nama)}</td>
+      <td>${esc(r.kelas)}</td>
+      <td>${r.autoMark}</td>
+      <td><b>${r.total}</b></td>
+      <td>${Number(r.peratus).toFixed(1)}%</td>
+      <td><span class="pill ${complete?'done':'wait'}">${esc(r.status)}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function shareWhatsApp(){
+  if(!allRows || allRows.length===0){
+    alert('Ranking belum dimuatkan.');
+    return;
+  }
+
+  const top10 = allRows.slice(0,10);
+
+  let msg = '🏆 *RANKING PJPK TINGKATAN 3*\n\n';
+
+  top10.forEach((r,i)=>{
+    const total = Number(r.total || 0);
+    const percent = Number(r.peratus || 0).toFixed(1);
+
+    msg += `${i+1}. ${r.nama} (${r.kelas})\n`;
+    msg += `   Markah: ${total}/50 | ${percent}%\n\n`;
+  });
+
+  const now = new Date();
+  const tarikh = now.toLocaleDateString('ms-MY',{
+    day:'2-digit',
+    month:'long',
+    year:'numeric'
+  });
+
+  msg += `📅 Dikemas kini: ${tarikh}\n`;
+  msg += '📘 UASA 2023 PJPK Tingkatan 3';
+
+  const url = 'https://wa.me/?text=' + encodeURIComponent(msg);
+  window.open(url,'_blank');
+}
+
+loadData();
+</script>
+</body>
+</html>
