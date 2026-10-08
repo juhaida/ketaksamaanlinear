@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ranking Gabungan Matematik Tingkatan 1</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#18232d;--muted:#667481;--primary:#145da0;--line:#dce6ef}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}.wrap{max-width:950px;margin:auto;padding:10px}.hero{background:linear-gradient(135deg,#145da0,#0c3d68);color:#fff;border-radius:18px;padding:18px}.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}button{width:100%;padding:12px;border:none;border-radius:11px;font-weight:900;cursor:pointer}.tab{background:#e7eef5;color:#27465f}.tab.active{background:#145da0;color:#fff}.small{font-size:.82rem;color:var(--muted)}.rank{display:grid;grid-template-columns:48px 1fr 85px 85px 90px;gap:6px;align-items:center;padding:10px 5px;border-bottom:1px solid #e5ebf0}.num{width:36px;height:36px;border-radius:50%;background:#fff3c4;display:flex;align-items:center;justify-content:center;font-weight:900}.nm{font-weight:800}.cl{font-size:.75rem;color:var(--muted)}.class-filter{display:grid;grid-template-columns:120px 1fr;gap:8px;align-items:center;margin:10px 0}select{width:100%;padding:10px;border:1px solid #cbd7e2;border-radius:10px;background:#fff}.error{display:none;color:#b3261e;background:#fff1f1;border:1px solid #f2c5c5;border-radius:10px;padding:10px;margin:10px 0}.wa{background:#25D366;color:#fff;margin-top:10px}
+@media(max-width:650px){.class-filter{grid-template-columns:1fr}.rank{grid-template-columns:40px 1fr 60px 60px 70px;font-size:.76rem}}
+</style></head><body>
+<div class="wrap"><section class="hero"><h1 style="margin:0 0 5px">🏆 Ranking Gabungan Matematik Tingkatan 1</h1><p style="margin:0">Garis dan Sudut 1 + Ungkapan Algebra 3 • Ditukar kepada markah per 100</p></section>
+<section class="panel">
+<div class="tabs"><button class="tab active" id="to" onclick="view('overall')">By Tingkatan</button><button class="tab" id="tc" onclick="view('class')">By Class</button></div>
+<button class="wa" onclick="shareWA()">📲 Kongsi Ranking ke WhatsApp</button>
+<div id="err" class="error"></div>
+<div id="overall"><div class="small" style="margin:10px 0">Top 50. Hanya murid yang telah melengkapkan kedua-dua latihan disenaraikan.</div><div id="overallRows"></div></div>
+<div id="class" style="display:none"><div class="class-filter"><b>Pilih kelas</b><select id="cf" onchange="renderClass()"></select></div><div id="classRows"></div></div>
+</section></div>
+<script>
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbyGrp9QEtqecdMCPHGNCwuhdAXiLK_MXG51qwUrOmQa1RBRp2D-9-bgJPqDIUAqL6JI/exec";let O=[],C={},ACTIVE='overall';const $=id=>document.getElementById(id);
+function view(v){ACTIVE=v;$('overall').style.display=v==='overall'?'block':'none';$('class').style.display=v==='class'?'block':'none';$('to').classList.toggle('active',v==='overall');$('tc').classList.toggle('active',v==='class');if(v==='class')renderClass()}
+function rows(a){if(!a||!a.length)return '<div class="small">Belum ada rekod lengkap.</div>';return a.map(r=>`<div class="rank"><div class="num">${r.rank}</div><div><div class="nm">${r.nama}</div><div class="cl">${r.kelas}</div></div><div>${r.garisSudut}/15</div><div>${r.algebra}/20</div><div><b>${r.peratus.toFixed(1)}/100</b></div></div>`).join('')}
+function renderClass(){let k=$('cf').value;$('classRows').innerHTML=rows(C[k]||[])}
+function populate(){let s=$('cf');s.innerHTML='';Object.keys(C).sort().forEach(k=>{let o=document.createElement('option');o.value=k;o.textContent=k;s.appendChild(o)});renderClass()}
+function jp(action){return new Promise((res,rej)=>{let cb='cb_'+Date.now()+'_'+Math.floor(Math.random()*1e5),sc=document.createElement('script'),t=setTimeout(()=>{clean();rej(new Error('Tiada respons Apps Script'))},12000);function clean(){clearTimeout(t);if(sc.parentNode)sc.remove();try{delete window[cb]}catch(e){}}window[cb]=d=>{clean();res(d)};sc.onerror=()=>{clean();rej(new Error('Gagal berhubung'))};sc.src=SCRIPT_URL+'?action='+action+'&callback='+cb;document.body.appendChild(sc)})}
+async function load(){try{$('err').style.display='none';let[a,b]=await Promise.all([jp('combinedranking50'),jp('combinedbyclass')]);if(!a.ok)throw new Error(a.message);if(!b.ok)throw new Error(b.message);O=a.top50||[];C=b.byClass||{};$('overallRows').innerHTML=rows(O);populate()}catch(e){$('err').style.display='block';$('err').textContent='Ranking tidak dapat dimuatkan: '+e.message}}
+function shareWA(){let a=ACTIVE==='overall'?O:(C[$('cf').value]||[]),title=ACTIVE==='overall'?'By Tingkatan — Top 50':'By Class — '+$('cf').value,lines=['🏆 *RANKING GABUNGAN MATEMATIK TINGKATAN 1*',title,''];a.forEach(r=>lines.push(`${r.rank}. ${r.nama} (${r.kelas}) — ${r.peratus.toFixed(1)}/100`));window.open('https://wa.me/?text='+encodeURIComponent(lines.join('\n')),'_blank')}
+load();setInterval(load,60000);
+</script></body></html>
