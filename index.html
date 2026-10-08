@@ -1,197 +1,256 @@
 <!doctype html>
 <html lang="ms">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ketaksamaan Linear Dalam Dua Pembolehubah - Latihan SPM</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ungkapan Algebra 3 - Latihan Interaktif</title>
 <style>
-*{box-sizing:border-box} body{margin:0;background:#f4f6f8;font-family:Arial,Helvetica,sans-serif;color:#202124}
-.wrap{max-width:920px;margin:24px auto;padding:16px} .card{background:#fff;border-radius:18px;padding:28px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
-h1{margin:6px 0 8px;font-size:30px} .sub{color:#667085} .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-label{font-weight:700;display:block;margin:12px 0 6px} select,.textin{width:100%;padding:12px;border:1px solid #cfd4dc;border-radius:10px;font-size:16px}
-.primary{border:0;background:#9b1c1c;color:#fff;padding:12px 20px;border-radius:999px;font-weight:700;cursor:pointer}
-.primary:disabled{opacity:.45} .topbar{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:#475467;margin-bottom:12px}
-.progress{height:9px;background:#e8ebef;border-radius:999px;overflow:hidden;margin-bottom:20px} .progress div{height:100%;background:#9b1c1c}
-.exam-head{border-bottom:2px solid #111;padding-bottom:10px;margin-bottom:18px} .qtitle{font-weight:800;margin-bottom:8px}
-.context{line-height:1.55;margin-bottom:14px} table{width:100%;border-collapse:collapse;margin:14px 0}
-th,td{border:1px solid #333;padding:9px;text-align:center} th{background:#f5f5f5}
-.conditions{margin:14px 0 6px;padding-left:0;list-style:none} .conditions li{margin:10px 0;line-height:1.5}
-.roman{display:inline-block;width:30px;font-weight:700} .answer-title{font-weight:700;margin:18px 0 10px}
-.ansrow{display:grid;grid-template-columns:44px 1fr auto 1fr;gap:8px;align-items:center;margin:10px 0}
-.symbols{display:flex;gap:6px;flex-wrap:wrap} .symbtn{border:1px solid #98a2b3;background:#fff;padding:9px 12px;border-radius:9px;font-size:18px;cursor:pointer}
-.symbtn.active{background:#9b1c1c;color:#fff;border-color:#9b1c1c}
-.resultline{font-size:14px;margin-top:4px;min-height:18px} .ok{color:#067647;font-weight:700} .bad{color:#b42318;font-weight:700}
-.notice{padding:12px;background:#fff7ed;color:#9a3412;border-radius:10px;margin-top:14px}
-.actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px} .center{text-align:center} .score{font-size:50px;color:#9b1c1c;font-weight:800}
-@media(max-width:700px){.row{grid-template-columns:1fr} .ansrow{grid-template-columns:36px 1fr} .symbols{grid-column:2} .ansrow .rhs{grid-column:2} .card{padding:18px}}
+:root{--bg:#f5f7fb;--card:#fff;--ink:#17212b;--muted:#677482;--blue:#145da0;--purple:#7654c7;--line:#dde5ec;--good:#18794e;--bad:#c62828}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+.wrap{max-width:980px;margin:auto;padding:10px}
+.hero{background:linear-gradient(135deg,#145da0,#0c3d68);color:#fff;padding:18px;border-radius:18px}
+.panel,.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label.title{display:block;font-weight:800;font-size:.88rem;margin-bottom:5px}
+select,input[type=text]{width:100%;padding:11px;border:1px solid #cbd7e2;border-radius:10px;background:#fff;font-size:1rem}
+.small{font-size:.82rem;color:var(--muted)}
+.guide-img{background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;margin:12px 0;text-align:center}
+.guide-img img{max-width:100%;height:auto;max-height:560px;border-radius:12px}
+.guide-img b{display:block;color:#4f3a9b;margin:4px 0 8px}
+.section-title{padding:13px 15px;border-radius:14px;color:#fff;font-weight:900;margin:18px 0 10px}
+.a-title{background:linear-gradient(135deg,#145da0,#4ea8de)}
+.b-title{background:linear-gradient(135deg,#6a46c5,#9b6ef3)}
+.q{font-size:1.07rem;font-weight:900;line-height:1.5}
+.guide{margin-top:9px;border:1px solid #b9d7ee;background:#f2f9fe;border-radius:10px;padding:8px 10px}
+.guide summary{cursor:pointer;font-weight:800;color:#0c4f82}
+.workbox{margin-top:12px;border:2px solid #91c5e6;border-radius:14px;overflow:hidden;background:#fbfdff}
+.workbox-title{background:#eaf6ff;padding:9px 12px;font-weight:900;color:#144d78}
+.four-grid{display:grid;grid-template-columns:1fr 1fr}
+.cell{padding:9px;border-top:1px solid #c8dce9;border-right:1px solid #c8dce9}
+.cell:nth-child(2n){border-right:none}
+.cell input{text-align:center;font-weight:800}
+.step{font-size:.78rem;color:var(--muted);margin-bottom:4px}
+.combine{padding:11px;border-top:1px solid #c8dce9;background:#fff8fb}.combine input{font-size:1.02rem}
+.combine input{text-align:center;font-weight:800}
+.final{padding:12px;border-top:2px solid #b7ddb9;background:#f3fff4}
+.final label{display:block;font-weight:900;color:#2f6c35;margin-bottom:6px}
+.final input{text-align:center;font-weight:900;font-size:1.05rem}
+.box-grid{display:grid;grid-template-columns:90px 1fr 1fr;border-top:1px solid #c8dce9}
+.box-grid>div{min-height:52px;display:flex;align-items:center;justify-content:center;border-right:1px solid #c8dce9;border-bottom:1px solid #c8dce9;padding:7px}
+.box-grid>div:nth-child(3n){border-right:none}
+.box-grid .head{background:#edf3ff;font-weight:900}
+.box-grid .side{background:#eef9ef;font-weight:900}
+.box-grid input{border:none;border-radius:0;text-align:center;font-weight:800}
+.math-note{background:#fff8dc;border:1px solid #eedc9a;border-radius:10px;padding:9px;margin-top:8px}
+button{width:100%;padding:12px;border:none;border-radius:11px;background:var(--blue);color:#fff;font-weight:900;font-size:1rem;cursor:pointer}
+.secondary{background:#687986}
+.result{text-align:center;background:#eef7ff;border-radius:14px;padding:18px;font-size:1.25rem;font-weight:900}
+.status{text-align:center;margin-top:8px;font-size:.85rem}
+.correct{border-color:var(--good)!important;background:#eef9f2!important}
+.wrong{border-color:var(--bad)!important;background:#fff1f1!important}
 
-.quiz-shell{
-  max-width:920px;
-  margin:18px auto;
-  padding:0 16px;
+/* floating keypad */
+.key-toggle{position:fixed;right:16px;bottom:16px;width:58px;height:58px;border-radius:50%;background:#6a46c5;box-shadow:0 5px 18px rgba(0,0,0,.25);z-index:1001;font-size:1.2rem}
+.keypad{position:fixed;right:12px;bottom:82px;width:315px;max-width:calc(100vw - 24px);background:#fff;border:1px solid #d8dfe8;border-radius:16px;padding:10px;box-shadow:0 8px 28px rgba(0,0,0,.24);z-index:1000;display:none}
+.keypad.show{display:block}
+.key-head{display:flex;justify-content:space-between;align-items:center;font-weight:900;color:#5f3cb0;margin-bottom:7px}
+.key-preview{font-size:.78rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:7px}
+.keys{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.keys button{padding:9px 3px;background:#edf1f7;color:#18232d;border:1px solid #d6dee7;font-size:.92rem}
+.keys .op{background:#ebe3ff;color:#5b36af}
+.keys .danger{background:#ffe9e9;color:#a31f1f}
+.keys .wide{grid-column:span 2}
+@media(max-width:650px){
+ .grid2{grid-template-columns:1fr}
+ .wrap{padding:7px}.panel,.card{padding:11px}
+ .four-grid{grid-template-columns:1fr 1fr}
+ .box-grid{grid-template-columns:70px 1fr 1fr}
+ .keypad{right:8px;bottom:76px;width:calc(100vw - 16px)}
+ .key-toggle{right:10px;bottom:10px}
 }
-.quiz-toggle{
-  width:100%;
-  border:0;
-  border-radius:16px;
-  background:#9b1c1c;
-  color:#fff;
-  padding:18px 20px;
-  font-size:18px;
-  font-weight:800;
-  text-align:left;
-  cursor:pointer;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  box-shadow:0 6px 18px rgba(0,0,0,.10);
-}
-.quiz-toggle:hover{background:#821717}
-.quiz-toggle .arrow{
-  font-size:20px;
-  transition:transform .25s ease;
-}
-.quiz-toggle.open .arrow{
-  transform:rotate(90deg);
-}
-.quiz-panel{
-  display:none;
-  margin-top:12px;
-}
-.quiz-panel.open{
-  display:block;
-}
-.quiz-hint{
-  font-size:13px;
-  font-weight:400;
-  opacity:.9;
-  margin-top:4px;
-}
-
 </style>
 </head>
 <body>
-<div class="quiz-shell">
-  <button id="quizToggle" class="quiz-toggle" type="button" onclick="toggleQuiz()">
-    <span>
-      Practice: Ketaksamaan Linear Dalam Dua Pembolehubah
-      <div class="quiz-hint">Klik untuk buka / tutup latihan</div>
-    </span>
-    <span class="arrow">▶</span>
-  </button>
+<div id="fatalError" style="display:none;max-width:980px;margin:10px auto;padding:12px;border-radius:10px;background:#fff1f1;color:#9b1c1c;border:1px solid #f2c5c5;font-family:Arial,sans-serif"></div>
+<iframe name="gsheet_sink" style="display:none"></iframe>
+<div class="wrap">
+<section class="hero">
+<h1 style="margin:0 0 5px">Ungkapan Algebra 3</h1>
+<p style="margin:0">Latihan Interaktif • Bahagian A & B • 20 markah</p>
+</section>
 
-  <div id="quizPanel" class="quiz-panel">
-    <div class="wrap" style="padding:0; margin:0 auto;">
-      <div id="app" class="card"></div>
-    </div>
-  </div>
+<section class="panel">
+<div class="grid2">
+<div><label class="title">Kelas</label><select id="kelas"><option value="">-- Pilih kelas --</option></select></div>
+<div><label class="title">Nama Pelajar</label><select id="nama" disabled><option value="">-- Pilih nama --</option></select></div>
 </div>
+<div style="margin-top:12px;border-top:1px solid #e4eaf0;padding-top:12px">
+<label style="display:flex;align-items:center;gap:8px;font-weight:800"><input type="checkbox" id="manualToggle" onchange="toggleManual()"> Nama saya tiada dalam senarai</label>
+<div id="manualBox" style="display:none;margin-top:10px" class="grid2">
+<div><label class="title">Masukkan kelas</label><input id="manualClass" type="text" placeholder="Contoh: 1DIAMOND"></div>
+<div><label class="title">Masukkan nama penuh</label><input id="manualName" type="text" placeholder="Nama penuh"></div>
+</div>
+</div>
+<div class="math-note small"><b>Math Keypad:</b> tekan butang ⌨︎ di bawah kanan untuk kuasa ², ³, pecahan /, tanda operasi dan simbol algebra.</div>
+</section>
+
+<section class="guide-img">
+<b>Panduan Bahagian A</b>
+<img src="assets/panduan_bahagian_a.webp" alt="Panduan kembangkan satu kurungan">
+</section>
+
+<section class="guide-img">
+<b>Panduan Bahagian B — Darab Dua Linear</b>
+<img src="assets/panduan_bahagian_b.webp" alt="Panduan kaedah petak darab dua linear">
+</section>
+
+<div class="section-title a-title">BAHAGIAN A — Kembangkan dan gabungkan sebutan sejenis (Soalan 1–10)</div>
+<div id="sectionA"></div>
+
+<div class="section-title b-title">BAHAGIAN B — Darab Dua Linear menggunakan Kaedah Petak (Soalan 11–20)</div>
+<div id="sectionB"></div>
+
+<section class="panel">
+<button onclick="submitQuiz()">Hantar Jawapan & Semak Markah</button>
+<div id="resultBox" style="display:none;margin-top:12px"></div>
+<div id="saveStatus" class="status" style="display:none"></div>
+<button id="retryBtn" class="secondary" style="display:none;margin-top:10px" onclick="retryQuiz()">Cuba Semula</button>
+</section>
+</div>
+
+<button class="key-toggle" onclick="toggleKeypad()">⌨︎</button>
+<div class="keypad" id="keypad">
+<div class="key-head"><span>Math Keypad</span><button style="width:auto;padding:5px 9px;background:#687986" onclick="toggleKeypad()">×</button></div>
+<div class="key-preview" id="preview">Klik ruang jawapan dahulu.</div>
+<div class="keys">
+<button onclick="insertKey('²')">x²</button><button onclick="insertKey('³')">x³</button><button onclick="insertKey('^2')">^2</button><button onclick="insertKey('^3')">^3</button><button class="op" onclick="insertKey('−')">−</button>
+<button class="op" onclick="insertKey('+')">+</button><button class="op" onclick="insertKey('×')">×</button><button onclick="insertKey('(')">(</button><button onclick="insertKey(')')">)</button><button onclick="insertKey('/')">a/b</button>
+<button onclick="insertKey('a')">a</button><button onclick="insertKey('b')">b</button><button onclick="insertKey('c')">c</button><button onclick="insertKey('d')">d</button><button onclick="insertKey('m')">m</button>
+<button onclick="insertKey('n')">n</button><button onclick="insertKey('h')">h</button><button onclick="insertKey('x')">x</button><button onclick="insertKey('y')">y</button><button onclick="insertKey('z')">z</button>
+<button onclick="insertKey('0')">0</button><button onclick="insertKey('1')">1</button><button onclick="insertKey('2')">2</button><button onclick="insertKey('3')">3</button><button onclick="insertKey('4')">4</button>
+<button onclick="insertKey('5')">5</button><button onclick="insertKey('6')">6</button><button onclick="insertKey('7')">7</button><button onclick="insertKey('8')">8</button><button onclick="insertKey('9')">9</button>
+<button onclick="insertKey('.')">.</button><button class="danger wide" onclick="backspaceKey()">⌫ Padam</button><button class="danger wide" onclick="clearKey()">C</button>
+</div>
+</div>
+
 <script>
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz32AYhu2Dj1Lb3tKBKPC9LF9AmJDrg77g9HUvqLTJCAcYrGwqutPyqIbNnzKIroKTl/exec";
-const students = [{"name": "SAM ZHI KHOI", "class": "EMERALD"}, {"name": "CHONG JIN TONG", "class": "DIAMOND"}, {"name": "VANNESA CHONG TING EN", "class": "EMERALD"}, {"name": "LIEW WEI XUN", "class": "SAPPHIRE"}, {"name": "SIM ZI HANG", "class": "SAPPHIRE"}, {"name": "MUHAMMAD ZEYN NIFAIL BIN ZAINAL", "class": "DIAMOND"}, {"name": "ZULAIKA BINTI SULAIMAN", "class": "DIAMOND"}, {"name": "KAMALIA DARWISYAH BINTI AZHAN", "class": "EMERALD"}, {"name": "MUHAMMAD SYAHMI ADHA BIN ZAMRI", "class": "DIAMOND"}, {"name": "MUHAMMAD ZAID BIN MUSTAPA", "class": "DIAMOND"}, {"name": "SAFIYA AUNI BINTI SAIFUL LIZAN", "class": "DIAMOND"}, {"name": "SELINA TAN QI ROU", "class": "DIAMOND"}, {"name": "WONG KA XUAN", "class": "EMERALD"}, {"name": "AQILAH SAIYEEDAH BINTI MD FABILAH", "class": "EMERALD"}, {"name": "NUR SYAMILA BINTI MOHD FARID", "class": "DIAMOND"}, {"name": "HEU CHIA NEE", "class": "EMERALD"}, {"name": "NUR ARISSYA AMEYLDA BINTI AZIZ", "class": "EMERALD"}, {"name": "CHAN WAI THONG", "class": "DIAMOND"}, {"name": "MUHAMMAD AL HAFIZ BIN MOHD SAIFULLIZAM", "class": "DIAMOND"}, {"name": "NUR AIN NADIRA BINTI SHAHRUDIN", "class": "EMERALD"}, {"name": "NUR'ALYA QISTINA BINTI MOHD HASRIME", "class": "DIAMOND"}, {"name": "PUTERI NUR ALEESYA BINTI MOHD AZHAN KWONG", "class": "DIAMOND"}, {"name": "HON THONG THONG", "class": "EMERALD"}, {"name": "AMIR WAFIEY BIN ZAINAL ABIDIN", "class": "DIAMOND"}, {"name": "MUHAMMAD DARWISY AHNA BIN MAZLAN", "class": "DIAMOND"}, {"name": "NOR AMIRA BINTI MOHAMMAD NAZIR", "class": "RUBY"}, {"name": "HUSNATUN SYIFA' BINTI MOHD HAFEZ", "class": "EMERALD"}, {"name": "SITI NURQURRATUAINIE BINTI MOHAMMAD HIRMAN", "class": "EMERALD"}, {"name": "MUHAMMAD DANIAL BIN MOHD MOKHTAR", "class": "DIAMOND"}, {"name": "MUHAMMAD RIZQ IQBAAL BIN FAIZAL", "class": "DIAMOND"}, {"name": "JUSTIN NELSON", "class": "EMERALD"}, {"name": "NUR QISTINA BALQIS BINTI AZHAR", "class": "DIAMOND"}, {"name": "RIDHUAN BIN ROSLEE", "class": "DIAMOND"}, {"name": "LIM YI XIAN", "class": "SAPPHIRE"}, {"name": "LIEW SIN JAJ", "class": "EMERALD"}, {"name": "NOR ATHIRAH BINTI MOHD IZAN", "class": "EMERALD"}, {"name": "NURUL SYAQIRAH BINTI MAZLAN", "class": "EMERALD"}, {"name": "IRIS NUR AISYAH BINTI MOHD HEFFE", "class": "EMERALD"}, {"name": "IZZI HALEEF BIN AZALI", "class": "DIAMOND"}, {"name": "AIERIL ZAQUAN BIN KUSNOS", "class": "EMERALD"}, {"name": "MUHAMMAD ADAM DANIAL BIN ABD AZIZ", "class": "EMERALD"}, {"name": "NUR DAWIRNA SAFFI BINTI ISHAK", "class": "EMERALD"}, {"name": "NUR ELISYA BINTI KHAIRUL AKMAL", "class": "EMERALD"}, {"name": "MUHAMMAD HARIS BIN JAMALUDIN", "class": "EMERALD"}, {"name": "ARMAN ARIF BIN MUHAMAD RAKBI", "class": "EMERALD"}, {"name": "MUBIN HARITH BIN MOHAMMAD MUBIN", "class": "EMERALD"}, {"name": "NG MEI XIN", "class": "SAPPHIRE"}, {"name": "AIN NATASHA BINTI MOHD ZAINAL ABIDIN", "class": "RUBY"}, {"name": "HUMAIRAH DANISHA BINTI ABDUL RAZAK", "class": "RUBY"}, {"name": "MUHAMMAD FITRI SYAH BIN MOHD NAJIB", "class": "RUBY"}, {"name": "NUR LIYANA BINTI KADERI", "class": "RUBY"}, {"name": "SITI NUR HAWA BINTI MD AZMI", "class": "RUBY"}, {"name": "AMIRA BINTI EIRHAN", "class": "EMERALD"}, {"name": "CHONG YU ZHE", "class": "SAPPHIRE"}, {"name": "HAN JO EN", "class": "RUBY"}, {"name": "SAIDATUL AKEMA BINTI MU'MININ", "class": "RUBY"}, {"name": "MUHAMMAD ZAINUL ZAKWAN BIN RAZALEE", "class": "EMERALD"}, {"name": "NURFARAH HANUM BINTI SALIM", "class": "EMERALD"}, {"name": "KHAIRUNISA BINTI ABDULLAH", "class": "EMERALD"}, {"name": "MUHAMMAD IZUDDIN BIN JANESDIN", "class": "RUBY"}, {"name": "CHONG JIA EN", "class": "SAPPHIRE"}, {"name": "CHEON ZI SHAN", "class": "RUBY"}, {"name": "MUHAMAD ALIF PUTRA BIN ZULKIFFLE", "class": "RUBY"}, {"name": "MUHAMMAD DINIE FIRDAUS BIN NORARMIZAN", "class": "RUBY"}, {"name": "SITI SOLEHA BINTI MARJUNI", "class": "RUBY"}, {"name": "MUHAMMAD ALIIF ZHORIIF BIN MOHD ABDULLAH", "class": "EMERALD"}, {"name": "MUHAMMAD ARIF HAKIMI BIN ABDULLAH", "class": "EMERALD"}, {"name": "MOHAMAD FAZRUL HAZIQ BIN MOHD AMIN", "class": "SAPPHIRE"}, {"name": "NUR HAZIRA SYAFIERA BINTI AL-HAFIZ", "class": "SAPPHIRE"}, {"name": "ADAM PUTERA BIN MOHAMAD SOLLEHAN", "class": "EMERALD"}, {"name": "MUHAMMAD THAQIF BIN AZMAN", "class": "EMERALD"}, {"name": "CHAI YU ZHE", "class": "ZIRCON"}, {"name": "CHANG JIA HENG", "class": "ZIRCON"}, {"name": "MUHAMMAD FAIQ BIN MOHD FARID", "class": "RUBY"}, {"name": "AL MAN SYAH RIZZAL BIN ABD SUKOR", "class": "SAPPHIRE"}, {"name": "AZLY FAHMI BIN AZRI SHAM", "class": "SAPPHIRE"}, {"name": "HAIQAL IKHWAN BIN NORHALIFI", "class": "SAPPHIRE"}, {"name": "NURUL AZREENA FATIHAH BINTI NORSHAM", "class": "SAPPHIRE"}, {"name": "PUTERI SHAHILA BINTI MOHD HALIM SHAH", "class": "SAPPHIRE"}, {"name": "NURDAYANA ELLYSYA BINTI ABDULLAH", "class": "RUBY"}, {"name": "AHMAD THAQIF IMRAN BIN NORAZMAN", "class": "SAPPHIRE"}, {"name": "CHAU RUI MENG", "class": "SAPPHIRE"}, {"name": "MUHAMMAD WAFIQ BIN MOHD FARID", "class": "RUBY"}, {"name": "CHOON LI XIN", "class": "SAPPHIRE"}, {"name": "LIM JOO YU", "class": "SAPPHIRE"}, {"name": "NAJIB IRFAN BIN NORDIN", "class": "SAPPHIRE"}, {"name": "WONG JIA HUI", "class": "SAPPHIRE"}, {"name": "NUR ALEEYA BINTI RAMLAN", "class": "RUBY"}, {"name": "NURSAFIYYAH BALQIS BINTI ZULKIFLY", "class": "RUBY"}, {"name": "NURUL IMAN ANISSA BINTI SHAHRIZAN", "class": "RUBY"}, {"name": "SOFIANA DEWI BINTI ABDULLAH", "class": "RUBY"}, {"name": "IRFAN ISKANDAR BIN MAT SAAT", "class": "EMERALD"}, {"name": "MUHAMMAD ADAM DANIAL BIN AZWHA", "class": "EMERALD"}, {"name": "ANIS ADHANUN SYIFAA BINTI SAMSUL BAHARI", "class": "SAPPHIRE"}, {"name": "MUHAMAD ZULHAIRIE BIN KHAIRULIZAM", "class": "SAPPHIRE"}, {"name": "MUHAMMAD ADAM DARWISY BIN MAZLIHAN", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HILMI BIN HAMZAH", "class": "SAPPHIRE"}, {"name": "DERREN LAI PIN CHAO", "class": "ZIRCON"}, {"name": "SACHIN A/L RAMAMURTHY", "class": "ZIRCON"}, {"name": "TAN JIAN YI", "class": "ZIRCON"}, {"name": "MUHAMAD FARISH HAIKAL BIN OSMAN", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HELMI BIN MAHADI", "class": "SAPPHIRE"}, {"name": "YONG LI LING", "class": "SAPPHIRE"}, {"name": "KHAIRUNNISA BINTI KOMARUDDIN", "class": "RUBY"}, {"name": "MOHAMAD FARIZUAN SHAHRUL BIN HAMDAN", "class": "RUBY"}, {"name": "NUR RABIAATUL ATIKA SYAHIRA BINTI MAZLAN", "class": "RUBY"}, {"name": "SITI NUR ALEYA BINTI MOHD NIZAM", "class": "RUBY"}, {"name": "MUHAMMAD RAHFIQ BIN RAHMAT", "class": "ZIRCON"}, {"name": "YAP ZHI LI", "class": "ZIRCON"}, {"name": "MUHAMMAD RIZMAN QUZAIMI BIN RAMLI", "class": "SAPPHIRE"}, {"name": "RIEFQIEE ADAMI BIN RIZAL", "class": "RUBY"}, {"name": "WONG YU GUAN", "class": "ZIRCON"}, {"name": "PUTRA ARMAND DARIUS BIN RAHMAT", "class": "SAPPHIRE"}, {"name": "CHEON ZI XUAN", "class": "ZIRCON"}, {"name": "CHANG JIA QI", "class": "SAPPHIRE"}, {"name": "MUHAMMAD DANISH RIFQI BIN MOHD NAZLI", "class": "SAPPHIRE"}, {"name": "MUHAMMAD HAZEEQ INDRA BIN AZALI", "class": "ZIRCON"}, {"name": "FATIN NASUHA BINTI ZAHARI", "class": "RUBY"}, {"name": "MUHAMMAD ALIF DANIEL BIN MUJAHID", "class": "ZIRCON"}, {"name": "CHONG CHEE CHEN", "class": "SAPPHIRE"}, {"name": "CHIN JI HAO", "class": "ZIRCON"}, {"name": "CHONG JING SHENG", "class": "ZIRCON"}, {"name": "CHONG LIH MIN", "class": "ZIRCON"}, {"name": "CHONG LIH SEEN", "class": "ZIRCON"}];
-const questions = [{"title": "Soalan 1", "context": "Encik Marzuki ialah pemilik sebuah tempat peranginan. Beliau perlu menyediakan x kek jenis P dan y kek jenis Q untuk satu majlis. Penghasilan kek melibatkan proses membakar dan menghias.", "table": [["Jenis kek", "Membakar (minit)", "Menghias (minit)"], ["P", "30", "20"], ["Q", "30", "20"]], "conditions": ["Jumlah masa membakar untuk kedua-dua jenis kek tidak lebih daripada 360 minit.", "Jumlah masa menghias untuk kedua-dua jenis kek ialah sekurang-kurangnya 240 minit.", "Nisbah bilangan kek jenis P kepada bilangan kek jenis Q yang dihasilkan tidak kurang daripada 2 : 1."], "answers": [["30x+30y", "≤", "360"], ["20x+20y", "≥", "240"], ["x", "≥", "2y"]]}, {"title": "Soalan 2", "context": "Sebuah bengkel menghasilkan x buah kerusi dan y buah meja. Setiap kerusi dan meja memerlukan masa yang berbeza untuk proses memotong dan memasang.", "table": [["Perabot", "Memotong (jam)", "Memasang (jam)"], ["Kerusi", "2", "1"], ["Meja", "4", "3"]], "conditions": ["Jumlah masa memotong tidak melebihi 40 jam.", "Jumlah masa memasang sekurang-kurangnya 24 jam.", "Bilangan kerusi yang dihasilkan tidak kurang daripada bilangan meja."], "answers": [["2x+4y", "≤", "40"], ["x+3y", "≥", "24"], ["x", "≥", "y"]]}, {"title": "Soalan 3", "context": "Sebuah kantin menyediakan x set nasi ayam dan y set mi goreng untuk satu program sekolah.", "table": [["Makanan", "Kos (RM)", "Masa penyediaan (minit)"], ["Nasi ayam", "6", "4"], ["Mi goreng", "4", "3"]], "conditions": ["Jumlah kos penyediaan tidak melebihi RM240.", "Jumlah masa penyediaan sekurang-kurangnya 120 minit.", "Bilangan set nasi ayam sekurang-kurangnya 10 set."], "answers": [["6x+4y", "≤", "240"], ["4x+3y", "≥", "120"], ["x", "≥", "10"]]}, {"title": "Soalan 4", "context": "Sebuah pusat tuisyen mendaftarkan x orang pelajar Tingkatan 4 dan y orang pelajar Tingkatan 5 untuk satu seminar.", "table": [["Kumpulan", "Bilangan tempat diperlukan", "Kit pembelajaran"], ["Tingkatan 4", "1", "1"], ["Tingkatan 5", "1", "1"]], "conditions": ["Jumlah pelajar yang hadir tidak melebihi 60 orang.", "Bilangan pelajar Tingkatan 5 sekurang-kurangnya 20 orang.", "Bilangan pelajar Tingkatan 4 tidak melebihi dua kali bilangan pelajar Tingkatan 5."], "answers": [["x+y", "≤", "60"], ["y", "≥", "20"], ["x", "≤", "2y"]]}, {"title": "Soalan 5", "context": "Sebuah ladang menanam x baris cili dan y baris tomato. Setiap baris memerlukan baja dan masa penjagaan tertentu.", "table": [["Tanaman", "Baja (kg)", "Penjagaan (jam)"], ["Cili", "3", "2"], ["Tomato", "2", "1"]], "conditions": ["Jumlah baja yang digunakan tidak melebihi 90 kg.", "Jumlah masa penjagaan sekurang-kurangnya 40 jam.", "Bilangan baris cili tidak kurang daripada bilangan baris tomato."], "answers": [["3x+2y", "≤", "90"], ["2x+y", "≥", "40"], ["x", "≥", "y"]]}, {"title": "Soalan 6", "context": "Sebuah kedai mencetak x poster saiz A3 dan y poster saiz A4. Setiap jenis poster menggunakan dakwat dan kertas pada kadar berbeza.", "table": [["Poster", "Dakwat (unit)", "Kertas (helai)"], ["A3", "4", "2"], ["A4", "2", "1"]], "conditions": ["Jumlah penggunaan dakwat tidak melebihi 120 unit.", "Jumlah penggunaan kertas sekurang-kurangnya 45 helai.", "Bilangan poster A4 sekurang-kurangnya tiga kali bilangan poster A3."], "answers": [["4x+2y", "≤", "120"], ["2x+y", "≥", "45"], ["y", "≥", "3x"]]}, {"title": "Soalan 7", "context": "Sebuah sekolah menyewa x buah bas dan y buah van untuk membawa murid ke satu program.", "table": [["Kenderaan", "Kapasiti murid", "Kos sewaan (RM)"], ["Bas", "40", "500"], ["Van", "10", "180"]], "conditions": ["Jumlah kapasiti kenderaan mestilah sekurang-kurangnya 200 orang murid.", "Jumlah kos sewaan tidak melebihi RM3000.", "Bilangan bas yang disewa sekurang-kurangnya 2 buah."], "answers": [["40x+10y", "≥", "200"], ["500x+180y", "≤", "3000"], ["x", "≥", "2"]]}, {"title": "Soalan 8", "context": "Sebuah kilang menghasilkan x kotak produk P dan y kotak produk Q. Kedua-dua produk menggunakan bahan mentah dan masa mesin.", "table": [["Produk", "Bahan mentah (kg)", "Masa mesin (minit)"], ["P", "5", "4"], ["Q", "3", "2"]], "conditions": ["Jumlah bahan mentah yang digunakan tidak melebihi 150 kg.", "Jumlah masa mesin sekurang-kurangnya 80 minit.", "Bilangan produk P tidak kurang daripada separuh bilangan produk Q."], "answers": [["5x+3y", "≤", "150"], ["4x+2y", "≥", "80"], ["x", "≥", "y/2"]]}, {"title": "Soalan 9", "context": "Sebuah kedai bunga menyediakan x jambangan mawar dan y jambangan bunga matahari untuk satu majlis.", "table": [["Jambangan", "Reben (batang)", "Masa (minit)"], ["Mawar", "6", "5"], ["Bunga matahari", "4", "3"]], "conditions": ["Jumlah reben yang digunakan tidak melebihi 120 batang.", "Jumlah masa penyediaan sekurang-kurangnya 75 minit.", "Bilangan jambangan mawar tidak melebihi bilangan jambangan bunga matahari."], "answers": [["6x+4y", "≤", "120"], ["5x+3y", "≥", "75"], ["x", "≤", "y"]]}, {"title": "Soalan 10", "context": "Sebuah kelab menjual x tiket dewasa dan y tiket pelajar untuk satu persembahan.", "table": [["Tiket", "Harga (RM)", "Kuota tempat"], ["Dewasa", "12", "1"], ["Pelajar", "8", "1"]], "conditions": ["Jumlah kutipan mestilah sekurang-kurangnya RM800.", "Jumlah tiket yang dijual tidak melebihi 90 keping.", "Bilangan tiket pelajar sekurang-kurangnya dua kali bilangan tiket dewasa."], "answers": [["12x+8y", "≥", "800"], ["x+y", "≤", "90"], ["y", "≥", "2x"]]}];
-let selectedClass="", selectedStudent="", index=0, totalScore=0, startTime=null, symbols=[null,null,null], locked=false;
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbyGrp9QEtqecdMCPHGNCwuhdAXiLK_MXG51qwUrOmQa1RBRp2D-9-bgJPqDIUAqL6JI/exec";
+const SET_NAME="UNGKAPAN ALGEBRA 3 - TINGKATAN 1";
+const STUDENTS={"1DIAMOND": ["ALLY ZULFADHLI BIN MOHD ZAHID", "AMNI QAISARA BINTI MOHD FAIRUS", "ANGEL LAYCOOL BAJIK ANAK ROBERT", "AWADAH NUR RIZQAH BINTI MOHD IKHRAM", "CHONG JING XIN", "FATIN AQILAH NAFISAH BINTI MOHD SHUKOR", "FONG JIN RU", "HAWA DAMIA NURAIN BINTI MOHD HUSAINI", "LIEW RUO QI", "LIM JING XIN", "MOHAMAD SYAHMIRUL BIN MOHD SHAHNIZA", "MUHAMMAD ABDULLAH SALAM ALI BIN GHAZALY ALI", "MUHAMMAD AIDID AMERUL BIN MUHAMMAD NAZRI", "MUHAMMAD AISY RIZQIN BIN MUHAMMAD GHAZALI", "MUHAMMAD AMIR KAZIM BIN SUDARMAN", "MUHAMMAD AQIFF HAKIMI BIN SHARUL IZUAN", "MUHAMMAD DANISH SHAZRIL BIN ABDULLAH", "MUHAMMAD FITRI HAMIZAN BIN ZAMEER AKMAL", "MUHAMMAD HAZIQ FAIZ BIN HASHIM", "MUHAMMAD IRFAN NAUFAL BIN NOORHAFIZAN", "MUHAMMAD RYAN ZAFRIL BIN MOHD NIZEM", "NAFIZ MURSYID BIN MOHD NOR KHAIRIL", "NUR HANI DARINA BINTI KAMARUL ARIFFIN", "NUR HUSNA FAQIHAH BINTI ISHAK", "NUR SYAFA ADILA BINTI ISMAIL", "NURUL FAIQAH HUSNA BINTI MOHD FARID", "PONG YIN XIN", "RIA ZARA BINTI MOHD HAZWAN", "THONG SZE YANG", "WONG LIEK KAI"], "1EMERALD": ["YONG SHENG XIANG", "KIEW RUI BIN", "TAN XUAN QI", "ADAM EEHAN BIN HARNIE SHA FARDLY", "HSU HAO XUAN", "LAI TECK FOCK", "SIM YUK SHAN", "NUR FATHIAH SAKINA BINTI MOHAMAD FIRDHAUS", "TEOH XIN CI", "NUR AMNI ELLISYA BINTI SYAIFUL IZWAN", "QASEH QAISARA BINTI SAZALI", "RADIN RAYYAN HAFIZ", "ANISSA SOFIA BINTI MOHAMAD HAIRULNIZAM", "MUHAMMAD FAIZ ZAKWAN BIN MOHD NAJIB", "MUHAMMAD YOUNES BIN MOHD YAZID", "NUR AINA MAISARAH BINTI KHAIRUL AZMI", "NURISYA AFIRA BINTI ABDULLAH", "SITI NUR RAQIAH BINTI ABDULLAH", "AISYAH BINTI MUHAMAD MUSTAKIM", "NURIN INSYIRAH BINTI NIZARUDIN", "MUHAMMAD HADI JAZLI BIN MD ALMUTAKIL", "MUHAMMAD AIMANSHAH BIN AZIZUL", "MUHAMMAD NASRAWI BIN MOHAMMAD FETRIE", "DARSHANASRI A/P KRISHNAN", "NUR ELFFIFARISAH QOYYIMAH BINTI MOHD RAIS", "KAMIL IMRAN BIN JEFRY"], "1RUBY": ["LIONG SHENG KANG", "AFNI ELVINA BINTI ARAFI", "NUR DELISHA AMANI BINTI MOHD NOOR RAMDAN", "WONG KA HUI", "UMAIRAH QAISARA BINTI IZHAR", "NUR ELYANA BINTI ABDULLAH", "THAM ZHI HONG", "MUHAMMAD QAWI NAUFAL BIN MUHAMMAD SAFUAN", "SAHET NAUFAL BIN MD NASIR", "SYLVESTER SHEN KAI BING", "CHONG JIA JIA", "MUHAMMAD HAQQEM BIN KHAIRULIZAM", "NURHAQESSYA BINTI SYAHAFIZ", "SITI NUR ASYIKIN BINTI IRWIN", "TAKESH A/L R.G. BABU", "MUHAMMAD DANISH HAZIQ BIN NORARMIZAN", "MUHAMMAD ILHAM MUHAYYAD BIN MESWAN", "MUHAMMAD UMAR BIN KAMARUL ZAMAN", "CHONG LE XUAN", "DINESH A/L LECHUMANAN", "MOHAMAD AISY ADWA BIN MOHD FIRDAUS", "MUHAMAD SYAMIL ASYRAFF BIN HISHAM", "WONG KIAN RONG", "ADAM DAZLY BIN SHAHALWI", "LEONG ZI QI", "NUR KHAIRA QALISYA BINTI MOHD KHAIR", "NUR IRIS HUMAIRA BINTI MOHD NOOR", "MOHAMMAD SYAHRIZAD RAYYAN BIN SAHRUDIN"], "1SAPPHIRE": ["LOY XIN TIAN", "UMAIRAH QALISYA BINTI IZHAR", "CHONG XIAO NING", "INTAN NUR SYAFIQAH BINTI MUHAMMAD FIRDAUS", "NERONDY SHAHLAN", "ADAM DAZRYN BIN SHAHALWI", "MUHAMMAD QALIFF ASHRAFF BIN MD SYAH", "YAP ZHI JIE", "CHONG YI XIN", "LEONG YEE ROU", "PUTERI NUR DAMIA BINTI ZULTIKA", "RAISHA SUTRA BINTI RAFIUDDIN", "WONG JIA JIA", "MOHAMAD DANIEL DANESH BIN MOSLIM", "MUHAMMAD ADAM ISKANDAR BIN MOHD SANI", "SOLEHUDDINULHAFIZ BIN MOHD SHAFIEE", "MUHAMMAD ADAM ARIEF BIN OSMAN", "RAYQAL ISKANDAR BIN RIZAL", "GAN CHIK CHEN", "CHANG JIE QI", "NUR HAZIQAH NASRIN BINTI ABDULLAH", "JUSTIN PANG HAO JUN", "MOHAMAD ZUHAER BIN MOHAMAD NIZAM", "MUHAMMAD SUFIY BIN SALAHUDIN", "LAM JUN YI"]};
+const QUESTIONS=[{"n": 1, "q": "3(a + b) + 5(2a − 4b)", "ans": "13a-17b", "work": ["3a", "3b", "10a", "-20b"]}, {"n": 2, "q": "−4a(a − b) − 2b(2a + 5)", "ans": "-4a^2-10b", "work": ["-4a^2", "4ab", "-4ab", "-10b"]}, {"n": 3, "q": "5b(b + 2a) − 3(b² + 2ab)", "ans": "2b^2+4ab", "work": ["5b^2", "10ab", "-3b^2", "-6ab"]}, {"n": 4, "q": "2m(−n + 3m) + 4(−m² + mn)", "ans": "2m^2+2mn", "work": ["-2mn", "6m^2", "-4m^2", "4mn"]}, {"n": 5, "q": "−5n(3m + 2n) − 7(2mn − n²)", "ans": "-29mn-3n^2", "work": ["-15mn", "-10n^2", "-14mn", "7n^2"]}, {"n": 6, "q": "m(−m + 4n) + 5(mn − m²)", "ans": "-6m^2+9mn", "work": ["-m^2", "4mn", "5mn", "-5m^2"]}, {"n": 7, "q": "c(6d − 7c) − 2(cd − 5c²)", "ans": "3c^2+4cd", "work": ["6cd", "-7c^2", "-2cd", "10c^2"]}, {"n": 8, "q": "5d(3 − c) + 4d(3 + 2c)", "ans": "3cd+27d", "work": ["15d", "-5cd", "12d", "8cd"]}, {"n": 9, "q": "9(c − 2d) − 3(−2d + 9c)", "ans": "-18c-12d", "work": ["9c", "-18d", "6d", "-27c"]}, {"n": 10, "q": "8(d − 2c) + 5(−c + 3d)", "ans": "-21c+23d", "work": ["8d", "-16c", "-5c", "15d"]}, {"n": 11, "q": "(3a + 9)(2a + 5)", "ans": "6a^2+33a+45", "rows": ["3a", "9"], "cols": ["2a", "5"], "products": ["6a^2", "15a", "18a", "45"]}, {"n": 12, "q": "(7a − 4)(3a − 2)", "ans": "21a^2-26a+8", "rows": ["7a", "-4"], "cols": ["3a", "-2"], "products": ["21a^2", "-14a", "-12a", "8"]}, {"n": 13, "q": "(2m − 3)(4m + 7)", "ans": "8m^2+2m-21", "rows": ["2m", "-3"], "cols": ["4m", "7"], "products": ["8m^2", "14m", "-12m", "-21"]}, {"n": 14, "q": "(−9m + 1)(m − 5)", "ans": "-9m^2+46m-5", "rows": ["-9m", "1"], "cols": ["m", "-5"], "products": ["-9m^2", "45m", "m", "-5"]}, {"n": 15, "q": "(8m + 3)(5m + 2)", "ans": "40m^2+31m+6", "rows": ["8m", "3"], "cols": ["5m", "2"], "products": ["40m^2", "16m", "15m", "6"]}, {"n": 16, "q": "(−b − 3)(6b − 1)", "ans": "-6b^2-17b+3", "rows": ["-b", "-3"], "cols": ["6b", "-1"], "products": ["-6b^2", "b", "-18b", "3"]}, {"n": 17, "q": "(3b + 8)(−4b + 1)", "ans": "-12b^2-29b+8", "rows": ["3b", "8"], "cols": ["-4b", "1"], "products": ["-12b^2", "3b", "-32b", "8"]}, {"n": 18, "q": "(2b − 5)(−b − 3)", "ans": "-2b^2-b+15", "rows": ["2b", "-5"], "cols": ["-b", "-3"], "products": ["-2b^2", "-6b", "5b", "15"]}, {"n": 19, "q": "(−h + 1)(7h − 4)", "ans": "-7h^2+11h-4", "rows": ["-h", "1"], "cols": ["7h", "-4"], "products": ["-7h^2", "4h", "7h", "-4"]}, {"n": 20, "q": "(5h + 3)(2h + 3)", "ans": "10h^2+21h+9", "rows": ["5h", "3"], "cols": ["2h", "3"], "products": ["10h^2", "15h", "6h", "9"]}];
+let activeInput=null,startTime=Date.now();
+const $=id=>document.getElementById(id);
 
-function classes(){return [...new Set(students.map(s=>s.class))].sort();}
-function renderLogin(){
- document.getElementById("app").innerHTML=`
- <div class="center"><h1>Ketaksamaan Linear Dalam Dua Pembolehubah</h1>
- <p class="sub">Latihan E-Learning Format SPM • 10 soalan • 3 markah setiap soalan</p></div>
- <div class="notice"><b>Arahan:</b> Baca situasi dan syarat I, II dan III. Taip ungkapan algebra pada ruang jawapan. Untuk simbol ketaksamaan, klik butang <b>&lt;, &gt;, ≤ atau ≥</b>. Setiap ketaksamaan yang betul diberi 1 markah.</div>
- <div class="row">
- <div><label>Kelas</label><select id="classSel" onchange="loadNames()"><option value="">-- Pilih kelas --</option>${classes().map(c=>`<option>${c}</option>`).join("")}</select></div>
- <div><label>Nama murid</label><select id="nameSel" onchange="toggleStart()"><option value="">-- Pilih nama --</option></select></div>
+function init(){
+ Object.keys(STUDENTS).forEach(c=>{let o=document.createElement('option');o.value=c;o.textContent=c;$('kelas').appendChild(o)});
+ $('kelas').addEventListener('change',()=>{let c=$('kelas').value,n=$('nama');n.innerHTML='<option value="">-- Pilih nama --</option>';if(c)STUDENTS[c].forEach(x=>{let o=document.createElement('option');o.value=x;o.textContent=x;n.appendChild(o)});n.disabled=!c});
+ document.addEventListener('focusin',e=>{if(e.target.matches('.math-input')){activeInput=e.target;updatePreview()}});
+ render();
+}
+function toggleManual(){let on=$('manualToggle').checked;$('manualBox').style.display=on?'grid':'none';$('kelas').disabled=on;$('nama').disabled=on||!$('kelas').value;if(on){$('kelas').value='';$('nama').innerHTML='<option value="">-- Pilih nama --</option>'}else{$('manualClass').value='';$('manualName').value=''}}
+function identity(){return $('manualToggle').checked?{kelas:$('manualClass').value.trim().toUpperCase(),nama:$('manualName').value.trim().toUpperCase()}:{kelas:$('kelas').value,nama:$('nama').value}}
+
+function render(){
+ $('sectionA').innerHTML=QUESTIONS.filter(q=>q.n<=10).map(q=>`
+ <section class="card">
+ <div class="q">${q.n}. ${q.q}</div>
+ <details class="guide"><summary>📘 Panduan Menjawab</summary><div class="small">Darabkan setiap faktor di luar kurungan dengan setiap sebutan di dalam kurungan. Selepas itu gabungkan sebutan sejenis.</div></details>
+ <div class="workbox">
+  <div class="workbox-title">Kotak Jawapan</div>
+  <div class="four-grid">
+   ${[1,2,3,4].map(i=>`<div class="cell"><div class="step">Hasil darab ${i}</div><input class="math-input" id="w${q.n}_${i}" type="text" placeholder="Isi hasil darab"></div>`).join('')}
+  </div>
+  <div class="combine"><div class="step">Gabungkan sebutan sejenis</div><input class="math-input" id="c${q.n}" type="text" placeholder="Contoh: 3a + 10a + 3b − 20b"></div>
+  <div class="final"><label>Jawapan akhir</label><input class="math-input" id="a${q.n}" type="text" placeholder="Bentuk lazim"></div>
  </div>
- <div class="center" style="margin-top:20px"><button id="startBtn" class="primary" disabled onclick="startQuiz()">Mula Latihan →</button></div>`;
-}
-function loadNames(){
- selectedClass=document.getElementById("classSel").value;
- const list=students.filter(s=>s.class===selectedClass).sort((a,b)=>a.name.localeCompare(b.name));
- document.getElementById("nameSel").innerHTML='<option value="">-- Pilih nama --</option>'+list.map(s=>`<option value="${s.name.replace(/"/g,'&quot;')}">${s.name}</option>`).join("");
- toggleStart();
-}
-function toggleStart(){
- selectedStudent=document.getElementById("nameSel")?.value||"";
- document.getElementById("startBtn").disabled=!(selectedClass&&selectedStudent);
-}
-function startQuiz(){index=0;totalScore=0;startTime=new Date();renderQuestion();}
-function tableHTML(t){return `<table>${t.map((r,i)=>`<tr>${r.map(c=>i===0?`<th>${c}</th>`:`<td>${c}</td>`).join("")}</tr>`).join("")}</table>`;}
-function renderQuestion(){
- locked=false; symbols=[null,null,null];
- const q=questions[index];
- document.getElementById("app").innerHTML=`
- <div class="topbar"><span>${selectedStudent} • ${selectedClass}</span><span>Markah: ${totalScore} / 30</span></div>
- <div class="progress"><div style="width:${(index/10)*100}%"></div></div>
- <div class="exam-head"><div class="qtitle">${index+1}.</div><div class="context">${q.context}</div>${tableHTML(q.table)}</div>
- <div class="context"><b>Penghasilan adalah berdasarkan syarat-syarat berikut:</b></div>
- <ul class="conditions">${q.conditions.map((c,i)=>`<li><span class="roman">${["I","II","III"][i]}</span>${c}</li>`).join("")}</ul>
- <div class="answer-title">Tulis tiga ketaksamaan linear yang mewakili syarat-syarat di atas. <span style="float:right">[3 markah]</span></div>
- ${[0,1,2].map(i=>answerRow(i)).join("")}
- <div class="actions"><button class="primary" id="checkBtn" onclick="checkAnswers()">Semak Jawapan</button><button class="primary" id="nextBtn" style="display:none" onclick="nextQuestion()">${index===9?"Hantar Markah":"Soalan Seterusnya →"}</button></div>`;
-}
-function answerRow(i){
- const roman=["I","II","III"][i];
- return `<div class="ansrow">
- <b>${roman}</b>
- <input id="lhs${i}" class="textin" placeholder="Contoh: 30x + 30y">
- <div class="symbols">
-   ${["<",">","≤","≥"].map(s=>`<button type="button" class="symbtn" data-row="${i}" data-sym="${s}" onclick="pickSymbol(${i}, '${s}', this)">${s}</button>`).join("")}
+ </section>`).join('');
+
+ $('sectionB').innerHTML=QUESTIONS.filter(q=>q.n>=11).map(q=>`
+ <section class="card">
+ <div class="q">${q.n}. ${q.q}</div>
+ <details class="guide"><summary>📘 Panduan Menjawab</summary><div class="small">Darab semua kombinasi istilah melalui kaedah petak. Kemudian gabungkan sebutan sejenis dan tulis jawapan akhir dalam bentuk lazim.</div></details>
+ <div class="workbox">
+  <div class="workbox-title">Kaedah Petak</div>
+  <div class="box-grid">
+   <div class="head">×</div><div class="head">${q.cols[0]}</div><div class="head">${q.cols[1]}</div>
+   <div class="side">${q.rows[0]}</div><div><input class="math-input" id="b${q.n}_1" type="text" placeholder="Hasil"></div><div><input class="math-input" id="b${q.n}_2" type="text" placeholder="Hasil"></div>
+   <div class="side">${q.rows[1]}</div><div><input class="math-input" id="b${q.n}_3" type="text" placeholder="Hasil"></div><div><input class="math-input" id="b${q.n}_4" type="text" placeholder="Hasil"></div>
+  </div>
+  <div class="combine">
+   <div class="step"><b>Langkah 2 — Gabungkan 4 ungkapan baharu</b></div>
+   <input class="math-input" id="c${q.n}" type="text" placeholder="Contoh: 2x² − 10x + 3x − 15">
+   <div class="small" style="margin-top:5px">Salin dan gabungkan keempat-empat hasil darab daripada petak di atas dalam satu baris.</div>
+  </div>
+  <div class="final">
+   <label>Langkah 3 — Ringkaskan kepada 1 jawapan akhir</label>
+   <input class="math-input" id="a${q.n}" type="text" placeholder="Contoh: 2x² − 7x − 15">
+  </div>
  </div>
- <input id="rhs${i}" class="textin rhs" placeholder="Contoh: 360">
- </div><div id="res${i}" class="resultline"></div>`;
+ </section>`).join('');
 }
-function pickSymbol(row,sym,btn){
- symbols[row]=sym;
- document.querySelectorAll(`.symbtn[data-row="${row}"]`).forEach(b=>b.classList.remove("active"));
- btn.classList.add("active");
-}
+
 function norm(s){
- return String(s||"").toLowerCase().replace(/\s+/g,"").replace(/×/g,"*").replace(/−/g,"-").replace(/÷/g,"/");
+ s=String(s||'').toLowerCase().replace(/−/g,'-').replace(/×/g,'*').replace(/÷/g,'/').replace(/²/g,'^2').replace(/³/g,'^3').replace(/\s+/g,'');
+ if(!/^[0-9a-z+\-*/^().]+$/.test(s))throw new Error();
+ s=s.replace(/(\d)([a-z(])/g,'$1*$2').replace(/([a-z)])(\d)/g,'$1*$2').replace(/([a-z])([a-z])/g,'$1*$2').replace(/([a-z)])(\()/g,'$1*$2').replace(/(\))([a-z(])/g,'$1*$2').replace(/\^/g,'**');
+ return s;
 }
-function sameExpr(a,b){
- a=norm(a); b=norm(b);
- return a===b;
-}
-function checkAnswers(){
- if(locked)return;
- const q=questions[index];
- let gained=0;
- for(let i=0;i<3;i++){
-   const lhs=document.getElementById("lhs"+i).value;
-   const rhs=document.getElementById("rhs"+i).value;
-   const [al,as,ar]=q.answers[i];
-   const ok=sameExpr(lhs,al) && symbols[i]===as && sameExpr(rhs,ar);
-   const el=document.getElementById("res"+i);
-   if(ok){gained++;el.className="resultline ok";el.textContent="✓ Betul";}
-   else{el.className="resultline bad";el.innerHTML=`✗ Jawapan betul: <b>${al} ${as} ${ar}</b>`;}
- }
- totalScore+=gained; locked=true;
- document.querySelectorAll("input,.symbtn").forEach(x=>x.disabled=true);
- document.getElementById("checkBtn").style.display="none";
- document.getElementById("nextBtn").style.display="inline-block";
-}
-function nextQuestion(){index++; if(index<10)renderQuestion(); else submitResult();}
-async function submitResult(){
- const percent=Math.round(totalScore/30*100);
- const duration=Math.round((new Date()-startTime)/1000);
- const payload={name:selectedStudent,class:selectedClass,score:totalScore,total:30,percent:percent,duration_seconds:duration,submitted_at:new Date().toISOString(),topic:"Ketaksamaan Linear Dalam Dua Pembolehubah"};
- let sent=false;
- try{
-   await fetch(WEB_APP_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(payload)});
-   sent=true;
- }catch(e){}
- document.getElementById("app").innerHTML=`
- <div class="center"><h1>Latihan Selesai</h1><p class="sub">${selectedStudent} • ${selectedClass}</p>
- <div class="score">${totalScore} / 30</div><h2>${percent}%</h2>
- <p>${sent?"Rekod markah telah dihantar.":"Markah selesai dikira."}</p>
- <button class="primary" onclick="renderLogin()">Kembali</button></div>`;
+function value(expr,v){return Function(...Object.keys(v),'"use strict";return ('+norm(expr)+');')(...Object.values(v))}
+function eq(u,e){
+ const tests=[{a:2,b:3,c:4,d:5,m:2,n:7,h:3,x:2,y:3,z:4},{a:-2,b:4,c:-3,d:2,m:5,n:-2,h:-4,x:-2,y:5,z:3},{a:3,b:-1,c:2,d:-5,m:-3,n:4,h:6,x:3,y:-2,z:7},{a:7,b:2,c:-4,d:3,m:1,n:5,h:-2,x:5,y:4,z:-3}];
+ try{return tests.every(t=>Math.abs(Number(value(u,t))-Number(value(e,t)))<1e-8)}catch{return false}
 }
 
-function toggleQuiz(){
-  const panel = document.getElementById("quizPanel");
-  const btn = document.getElementById("quizToggle");
-  panel.classList.toggle("open");
-  btn.classList.toggle("open");
-}
+function submitQuiz(){
+ const id=identity();if(!id.kelas||!id.nama){alert('Sila pilih atau masukkan kelas dan nama pelajar.');return}
+ let missing=[],score=0;
+ QUESTIONS.forEach(q=>{
+   if(!$('a'+q.n).value.trim())missing.push(`${q.n} jawapan akhir`);
+   if(!$('c'+q.n).value.trim())missing.push(`${q.n} gabung sejenis`);
+   if(q.n<=10){for(let i=1;i<=4;i++)if(!$(`w${q.n}_${i}`).value.trim())missing.push(`${q.n} hasil ${i}`)}
+   else{for(let i=1;i<=4;i++)if(!$(`b${q.n}_${i}`).value.trim())missing.push(`${q.n} petak ${i}`)}
+ });
+ if(missing.length){alert('Belum lengkap: '+missing.join(', '));return}
 
-renderLogin();
-</script></body></html>
+ QUESTIONS.forEach(q=>{
+   let ok=eq($('a'+q.n).value,q.ans);if(ok)score++;
+   $('a'+q.n).classList.toggle('correct',ok);$('a'+q.n).classList.toggle('wrong',!ok);
+
+   if(q.n<=10){
+     q.work.forEach((e,i)=>{let el=$(`w${q.n}_${i+1}`),k=eq(el.value,e);el.classList.toggle('correct',k);el.classList.toggle('wrong',!k)});
+   }else{
+     q.products.forEach((e,i)=>{let el=$(`b${q.n}_${i+1}`),k=eq(el.value,e);el.classList.toggle('correct',k);el.classList.toggle('wrong',!k)});
+   }
+   let ce=$('c'+q.n),ck=eq(ce.value,q.ans);ce.classList.toggle('correct',ck);ce.classList.toggle('wrong',!ck);
+ });
+
+ const sec=Math.max(1,Math.round((Date.now()-startTime)/1000));
+ $('resultBox').style.display='block';$('resultBox').innerHTML=`<div class="result">Markah: ${score}/20 (${score*5}%)<br><span class="small">Masa: ${Math.floor(sec/60)} minit ${sec%60} saat</span></div>`;$('retryBtn').style.display='block';
+
+ const st=$('saveStatus');st.style.display='block';st.style.color='#667481';st.textContent='Sedang menghantar markah ke Google Sheet...';
+ const f=document.createElement('form');f.method='POST';f.action=SCRIPT_URL;f.target='gsheet_sink';f.style.display='none';
+ const payload={action:'submit',set:SET_NAME,kelas:id.kelas,nama:id.nama,markah:String(score),jumlah:'20',masaSaat:String(sec)};
+ Object.entries(payload).forEach(([k,v])=>{let x=document.createElement('input');x.type='hidden';x.name=k;x.value=v;f.appendChild(x)});
+ document.body.appendChild(f);f.submit();setTimeout(()=>{st.style.color='#18794e';st.textContent='✓ Markah telah dihantar ke Google Sheet yang sama.';f.remove()},900);
+}
+function retryQuiz(){document.querySelectorAll('.math-input').forEach(e=>{e.value='';e.classList.remove('correct','wrong')});$('resultBox').style.display='none';$('saveStatus').style.display='none';$('retryBtn').style.display='none';startTime=Date.now();window.scrollTo({top:0,behavior:'smooth'})}
+
+/* keypad */
+function toggleKeypad(){$('keypad').classList.toggle('show')}
+function updatePreview(){$('preview').textContent=activeInput?('Aktif: '+(activeInput.value||'ruang kosong')):'Klik ruang jawapan dahulu.'}
+function insertKey(v){if(!activeInput)return;let s=activeInput.selectionStart??activeInput.value.length,e=activeInput.selectionEnd??activeInput.value.length;activeInput.value=activeInput.value.slice(0,s)+v+activeInput.value.slice(e);let p=s+v.length;activeInput.focus();activeInput.setSelectionRange(p,p);updatePreview()}
+function backspaceKey(){if(!activeInput)return;let s=activeInput.selectionStart??activeInput.value.length,e=activeInput.selectionEnd??activeInput.value.length;if(s!==e){activeInput.value=activeInput.value.slice(0,s)+activeInput.value.slice(e);activeInput.setSelectionRange(s,s)}else if(s>0){activeInput.value=activeInput.value.slice(0,s-1)+activeInput.value.slice(e);activeInput.setSelectionRange(s-1,s-1)}activeInput.focus();updatePreview()}
+function clearKey(){if(activeInput){activeInput.value='';activeInput.focus();updatePreview()}}
+try{
+  init();
+}catch(err){
+  const box=document.getElementById('fatalError');
+  if(box){
+    box.style.display='block';
+    box.textContent='Ralat membuka latihan: '+(err && err.message ? err.message : String(err));
+  }
+  console.error(err);
+}
+</script>
+</body></html>
