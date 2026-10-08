@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ranking Garis dan Sudut 1</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#18232d;--muted:#667481;--primary:#145da0;--line:#dce6ef}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+.wrap{max-width:900px;margin:auto;padding:10px}
+.hero{background:linear-gradient(135deg,#145da0,#0c3d68);color:#fff;border-radius:18px;padding:18px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+button{width:100%;padding:12px;border:none;border-radius:11px;font-weight:900;cursor:pointer}
+.tab{background:#e7eef5;color:#27465f}
+.tab.active{background:#145da0;color:#fff}
+.small{font-size:.82rem;color:var(--muted)}
+.rank-grid{display:grid;grid-template-columns:50px 1fr 90px 80px;gap:6px;align-items:center;padding:10px 6px;border-bottom:1px solid #e5ebf0}
+.rank-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff3c4;font-weight:900}
+.rank-name{font-weight:800}
+.rank-class{font-size:.75rem;color:var(--muted)}
+.class-filter{display:grid;grid-template-columns:120px 1fr;gap:8px;align-items:center;margin:10px 0}
+select{width:100%;padding:10px;border:1px solid #cbd7e2;border-radius:10px;background:#fff}
+.error{display:none;color:#b3261e;background:#fff1f1;border:1px solid #f2c5c5;border-radius:10px;padding:10px;margin:10px 0}.wa-btn{margin-top:12px;background:#25D366;color:#fff}.wa-note{text-align:center;margin-top:6px;font-size:.78rem;color:var(--muted)}
+@media(max-width:650px){.class-filter{grid-template-columns:1fr}.rank-grid{grid-template-columns:42px 1fr 70px 60px;font-size:.8rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<h1 style="margin:0 0 5px">🏆 Ranking Garis dan Sudut 1</h1>
+<p style="margin:0">Top 50 keseluruhan dan ranking mengikut kelas</p>
+</section>
+
+<section class="panel">
+<div class="tabs">
+<button class="tab active" id="tabOverall" onclick="showRankView('overall')">By Tingkatan</button>
+<button class="tab" id="tabClass" onclick="showRankView('class')">By Class</button>
+</div>
+<button class="wa-btn" onclick="shareWhatsApp()">📲 Kongsi Ranking ke WhatsApp</button>
+<div class="wa-note">WhatsApp akan dibuka; pilih group yang hendak dihantar.</div>
+
+<div id="rankError" class="error"></div>
+
+<div id="overallView">
+<div class="small" style="margin:8px 0">50 terbaik keseluruhan.</div>
+<div id="overallRank"></div>
+</div>
+
+<div id="classView" style="display:none">
+<div class="class-filter">
+<b>Pilih kelas</b>
+<select id="classFilter" onchange="renderClassRank()"></select>
+</div>
+<div id="classRank"></div>
+</div>
+</section>
+</div>
+
+<script>
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbyGrp9QEtqecdMCPHGNCwuhdAXiLK_MXG51qwUrOmQa1RBRp2D-9-bgJPqDIUAqL6JI/exec';
+const SET_NAME='GARIS DAN SUDUT 1 - TINGKATAN 1';
+let OVERALL_DATA=[],BY_CLASS_DATA={},ACTIVE_VIEW='overall';
+const $=id=>document.getElementById(id);
+
+function showRankView(v){ACTIVE_VIEW=v;
+ $('overallView').style.display=v==='overall'?'block':'none';
+ $('classView').style.display=v==='class'?'block':'none';
+ $('tabOverall').classList.toggle('active',v==='overall');
+ $('tabClass').classList.toggle('active',v==='class');
+ if(v==='class')renderClassRank();
+}
+
+function rankRows(items){
+ if(!items||!items.length)return '<div class="small">Belum ada rekod.</div>';
+ return items.map(r=>`<div class="rank-grid"><div class="rank-num">${r.rank}</div><div><div class="rank-name">${r.nama}</div><div class="rank-class">${r.kelas}</div></div><div><b>${r.markah}/${r.jumlah}</b></div><div>${Math.floor((r.masaSaat||0)/60)}m ${(r.masaSaat||0)%60}s</div></div>`).join('');
+}
+
+function renderClassRank(){
+ const c=$('classFilter').value;
+ $('classRank').innerHTML=rankRows(BY_CLASS_DATA[c]||[]);
+}
+
+function populateClasses(){
+ const sel=$('classFilter');
+ sel.innerHTML='';
+ Object.keys(BY_CLASS_DATA).sort().forEach(c=>{
+   const o=document.createElement('option');
+   o.value=c;o.textContent=c;sel.appendChild(o);
+ });
+ if(sel.options.length)renderClassRank();
+}
+
+function jsonpRequest(action){
+ return new Promise((resolve,reject)=>{
+   const cb='cb_'+Date.now()+'_'+Math.floor(Math.random()*100000);
+   const s=document.createElement('script');
+   const timer=setTimeout(()=>{cleanup();reject(new Error('Tiada respons daripada Apps Script.'))},12000);
+
+   function cleanup(){
+     clearTimeout(timer);
+     if(s.parentNode)s.parentNode.removeChild(s);
+     try{delete window[cb]}catch(e){}
+   }
+
+   window[cb]=data=>{cleanup();resolve(data)};
+   s.onerror=()=>{cleanup();reject(new Error('Gagal berhubung dengan Apps Script.'))};
+   s.src=SCRIPT_URL+'?action='+encodeURIComponent(action)+'&set='+encodeURIComponent(SET_NAME)+'&callback='+encodeURIComponent(cb);
+   document.body.appendChild(s);
+ });
+}
+
+
+function buildWhatsAppText(){
+  let lines=[];
+  lines.push('🏆 *RANKING GARIS DAN SUDUT 1*');
+  lines.push('');
+
+  if(ACTIVE_VIEW==='class'){
+    const cls=$('classFilter').value;
+    const items=BY_CLASS_DATA[cls]||[];
+    lines.push('🏫 *By Class: '+cls+'*');
+    lines.push('');
+
+    if(!items.length){
+      lines.push('Belum ada rekod.');
+    }else{
+      items.forEach(r=>{
+        lines.push(`${r.rank}. ${r.nama} (${r.kelas}) — ${r.markah}/${r.jumlah}`);
+      });
+    }
+  }else{
+    const items=OVERALL_DATA||[];
+    lines.push('🎓 *By Tingkatan — Top 50*');
+    lines.push('');
+
+    if(!items.length){
+      lines.push('Belum ada rekod.');
+    }else{
+      items.forEach(r=>{
+        lines.push(`${r.rank}. ${r.nama} (${r.kelas}) — ${r.markah}/${r.jumlah}`);
+      });
+    }
+  }
+
+  lines.push('');
+  lines.push('Ranking berdasarkan markah terbaik; jika seri, masa lebih cepat didahulukan.');
+  return lines.join('\n');
+}
+
+function shareWhatsApp(){
+  const text=buildWhatsAppText();
+  const url='https://wa.me/?text='+encodeURIComponent(text);
+  window.open(url,'_blank');
+}
+
+async function loadRanking(){
+ try{
+   $('rankError').style.display='none';
+   const [a,b]=await Promise.all([
+     jsonpRequest('ranking50'),
+     jsonpRequest('rankingByClass')
+   ]);
+
+   if(!a.ok)throw new Error(a.message||'Ranking keseluruhan gagal');
+   if(!b.ok)throw new Error(b.message||'Ranking kelas gagal');
+
+   OVERALL_DATA=a.top50||[];
+   BY_CLASS_DATA=b.byClass||{};
+
+   $('overallRank').innerHTML=rankRows(OVERALL_DATA);
+   populateClasses();
+
+ }catch(e){
+   $('rankError').style.display='block';
+   $('rankError').textContent='Ranking tidak dapat dimuatkan: '+e.message;
+ }
+}
+
+loadRanking();
+setInterval(loadRanking,60000);
+</script>
+</body>
+</html>
