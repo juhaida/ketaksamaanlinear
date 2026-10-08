@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Game Blok Sebutan Serupa</title>
+<style>
+:root{--bg:#0f172a;--panel:#172033;--line:#334155;--ink:#f8fafc;--muted:#cbd5e1}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#0f172a,#111827);color:var(--ink)}
+.wrap{max-width:980px;margin:auto;padding:10px}
+.hero,.panel{background:rgba(23,32,51,.98);border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0}
+.hero{background:linear-gradient(135deg,#172554,#312e81)}
+.hero h1{margin:0 0 5px}.hero p{margin:3px 0;color:#dbeafe}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{font-weight:800;font-size:.85rem}
+select,input{width:100%;padding:10px;border-radius:10px;border:1px solid #475569;background:#0f172a;color:#fff;font-size:1rem}
+.game-layout{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:12px;align-items:start}
+.board{position:relative;background:#020617;border:2px solid #475569;border-radius:14px;overflow:hidden;height:620px;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(10,1fr)}
+.cell{border-right:1px solid #1e293b;border-bottom:1px solid #1e293b}
+.block{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;padding:5px;border-radius:10px;border:2px solid rgba(255,255,255,.22);font-weight:900;font-size:1rem;line-height:1.1;box-shadow:0 3px 8px rgba(0,0,0,.28);transition:top .08s linear,left .08s linear,transform .18s,opacity .18s}
+.block.falling{outline:3px solid #facc15;z-index:4}
+.block.match{transform:scale(.1);opacity:0}
+.side{display:flex;flex-direction:column;gap:10px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:10px;text-align:center}
+.stat b{display:block;font-size:1.25rem;color:#93c5fd}
+.current{background:#0f172a;border:1px solid #334155;border-radius:12px;padding:12px}
+.current .expr{font-size:1.4rem;font-weight:900;text-align:center;color:#fde68a;padding:8px}
+.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+button{padding:12px;border:none;border-radius:10px;background:#2563eb;color:#fff;font-weight:900;cursor:pointer}
+.down{background:#16a34a}.start{background:#7c3aed}.end{background:#b91c1c}
+.help{font-size:.8rem;color:var(--muted);line-height:1.5}
+.result{background:#052e16;border:1px solid #22c55e;border-radius:12px;padding:12px;text-align:center;font-weight:900}
+.status{text-align:center;font-size:.82rem;color:#cbd5e1}
+.legend{display:flex;gap:8px;flex-wrap:wrap;font-size:.78rem;color:#dbeafe}
+.legend span{background:#0f172a;border:1px solid #334155;border-radius:999px;padding:5px 8px}
+@media(max-width:760px){.game-layout,.grid2{grid-template-columns:1fr}.board{height:560px}.block{font-size:.9rem}}
+
+/* Mobile optimisation */
+.board{
+  width:min(100%,360px);
+  aspect-ratio:4/10;
+  height:auto;
+  min-height:0;
+  margin:0 auto;
+}
+.block{
+  font-size:clamp(.68rem,2.7vw,.98rem);
+  padding:3px;
+  word-break:keep-all;
+  white-space:normal;
+}
+.current .expr{
+  font-size:clamp(1.1rem,5vw,1.55rem);
+}
+.controls button{
+  min-height:52px;
+  font-size:1rem;
+  touch-action:manipulation;
+}
+@media(max-width:760px){
+  .wrap{padding:6px}
+  .hero,.panel{padding:10px;margin:7px 0;border-radius:13px}
+  .hero h1{font-size:1.1rem}
+  .hero p{font-size:.82rem}
+  .game-layout{grid-template-columns:1fr;gap:7px}
+  .board{width:min(92vw,340px);max-height:none}
+  .stats{gap:5px}
+  .stat{padding:7px;font-size:.75rem}
+  .stat b{font-size:1.05rem}
+  .controls{position:sticky;bottom:6px;z-index:20;background:#172033;padding:6px;border-radius:12px}
+  .controls button{padding:12px 4px}
+  .start,.end{min-height:46px}
+  .help{font-size:.76rem}
+}
+@media(max-width:390px){
+  .board{width:94vw}
+  .block{font-size:.66rem}
+  .controls button{font-size:.9rem}
+}
+
+</style>
+</head>
+<body>
+<iframe name="gsheet_sink" style="display:none"></iframe>
+<div class="wrap">
+<section class="hero">
+<h1>🧩 Game Blok Sebutan Serupa</h1>
+<p>Gerakkan blok yang turun dan padankan dengan <b>sebutan algebra yang serupa</b>.</p>
+<p>Contoh: <b>4x</b> serupa dengan <b>7x</b>, <b>2x²</b> serupa dengan <b>5x²</b>, dan <b>3ab³</b> serupa dengan <b>7ab³</b>.</p>
+</section>
+
+<section class="panel">
+<div class="grid2">
+<div><label>Kelas</label><select id="kelas"><option value="">-- Pilih kelas --</option></select></div>
+<div><label>Nama</label><select id="nama" disabled><option value="">-- Pilih nama --</option></select></div>
+</div>
+<label style="display:flex;align-items:center;gap:8px;margin-top:10px"><input type="checkbox" id="manualToggle" onchange="toggleManual()" style="width:auto"> Nama saya tiada dalam senarai</label>
+<div id="manualBox" class="grid2" style="display:none;margin-top:8px">
+<input id="manualClass" placeholder="Masukkan kelas">
+<input id="manualName" placeholder="Masukkan nama penuh">
+</div>
+</section>
+
+<section class="game-layout">
+<div class="panel"><div id="board" class="board"></div></div>
+
+<div class="panel side">
+<div class="stats">
+<div class="stat">Skor<b id="score">0</b></div>
+<div class="stat">Match<b id="matches">0</b></div>
+<div class="stat">Level<b id="level">1</b></div>
+</div>
+
+<div class="current">
+<div class="help">Blok sedang turun:</div>
+<div class="expr" id="currentExpr">—</div>
+</div>
+
+<div class="controls">
+<button onclick="move(-1)">← Kiri</button>
+<button class="down" onclick="softDrop()">↓ Bawah</button>
+<button onclick="move(1)">Kanan →</button>
+</div>
+
+<button class="start" onclick="startGame()">▶ Mula / Mula Semula</button>
+<button class="end" onclick="finishGame()">■ Tamat & Simpan Skor</button>
+
+<div class="help">
+<b>Cara bermain:</b><br>
+1. Blok turun satu demi satu.<br>
+2. Tiada operasi; blok hanya sebutan ringkas seperti <b>4x, 2x², 3x³, 5ab³, 2x²yz, 3abcd</b>.<br>
+3. Gerakkan blok supaya menyentuh blok dengan <b>pemboleh ubah dan kuasa yang sama tepat</b>.<br>
+4. Contoh: <b>4x</b> match dengan <b>7x</b>; <b>2ab³</b> match dengan <b>5ab³</b>; <b>3abcd</b> match dengan <b>7abcd</b>.<br>
+5. Apabila match, blok yang serupa akan hilang.<br>6. Tiga blok awal biasanya berbeza. Selepas itu peluang blok serupa adalah sederhana. Jika terlalu lama tiada peluang match, sistem akan keluarkan satu blok yang boleh dipadankan.
+</div>
+
+<div class="legend">
+<span>2 blok serupa = +200</span>
+<span>3+ blok serupa = bonus</span>
+<span>Tahap kesukaran seimbang</span><span>Skor game disimpan berasingan</span>
+</div>
+
+<div id="resultBox" style="display:none"></div>
+<div id="saveStatus" class="status"></div>
+</div>
+</section>
+</div>
+
+<script>
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbyGrp9QEtqecdMCPHGNCwuhdAXiLK_MXG51qwUrOmQa1RBRp2D-9-bgJPqDIUAqL6JI/exec";
+const GAME_SET='GAME BLOK SEBUTAN SERUPA - TINGKATAN 1';
+const STUDENTS={"1DIAMOND": ["ALLY ZULFADHLI BIN MOHD ZAHID", "AMNI QAISARA BINTI MOHD FAIRUS", "ANGEL LAYCOOL BAJIK ANAK ROBERT", "AWADAH NUR RIZQAH BINTI MOHD IKHRAM", "CHONG JING XIN", "FATIN AQILAH NAFISAH BINTI MOHD SHUKOR", "FONG JIN RU", "HAWA DAMIA NURAIN BINTI MOHD HUSAINI", "LIEW RUO QI", "LIM JING XIN", "MOHAMAD SYAHMIRUL BIN MOHD SHAHNIZA", "MUHAMMAD ABDULLAH SALAM ALI BIN GHAZALY ALI", "MUHAMMAD AIDID AMERUL BIN MUHAMMAD NAZRI", "MUHAMMAD AISY RIZQIN BIN MUHAMMAD GHAZALI", "MUHAMMAD AMIR KAZIM BIN SUDARMAN", "MUHAMMAD AQIFF HAKIMI BIN SHARUL IZUAN", "MUHAMMAD DANISH SHAZRIL BIN ABDULLAH", "MUHAMMAD FITRI HAMIZAN BIN ZAMEER AKMAL", "MUHAMMAD HAZIQ FAIZ BIN HASHIM", "MUHAMMAD IRFAN NAUFAL BIN NOORHAFIZAN", "MUHAMMAD RYAN ZAFRIL BIN MOHD NIZEM", "NAFIZ MURSYID BIN MOHD NOR KHAIRIL", "NUR HANI DARINA BINTI KAMARUL ARIFFIN", "NUR HUSNA FAQIHAH BINTI ISHAK", "NUR SYAFA ADILA BINTI ISMAIL", "NURUL FAIQAH HUSNA BINTI MOHD FARID", "PONG YIN XIN", "RIA ZARA BINTI MOHD HAZWAN", "THONG SZE YANG", "WONG LIEK KAI"], "1EMERALD": ["YONG SHENG XIANG", "KIEW RUI BIN", "TAN XUAN QI", "ADAM EEHAN BIN HARNIE SHA FARDLY", "HSU HAO XUAN", "LAI TECK FOCK", "SIM YUK SHAN", "NUR FATHIAH SAKINA BINTI MOHAMAD FIRDHAUS", "TEOH XIN CI", "NUR AMNI ELLISYA BINTI SYAIFUL IZWAN", "QASEH QAISARA BINTI SAZALI", "RADIN RAYYAN HAFIZ", "ANISSA SOFIA BINTI MOHAMAD HAIRULNIZAM", "MUHAMMAD FAIZ ZAKWAN BIN MOHD NAJIB", "MUHAMMAD YOUNES BIN MOHD YAZID", "NUR AINA MAISARAH BINTI KHAIRUL AZMI", "NURISYA AFIRA BINTI ABDULLAH", "SITI NUR RAQIAH BINTI ABDULLAH", "AISYAH BINTI MUHAMAD MUSTAKIM", "NURIN INSYIRAH BINTI NIZARUDIN", "MUHAMMAD HADI JAZLI BIN MD ALMUTAKIL", "MUHAMMAD AIMANSHAH BIN AZIZUL", "MUHAMMAD NASRAWI BIN MOHAMMAD FETRIE", "DARSHANASRI A/P KRISHNAN", "NUR ELFFIFARISAH QOYYIMAH BINTI MOHD RAIS", "KAMIL IMRAN BIN JEFRY"], "1RUBY": ["LIONG SHENG KANG", "AFNI ELVINA BINTI ARAFI", "NUR DELISHA AMANI BINTI MOHD NOOR RAMDAN", "WONG KA HUI", "UMAIRAH QAISARA BINTI IZHAR", "NUR ELYANA BINTI ABDULLAH", "THAM ZHI HONG", "MUHAMMAD QAWI NAUFAL BIN MUHAMMAD SAFUAN", "SAHET NAUFAL BIN MD NASIR", "SYLVESTER SHEN KAI BING", "CHONG JIA JIA", "MUHAMMAD HAQQEM BIN KHAIRULIZAM", "NURHAQESSYA BINTI SYAHAFIZ", "SITI NUR ASYIKIN BINTI IRWIN", "TAKESH A/L R.G. BABU", "MUHAMMAD DANISH HAZIQ BIN NORARMIZAN", "MUHAMMAD ILHAM MUHAYYAD BIN MESWAN", "MUHAMMAD UMAR BIN KAMARUL ZAMAN", "CHONG LE XUAN", "DINESH A/L LECHUMANAN", "MOHAMAD AISY ADWA BIN MOHD FIRDAUS", "MUHAMAD SYAMIL ASYRAFF BIN HISHAM", "WONG KIAN RONG", "ADAM DAZLY BIN SHAHALWI", "LEONG ZI QI", "NUR KHAIRA QALISYA BINTI MOHD KHAIR", "NUR IRIS HUMAIRA BINTI MOHD NOOR", "MOHAMMAD SYAHRIZAD RAYYAN BIN SAHRUDIN"], "1SAPPHIRE": ["LOY XIN TIAN", "UMAIRAH QALISYA BINTI IZHAR", "CHONG XIAO NING", "INTAN NUR SYAFIQAH BINTI MUHAMMAD FIRDAUS", "NERONDY SHAHLAN", "ADAM DAZRYN BIN SHAHALWI", "MUHAMMAD QALIFF ASHRAFF BIN MD SYAH", "YAP ZHI JIE", "CHONG YI XIN", "LEONG YEE ROU", "PUTERI NUR DAMIA BINTI ZULTIKA", "RAISHA SUTRA BINTI RAFIUDDIN", "WONG JIA JIA", "MOHAMAD DANIEL DANESH BIN MOSLIM", "MUHAMMAD ADAM ISKANDAR BIN MOHD SANI", "SOLEHUDDINULHAFIZ BIN MOHD SHAFIEE", "MUHAMMAD ADAM ARIEF BIN OSMAN", "RAYQAL ISKANDAR BIN RIZAL", "GAN CHIK CHEN", "CHANG JIE QI", "NUR HAZIQAH NASRIN BINTI ABDULLAH", "JUSTIN PANG HAO JUN", "MOHAMAD ZUHAER BIN MOHAMAD NIZAM", "MUHAMMAD SUFIY BIN SALAHUDIN", "LAM JUN YI"]};
+const GROUPS=[{"key": "x", "items": ["4x", "7x", "−2x", "9x", "3x"]}, {"key": "x2", "items": ["2x²", "5x²", "−3x²", "8x²", "x²"]}, {"key": "x3", "items": ["3x³", "−2x³", "6x³", "9x³", "x³"]}, {"key": "ab", "items": ["2ab", "5ab", "−ab", "7ab", "3ab"]}, {"key": "ab3", "items": ["2ab³", "5ab³", "−3ab³", "7ab³", "ab³"]}, {"key": "a2b", "items": ["3a²b", "−2a²b", "6a²b", "9a²b", "a²b"]}, {"key": "ab2", "items": ["4ab²", "7ab²", "−ab²", "2ab²", "9ab²"]}, {"key": "a2b2", "items": ["2a²b²", "5a²b²", "−3a²b²", "8a²b²", "a²b²"]}, {"key": "xyz", "items": ["2xyz", "5xyz", "−xyz", "7xyz", "3xyz"]}, {"key": "x2yz", "items": ["4x²yz", "−2x²yz", "6x²yz", "9x²yz", "x²yz"]}, {"key": "xy2z", "items": ["3xy²z", "5xy²z", "−2xy²z", "8xy²z", "xy²z"]}, {"key": "abcd", "items": ["2abcd", "5abcd", "−abcd", "7abcd", "3abcd"]}, {"key": "a2bcd", "items": ["4a²bcd", "−2a²bcd", "6a²bcd", "9a²bcd", "a²bcd"]}, {"key": "ab2cd", "items": ["3ab²cd", "5ab²cd", "−2ab²cd", "8ab²cd", "ab²cd"]}, {"key": "abc2d", "items": ["2abc²d", "7abc²d", "−3abc²d", "5abc²d", "abc²d"]}, {"key": "abcd2", "items": ["4abcd²", "−abcd²", "6abcd²", "9abcd²", "2abcd²"]}];
+const COLS=4,ROWS=10;
+const $=id=>document.getElementById(id);
+
+let board=[],falling=null,timer=null,running=false,score=0,matches=0,level=1,startTime=0,spawnCount=0,lastSpawnKey=null,noOpportunityStreak=0;
+
+function init(){
+ for(let r=0;r<ROWS;r++)board[r]=Array(COLS).fill(null);
+ Object.keys(STUDENTS).forEach(c=>{let o=document.createElement('option');o.value=c;o.textContent=c;$('kelas').appendChild(o)});
+ $('kelas').addEventListener('change',()=>{let c=$('kelas').value,n=$('nama');n.innerHTML='<option value="">-- Pilih nama --</option>';if(c)STUDENTS[c].forEach(x=>{let o=document.createElement('option');o.value=x;o.textContent=x;n.appendChild(o)});n.disabled=!c});
+ renderBoard();
+}
+function toggleManual(){let on=$('manualToggle').checked;$('manualBox').style.display=on?'grid':'none';$('kelas').disabled=on;$('nama').disabled=on||!$('kelas').value}
+function ident(){return $('manualToggle').checked?{kelas:$('manualClass').value.trim().toUpperCase(),nama:$('manualName').value.trim().toUpperCase()}:{kelas:$('kelas').value,nama:$('nama').value}}
+
+function randomBlock(){
+  spawnCount++;
+
+  const presentKeys=[];
+  for(let r=0;r<ROWS;r++){
+    for(let c=0;c<COLS;c++){
+      const b=board[r][c];
+      if(b && !presentKeys.includes(b.key)) presentKeys.push(b.key);
+    }
+  }
+
+  let g;
+  let createsOpportunity=false;
+
+  // 3 blok pertama: cuba keluarkan jenis berbeza supaya tidak terlalu mudah.
+  if(spawnCount<=3){
+    let pool=GROUPS.filter(x=>x.key!==lastSpawnKey && !presentKeys.includes(x.key));
+    if(!pool.length) pool=GROUPS.filter(x=>x.key!==lastSpawnKey);
+    if(!pool.length) pool=GROUPS;
+    g=pool[Math.floor(Math.random()*pool.length)];
+  }
+
+  // Jika sudah 3 kali berturut-turut tanpa peluang match,
+  // blok seterusnya dijamin daripada jenis yang sudah ada di papan.
+  else if(noOpportunityStreak>=3 && presentKeys.length){
+    const key=presentKeys[Math.floor(Math.random()*presentKeys.length)];
+    g=GROUPS.find(x=>x.key===key);
+    createsOpportunity=true;
+  }
+
+  // Selepas itu, 55% peluang blok daripada jenis sedia ada,
+  // 45% peluang jenis baru.
+  else if(presentKeys.length && Math.random()<0.55){
+    const key=presentKeys[Math.floor(Math.random()*presentKeys.length)];
+    g=GROUPS.find(x=>x.key===key);
+    createsOpportunity=true;
+  }
+
+  else{
+    let pool=GROUPS.filter(x=>!presentKeys.includes(x.key) && x.key!==lastSpawnKey);
+    if(!pool.length) pool=GROUPS.filter(x=>x.key!==lastSpawnKey);
+    if(!pool.length) pool=GROUPS;
+    g=pool[Math.floor(Math.random()*pool.length)];
+  }
+
+  // Elak teks tepat yang sama jika boleh,
+  // tetapi masih kekalkan jenis sebutan yang sama.
+  let choices=g.items.slice();
+  let text=choices[Math.floor(Math.random()*choices.length)];
+
+  if(lastSpawnKey===g.key && choices.length>1){
+    const alt=choices.filter(x=>x!==text);
+    if(alt.length) text=alt[Math.floor(Math.random()*alt.length)];
+  }
+
+  lastSpawnKey=g.key;
+
+  if(createsOpportunity) noOpportunityStreak=0;
+  else noOpportunityStreak++;
+
+  return {
+    key:g.key,
+    text:text,
+    row:0,
+    col:Math.floor((COLS-1)/2),
+    color:colorFor(g.key)
+  };
+}
+function colorFor(k){
+ const colors=['#2563eb','#16a34a','#7c3aed','#db2777','#ea580c','#0891b2','#4f46e5','#65a30d','#c026d3','#dc2626'];
+ const index=GROUPS.findIndex(g=>g.key===k);
+ return colors[index%colors.length];
+}
+function startGame(){
+ const id=ident();if(!id.kelas||!id.nama){alert('Sila pilih atau masukkan kelas dan nama.');return}
+ if(timer)clearInterval(timer);
+ board=Array.from({length:ROWS},()=>Array(COLS).fill(null));
+ score=0;matches=0;level=1;spawnCount=0;lastSpawnKey=null;noOpportunityStreak=0;running=true;startTime=Date.now();
+ $('resultBox').style.display='none';$('saveStatus').textContent='';
+ spawn();schedule();updateStats();
+}
+function spawn(){
+ falling=randomBlock();
+ if(board[0][falling.col]){gameOver();return}
+ $('currentExpr').textContent=falling.text;
+ renderBoard();
+}
+function schedule(){
+ if(timer)clearInterval(timer);
+ timer=setInterval(step,Math.max(300,1020-(level-1)*70));
+}
+function step(){
+ if(!running||!falling)return;
+ if(canMove(falling.row+1,falling.col))falling.row++;
+ else land();
+ renderBoard();
+}
+function canMove(r,c){return c>=0&&c<COLS&&r>=0&&r<ROWS&&!board[r][c]}
+function move(dc){
+ if(!running||!falling)return;
+ const nc=falling.col+dc;
+ if(canMove(falling.row,nc)){falling.col=nc;renderBoard()}
+}
+function softDrop(){
+ if(!running||!falling)return;
+ if(canMove(falling.row+1,falling.col)){falling.row++;score+=1;updateStats();renderBoard()}
+ else land();
+}
+function land(){
+ board[falling.row][falling.col]={key:falling.key,text:falling.text,color:falling.color};
+ const r=falling.row,c=falling.col;
+ falling=null;
+ const cluster=getCluster(r,c);
+ if(cluster.length>=2)clearCluster(cluster);
+ else spawn();
+}
+function getCluster(sr,sc){
+ const start=board[sr][sc];if(!start)return[];
+ const key=start.key,seen=new Set(),stack=[[sr,sc]],out=[];
+ while(stack.length){
+  const [r,c]=stack.pop(),id=r+','+c;
+  if(seen.has(id)||r<0||r>=ROWS||c<0||c>=COLS)continue;
+  seen.add(id);
+  const b=board[r][c];
+  if(!b||b.key!==key)continue;
+  out.push([r,c]);
+  stack.push([r-1,c],[r+1,c],[r,c-1],[r,c+1]);
+ }
+ return out;
+}
+function clearCluster(cluster){
+ cluster.forEach(([r,c])=>board[r][c].matched=true);
+ renderBoard();
+ setTimeout(()=>{
+  cluster.forEach(([r,c])=>board[r][c]=null);
+  applyGravity();
+  matches+=cluster.length;
+  score+=200*cluster.length+(cluster.length>=3?150:0);
+  level=1+Math.floor(matches/8);
+  updateStats();schedule();spawn();renderBoard();
+ },220);
+}
+function applyGravity(){
+ for(let c=0;c<COLS;c++){
+  const vals=[];
+  for(let r=ROWS-1;r>=0;r--)if(board[r][c])vals.push(board[r][c]);
+  for(let r=ROWS-1;r>=0;r--)board[r][c]=vals[ROWS-1-r]||null;
+ }
+}
+function renderBoard(){
+ const el=$('board');el.innerHTML='';
+ for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){const cell=document.createElement('div');cell.className='cell';el.appendChild(cell)}
+ const cw=100/COLS,ch=100/ROWS;
+ for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+  const b=board[r][c];if(!b)continue;
+  const d=document.createElement('div');
+  d.className='block'+(b.matched?' match':'');
+  d.style.left=(c*cw+1)+'%';d.style.top=(r*ch+1)+'%';d.style.width=(cw-2)+'%';d.style.height=(ch-2)+'%';d.style.background=b.color;d.textContent=b.text;
+  el.appendChild(d);
+ }
+ if(falling){
+  const d=document.createElement('div');d.className='block falling';
+  d.style.left=(falling.col*cw+1)+'%';d.style.top=(falling.row*ch+1)+'%';d.style.width=(cw-2)+'%';d.style.height=(ch-2)+'%';d.style.background=falling.color;d.textContent=falling.text;
+  el.appendChild(d);
+ }
+}
+function updateStats(){$('score').textContent=score;$('matches').textContent=matches;$('level').textContent=level}
+function gameOver(){running=false;if(timer)clearInterval(timer);timer=null;finishGame(true)}
+function finishGame(fromGameOver=false){
+ if(!startTime)return;
+ running=false;if(timer)clearInterval(timer);timer=null;
+ const sec=Math.max(1,Math.round((Date.now()-startTime)/1000));
+ $('resultBox').style.display='block';
+ $('resultBox').innerHTML=`<div class="result">${fromGameOver?'Game Over':'Permainan Tamat'}<br>Skor: ${score}<br>Blok Match: ${matches}<br>Masa: ${Math.floor(sec/60)}m ${sec%60}s</div>`;
+ saveScore(sec);
+}
+function saveScore(sec){
+ const id=ident(),f=document.createElement('form');
+ f.method='POST';f.action=SCRIPT_URL;f.target='gsheet_sink';f.style.display='none';
+ const p={action:'submitGame',set:GAME_SET,kelas:id.kelas,nama:id.nama,skor:String(score),betul:String(matches),level:String(level),masaSaat:String(sec)};
+ Object.entries(p).forEach(([k,v])=>{let x=document.createElement('input');x.type='hidden';x.name=k;x.value=v;f.appendChild(x)});
+ document.body.appendChild(f);f.submit();$('saveStatus').textContent='✓ Skor dihantar ke sheet Game_Algebra.';setTimeout(()=>f.remove(),900);
+}
+init();
+</script>
+</body></html>
