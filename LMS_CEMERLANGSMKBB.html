@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LMS Pelajar Cemerlang SPM 2026</title>
+<style>
+:root{--navy:#0b1f3a;--blue:#1d4ed8;--bg:#f4f7fb;--card:#fff;--line:#dce5f0;--muted:#64748b;--good:#15803d}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#172033}
+.hidden{display:none!important}.login{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(145deg,#081b33,#17365d)}
+.loginbox{width:min(430px,96vw);background:white;border-radius:22px;padding:24px;box-shadow:0 20px 50px rgba(0,0,0,.22)}
+.logo{font-size:42px}.loginbox h1{margin:6px 0}.loginbox p{color:var(--muted);font-size:13px}.loginbox input,.loginbox button{width:100%;padding:12px;border-radius:11px;margin-top:9px;font:inherit}
+.loginbox input{border:1px solid #cbd5e1}.loginbox button{border:0;background:#1d4ed8;color:white;font-weight:900}
+.top{background:linear-gradient(135deg,#0b1f3a,#17365d);color:#fff;padding:16px}.wrap{max-width:1100px;margin:auto}.toprow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.avatar{width:60px;height:60px;border-radius:16px;background:rgba(255,255,255,.16);display:grid;place-items:center;font-size:24px;overflow:hidden}.profile-img{width:100%;height:100%;object-fit:cover}.profile-card{display:grid;grid-template-columns:100px 1fr;gap:14px;align-items:center}.profile-large{width:96px;height:96px;border-radius:18px;background:#eef2ff;display:grid;place-items:center;font-size:36px;overflow:hidden}.profile-large img{width:100%;height:100%;object-fit:cover}.profile-info h3{margin-bottom:5px}.profile-line{font-size:13px;margin:4px 0}.photo-tools{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:8px}.photo-tools input{font-size:11px}.photo-tools button{width:auto;border:0;border-radius:8px;background:#1d4ed8;color:#fff;padding:8px 10px;font-weight:900}.upload-status{font-size:11px;color:#64748b}.who{flex:1}.who h2{margin:0;font-size:20px}.who div{opacity:.82;font-size:12px}
+.points{background:#fff;color:#0b1f3a;padding:10px 13px;border-radius:14px;font-weight:900}.main{max-width:1100px;margin:14px auto;padding:0 12px 30px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 5px 16px rgba(19,33,68,.05)}
+.kpi{font-size:25px;font-weight:900;color:#1d4ed8}.small{font-size:11px;color:var(--muted)}h3{margin:0 0 10px}
+.assess{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.assess .box{text-align:center;padding:10px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0}.mark{font-size:22px;font-weight:900}.grade{font-weight:900;color:#1d4ed8}
+.two{display:grid;grid-template-columns:1.35fr .65fr;gap:12px;margin-top:12px}.assignment{padding:11px 0;border-bottom:1px solid #eef2f7}.assignment:last-child{border:0}.assignment a{font-weight:900;color:#1d4ed8;text-decoration:none}.due{font-size:11px;color:#b45309}
+.reward{display:flex;gap:9px;align-items:center;padding:9px;border-radius:11px;margin:7px 0;background:#f8fafc;border:1px solid #e2e8f0}.reward.locked{opacity:.45}.reward .ico{font-size:26px}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:8px;border-bottom:1px solid #e5e7eb;text-align:left}th{color:#64748b}
+.logout{border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;border-radius:9px;padding:7px 10px;font-weight:800}
+@media(max-width:760px){.profile-card{grid-template-columns:78px 1fr}.profile-large{width:74px;height:74px}.grid4{grid-template-columns:repeat(2,1fr)}.assess{grid-template-columns:repeat(3,1fr)}.two{grid-template-columns:1fr}.top{padding:12px}.points{width:100%;text-align:center}}
+</style>
+</head>
+<body>
+<div id="loginView" class="login"><div class="loginbox">
+<div class="logo">🎓</div><h1>LMS Pelajar Cemerlang</h1><p>Matematik SPM 2026 • Ruang pembelajaran peribadi</p>
+<input id="studentId" placeholder="Student ID (contoh EX001)" autocomplete="username">
+<input id="pin" type="password" placeholder="PIN 6 digit" autocomplete="current-password">
+<button id="loginBtn">LOGIN</button><div id="loginMsg" class="small" style="margin-top:9px"></div>
+</div></div>
+
+<div id="app" class="hidden">
+<div class="top"><div class="wrap toprow">
+<div class="avatar" id="avatar"><span id="avatarIcon">📐</span><img id="profileImg" class="profile-img hidden" alt="Gambar profil"></div><div class="who"><h2 id="name"></h2><div><span id="sid"></span> • <span id="className"></span></div></div>
+<div class="points"><span id="levelIcon">⭐</span> <span id="points">0</span> mata • <span id="levelName"></span></div>
+<button class="logout" onclick="logout()">Keluar</button>
+</div></div>
+
+<div class="main">
+
+<div class="card" style="margin-bottom:12px">
+  <div class="profile-card">
+    <div class="profile-large" id="profileLarge">
+      <span id="profileLargeIcon">👤</span>
+      <img id="profileLargeImg" class="hidden" alt="Gambar profil murid">
+    </div>
+    <div class="profile-info">
+      <h3>👤 Profil Murid</h3>
+      <div class="profile-line"><b>Nama:</b> <span id="profileName">-</span></div>
+      <div class="profile-line"><b>Kelas:</b> <span id="profileClass">-</span></div>
+      <div class="profile-line"><b>Student ID:</b> <span id="profileId">-</span></div>
+      <div class="photo-tools">
+        <input id="photoFile" type="file" accept="image/jpeg,image/png,image/webp">
+        <button id="uploadPhotoBtn" type="button">UPLOAD GAMBAR</button>
+        <span id="photoStatus" class="upload-status"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grid4">
+<div class="card"><div class="small">ETR</div><div class="kpi" id="etr">-</div><div class="small">Sasaran SPM 2026</div></div>
+<div class="card"><div class="small">Latihan direkod</div><div class="kpi" id="numResults">0</div><div class="small">Semua set Matematik</div></div>
+<div class="card"><div class="small">Purata terbaik</div><div class="kpi" id="avgBest">0%</div><div class="small">Berdasarkan set terbaik</div></div>
+<div class="card"><div class="small">Tugasan aktif</div><div class="kpi" id="numTasks">0</div><div class="small">Daripada guru</div></div>
+</div>
+
+<div class="card" style="margin-top:12px"><h3>📈 Rekod Prestasi SPM 2026</h3><div id="assessments" class="assess"></div></div>
+
+<div class="two">
+<div>
+<div class="card"><h3>📝 Tugasan Baharu</h3><div id="assignments"></div></div>
+<div class="card" style="margin-top:12px"><h3>✅ Tugasan Telah Dijalankan</h3><div id="completed"></div></div>
+<div class="card" style="margin-top:12px"><h3>📊 Hasil Latihan Matematik</h3><div style="overflow:auto"><table><thead><tr><th>Set</th><th>Markah</th><th>%</th><th>Tarikh</th></tr></thead><tbody id="history"></tbody></table></div></div>
+</div>
+<div>
+<div class="card"><h3>🏅 Ganjaran</h3><div id="rewards"></div></div>
+<div class="card" style="margin-top:12px"><h3>⭐ Rekod Terbaik Mengikut Set</h3><div id="best"></div></div>
+</div>
+</div>
+</div></div>
+
+<script>
+const LMS_WEB_APP_URL="https://script.google.com/macros/s/AKfycbzboy-pmCgRbxKf_gm4ErRVqEQG3ObMvU2Ru083PU9ILGY0UxwUoNPxWcZLpR4ECu69Ag/exec";
+let token=localStorage.getItem("lmsStudentToken")||"";
+
+async function api(payload){
+ const r=await fetch(LMS_WEB_APP_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+ return await r.json();
+}
+loginBtn.onclick=async()=>{
+ loginBtn.disabled=true;loginMsg.textContent="Memeriksa...";
+ try{
+  const r=await api({action:"studentLogin",studentId:studentId.value,pin:pin.value});
+  if(!r.ok)throw new Error(r.error);
+  token=r.token;localStorage.setItem("lmsStudentToken",token);await loadDashboard();
+ }catch(e){loginMsg.textContent=e.message;}finally{loginBtn.disabled=false;}
+};
+async function loadDashboard(){
+ try{
+  const r=await api({action:"studentDashboard",token});
+  if(!r.ok)throw new Error(r.error);
+  loginView.classList.add("hidden");app.classList.remove("hidden");
+  name.textContent=r.student.name;sid.textContent=r.student.studentId;className.textContent=r.student.className;
+  profileName.textContent=r.student.name;
+  profileClass.textContent=r.student.className;
+  profileId.textContent=r.student.studentId;
+  setProfilePhoto(r.student.photoUrl||"");
+  points.textContent=r.points;levelName.textContent=r.level.name;levelIcon.textContent=r.level.icon;
+  etr.textContent=r.student.etrMark+" ("+r.student.etrGrade+")";
+  numResults.textContent=r.quizHistory.length;numTasks.textContent=r.assignments.length;
+  const av=r.bestResults.length?r.bestResults.reduce((s,x)=>s+Number(x.pct||0),0)/r.bestResults.length:0;
+  avgBest.textContent=av.toFixed(1)+"%";
+  assessments.innerHTML=r.assessments.map(x=>`<div class="box"><div class="small">${x.key}</div><div class="mark">${x.mark}</div><div class="grade">${x.grade}</div></div>`).join("");
+  assignments.innerHTML=r.assignments.length?r.assignments.map(a=>`<div class="assignment"><a href="${a.url||'#'}" target="_blank">${esc(a.title)}</a><div>${esc(a.description)}</div><div class="due">Tarikh akhir: ${esc(a.dueDate||'-')} • ${a.points} mata</div></div>`).join(""):'<div class="small">Tiada tugasan aktif.</div>';
+  completed.innerHTML=r.completedActivities&&r.completedActivities.length?r.completedActivities.slice(0,12).map(x=>`<div class="assignment"><b>${esc(x.set)}</b><div class="small">${esc(x.source||'')} • ${x.score}/${x.total} • ${Number(x.pct).toFixed(1)}% • ${fmt(x.timestamp)}</div></div>`).join(""):'<div class="small">Belum ada tugasan direkodkan.</div>';
+  history.innerHTML=r.quizHistory.length?r.quizHistory.map(x=>`<tr><td><b>${esc(x.set)}</b><div class="small">${esc(x.source||"")}</div></td><td>${x.score}/${x.total}</td><td><b>${Number(x.pct).toFixed(1)}%</b></td><td>${fmt(x.timestamp)}</td></tr>`).join(""):'<tr><td colspan="4">Belum ada rekod.</td></tr>';
+  rewards.innerHTML=r.rewards.map(x=>`<div class="reward ${x.unlocked?'':'locked'}"><div class="ico">${x.icon}</div><div><b>${esc(x.title)}</b><div class="small">${x.pointsRequired} mata • ${esc(x.description)}</div></div></div>`).join("");
+  best.innerHTML=r.bestResults.slice(0,8).map(x=>`<div class="assignment"><b>${esc(x.set)}</b><div class="small">${Number(x.pct).toFixed(1)}% • ${x.score}/${x.total}</div></div>`).join("");
+ }catch(e){localStorage.removeItem("lmsStudentToken");token="";app.classList.add("hidden");loginView.classList.remove("hidden");loginMsg.textContent=e.message;}
+}
+
+function setProfilePhoto(url){
+  const has=Boolean(url);
+  profileImg.classList.toggle("hidden",!has);
+  profileLargeImg.classList.toggle("hidden",!has);
+  avatarIcon.classList.toggle("hidden",has);
+  profileLargeIcon.classList.toggle("hidden",has);
+  if(has){
+    profileImg.src=url;
+    profileLargeImg.src=url;
+  }else{
+    profileImg.removeAttribute("src");
+    profileLargeImg.removeAttribute("src");
+  }
+}
+
+uploadPhotoBtn.onclick=async()=>{
+  const f=photoFile.files[0];
+  if(!f){photoStatus.textContent="Pilih gambar dahulu.";return;}
+  if(f.size>2*1024*1024){photoStatus.textContent="Saiz maksimum 2MB.";return;}
+  if(!/^image\/(jpeg|png|webp)$/i.test(f.type)){photoStatus.textContent="Guna JPG, PNG atau WEBP.";return;}
+
+  uploadPhotoBtn.disabled=true;
+  photoStatus.textContent="Memuat naik...";
+
+  try{
+    const dataUrl=await fileToDataUrl(f);
+    const r=await api({
+      action:"uploadStudentPhoto",
+      token,
+      fileName:f.name,
+      mimeType:f.type,
+      fileBase64:dataUrl.split(",")[1]
+    });
+    if(!r.ok)throw new Error(r.error);
+    setProfilePhoto(r.photoUrl);
+    photoStatus.textContent="Gambar berjaya dikemas kini.";
+    photoFile.value="";
+  }catch(e){
+    photoStatus.textContent=e.message;
+  }finally{
+    uploadPhotoBtn.disabled=false;
+  }
+};
+
+function fileToDataUrl(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>resolve(reader.result);
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+
+function logout(){localStorage.removeItem("lmsStudentToken");location.reload()}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function fmt(s){if(!s)return"-";try{return new Date(s).toLocaleDateString("ms-MY")}catch(e){return"-"}}
+if(token)loadDashboard();
+</script>
+</body></html>
