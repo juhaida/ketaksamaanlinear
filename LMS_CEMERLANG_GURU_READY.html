@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ms"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guru • LMS Pelajar Cemerlang</title>
+<style>
+:root{--bg:#f4f7fb;--ink:#172033;--line:#dce5f0;--blue:#1d4ed8}*{box-sizing:border-box}body{margin:0;font-family:Arial;background:var(--bg);color:var(--ink)}
+.wrap{max-width:980px;margin:auto;padding:16px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}.hidden{display:none!important}
+input,textarea,select,button{font:inherit;width:100%;padding:10px;border-radius:9px;margin-top:7px}input,textarea,select{border:1px solid #cbd5e1;background:white}button{border:0;background:var(--blue);color:white;font-weight:900}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.assignment{padding:10px 0;border-bottom:1px solid #eef2f7}.small{font-size:11px;color:#64748b}h1,h2{margin-top:0}
+@media(max-width:650px){.grid{grid-template-columns:1fr}}
+</style></head><body><div class="wrap">
+<div id="loginCard" class="card"><h1>👩‍🏫 Guru • LMS Pelajar Cemerlang</h1><input id="password" type="password" placeholder="Password guru"><button id="loginBtn">LOGIN GURU</button><div id="msg" class="small"></div></div>
+
+<div id="admin" class="hidden">
+<div class="card"><h2>➕ Tugasan Baharu</h2><div class="grid">
+<div><input id="title" placeholder="Tajuk tugasan"><textarea id="description" rows="5" placeholder="Arahan tugasan"></textarea></div>
+<div><input id="dueDate" type="date"><input id="points" type="number" min="0" placeholder="Mata"><input id="url" placeholder="Link tugasan / Google Form (optional)"><input id="file" type="file"></div>
+</div><button id="createBtn">UPLOAD / TERBITKAN TUGASAN</button><div id="createMsg" class="small"></div></div>
+
+<div class="card"><h2>⭐ Tambah Mata Murid</h2><div class="grid"><select id="student"></select><input id="bonus" type="number" placeholder="Mata tambahan"></div><input id="reason" placeholder="Sebab / pencapaian"><button id="awardBtn">TAMBAH MATA</button></div>
+
+<div class="card"><h2>📚 Tugasan Semasa</h2><div id="assignments"></div></div>
+</div></div>
+<script>
+const LMS_WEB_APP_URL="https://script.google.com/macros/s/AKfycbzboy-pmCgRbxKf_gm4ErRVqEQG3ObMvU2Ru083PU9ILGY0UxwUoNPxWcZLpR4ECu69Ag/exec";let token=sessionStorage.getItem("lmsTeacherToken")||"";
+async function api(p){const r=await fetch(LMS_WEB_APP_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(p)});return await r.json()}
+loginBtn.onclick=async()=>{try{const r=await api({action:"teacherLogin",password:password.value});if(!r.ok)throw new Error(r.error);token=r.token;sessionStorage.setItem("lmsTeacherToken",token);await load()}catch(e){msg.textContent=e.message}};
+async function load(){try{const r=await api({action:"teacherDashboard",token});if(!r.ok)throw new Error(r.error);loginCard.classList.add("hidden");admin.classList.remove("hidden");student.innerHTML=r.students.map(s=>`<option value="${s.studentId}">${s.name} [${s.className}]</option>`).join("");assignments.innerHTML=r.assignments.map(a=>`<div class="assignment"><b>${a.title}</b><div>${a.description}</div><div class="small">${a.dueDate||'-'} • ${a.points} mata • ${a.active?'AKTIF':'TUTUP'}</div><button onclick="toggleA('${a.assignmentId}',${!a.active})">${a.active?'Tutup':'Aktifkan'}</button></div>`).join("")}catch(e){msg.textContent=e.message}}
+createBtn.onclick=async()=>{try{createBtn.disabled=true;let b64="",fn="",mt="";if(file.files[0]){const f=file.files[0];if(f.size>5*1024*1024)throw new Error("Fail maksimum 5MB.");fn=f.name;mt=f.type;b64=(await toData(f)).split(",")[1]}const r=await api({action:"createAssignment",token,title:title.value,description:description.value,dueDate:dueDate.value,points:points.value,url:url.value,fileBase64:b64,fileName:fn,mimeType:mt});if(!r.ok)throw new Error(r.error);createMsg.textContent="Tugasan berjaya diterbitkan.";title.value=description.value=dueDate.value=points.value=url.value="";file.value="";await load()}catch(e){createMsg.textContent=e.message}finally{createBtn.disabled=false}};
+awardBtn.onclick=async()=>{const r=await api({action:"awardPoints",token,studentId:student.value,points:bonus.value,reason:reason.value});alert(r.ok?"Mata ditambah.":r.error);if(r.ok){bonus.value="";reason.value=""}};
+async function toggleA(id,active){const r=await api({action:"toggleAssignment",token,assignmentId:id,active});if(!r.ok)alert(r.error);await load()}
+function toData(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)})}
+if(token)load();
+</script></body></html>
