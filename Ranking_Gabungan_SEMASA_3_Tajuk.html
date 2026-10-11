@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ranking Gabungan Matematik Tingkatan 1</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#18232d;--muted:#667481;--primary:#145da0;--line:#dce6ef}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}.wrap{max-width:950px;margin:auto;padding:10px}.hero{background:linear-gradient(135deg,#145da0,#0c3d68);color:#fff;border-radius:18px;padding:18px}.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}button{width:100%;padding:12px;border:none;border-radius:11px;font-weight:900;cursor:pointer}.tab{background:#e7eef5;color:#27465f}.tab.active{background:#145da0;color:#fff}.small{font-size:.82rem;color:var(--muted)}.rank{display:grid;grid-template-columns:48px 1.5fr 92px 92px 105px 95px 90px;gap:6px;align-items:center;padding:10px 5px;border-bottom:1px solid #e5ebf0}.rank.head{font-size:.72rem;font-weight:900;color:#48606f;background:#f7fafc;border-radius:10px;position:sticky;top:0;z-index:2}.score{font-weight:800;text-align:center}.total{font-weight:900;text-align:center}.pct{font-weight:900;text-align:center}.num{width:36px;height:36px;border-radius:50%;background:#fff3c4;display:flex;align-items:center;justify-content:center;font-weight:900}.nm{font-weight:800}.cl{font-size:.75rem;color:var(--muted)}.class-filter{display:grid;grid-template-columns:120px 1fr;gap:8px;align-items:center;margin:10px 0}select{width:100%;padding:10px;border:1px solid #cbd7e2;border-radius:10px;background:#fff}.error{display:none;color:#b3261e;background:#fff1f1;border:1px solid #f2c5c5;border-radius:10px;padding:10px;margin:10px 0}.wa{background:#25D366;color:#fff;margin-top:10px}
+@media(max-width:650px){.class-filter{grid-template-columns:1fr}.panel{padding:10px}.rank{grid-template-columns:34px minmax(145px,1.5fr) 74px 74px 86px 76px 72px;font-size:.72rem;min-width:650px}.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}.rank.head{font-size:.66rem}.num{width:30px;height:30px}.small{font-size:.76rem}}
+</style></head><body>
+<div class="wrap"><section class="hero"><h1 style="margin:0 0 5px">🏆 Ranking Gabungan Matematik Tingkatan 1</h1><p style="margin:0">Garis dan Sudut + Ungkapan Algebra + Persamaan Linear • Markah semasa dipaparkan; tajuk belum dijawab dibiarkan kosong</p></section>
+<section class="panel">
+<div class="tabs"><button class="tab active" id="to" onclick="view('overall')">By Tingkatan</button><button class="tab" id="tc" onclick="view('class')">By Class</button></div>
+<button class="wa" onclick="shareWA()">📲 Kongsi Ranking ke WhatsApp</button>
+<div id="err" class="error"></div>
+<div id="overall"><div class="small" style="margin:10px 0">Top 50. Murid terus disenaraikan walaupun baru menjawab satu tajuk. Tajuk yang belum dijawab dibiarkan kosong.</div><div class="table-scroll"><div id="overallRows"></div></div></div>
+<div id="class" style="display:none"><div class="class-filter"><b>Pilih kelas</b><select id="cf" onchange="renderClass()"></select></div><div class="table-scroll"><div id="classRows"></div></div></div>
+</section></div>
+<script>
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbyGrp9QEtqecdMCPHGNCwuhdAXiLK_MXG51qwUrOmQa1RBRp2D-9-bgJPqDIUAqL6JI/exec";let O=[],C={},ACTIVE='overall';const $=id=>document.getElementById(id);
+function view(v){ACTIVE=v;$('overall').style.display=v==='overall'?'block':'none';$('class').style.display=v==='class'?'block':'none';$('to').classList.toggle('active',v==='overall');$('tc').classList.toggle('active',v==='class');if(v==='class')renderClass()}
+function rows(a){
+  if(!a||!a.length)return '<div class="small">Belum ada rekod.</div>';
+
+  const head=`<div class="rank head">
+    <div>#</div>
+    <div>Nama / Kelas</div>
+    <div>Garis & Sudut</div>
+    <div>Algebra</div>
+    <div>Persamaan Linear</div>
+    <div>Jumlah Semasa</div>
+    <div>Peratus Semasa</div>
+  </div>`;
+
+  const showMark=(mark,full)=>{
+    if(mark===null || mark===undefined || mark==='') return '';
+    return `${Number(mark)}/${Number(full)}`;
+  };
+
+  const body=a.map(r=>{
+    const gs=showMark(r.garisSudut,r.garisSudutPenuh||15);
+    const al=showMark(r.algebra,r.algebraPenuh||20);
+    const pl=showMark(r.persamaanLinear,r.persamaanLinearPenuh||20);
+
+    const totalFull=Number(r.jumlahPenuhSemasa||0);
+    const totalText=totalFull>0
+      ? `${Number(r.jumlah||0)}/${totalFull}`
+      : '';
+
+    const pct=Number(r.peratus||0);
+
+    return `<div class="rank">
+      <div class="num">${r.rank}</div>
+      <div>
+        <div class="nm">${r.nama}</div>
+        <div class="cl">${r.kelas}</div>
+      </div>
+      <div class="score">${gs}</div>
+      <div class="score">${al}</div>
+      <div class="score">${pl}</div>
+      <div class="total">${totalText}</div>
+      <div class="pct">${pct.toFixed(1)}/100</div>
+    </div>`;
+  }).join('');
+
+  return head+body;
+}
+
+function shareWA(){
+  let a=ACTIVE==='overall'?O:(C[$('cf').value]||[]),
+      title=ACTIVE==='overall'?'By Tingkatan — Top 50':'By Class — '+$('cf').value,
+      lines=['🏆 *RANKING GABUNGAN MATEMATIK TINGKATAN 1*',title,''];
+
+  const show=(mark,full)=>{
+    if(mark===null || mark===undefined || mark==='') return 'Belum jawab';
+    return `${Number(mark)}/${Number(full)}`;
+  };
+
+  a.forEach(r=>{
+    const gs=show(r.garisSudut,r.garisSudutPenuh||15);
+    const al=show(r.algebra,r.algebraPenuh||20);
+    const pl=show(r.persamaanLinear,r.persamaanLinearPenuh||20);
+    const jt=r.jumlahPenuhSemasa
+      ? `${Number(r.jumlah||0)}/${Number(r.jumlahPenuhSemasa)}`
+      : '';
+
+    lines.push(
+      `${r.rank}. ${r.nama} (${r.kelas})\n`+
+      `   Garis & Sudut: ${gs} | Algebra: ${al} | Persamaan Linear: ${pl}\n`+
+      `   Jumlah semasa: ${jt} = ${Number(r.peratus||0).toFixed(1)}/100`
+    );
+  });
+
+  window.open(
+    'https://wa.me/?text='+encodeURIComponent(lines.join('\n')),
+    '_blank'
+  );
+}
+
+</script></body></html>
