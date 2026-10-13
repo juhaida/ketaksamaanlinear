@@ -24,6 +24,25 @@ button,input{font:inherit}.hidden{display:none!important}
 .tableWrap{overflow:auto;border:1px solid #e2e8ef;border-radius:12px}table{width:100%;border-collapse:collapse;min-width:680px}th{background:#eef5fb;text-align:left;font-size:.73rem;padding:8px}td{padding:8px;font-size:.78rem;border-top:1px solid #edf1f5}
 .legend{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}.back{text-align:center;margin-top:12px}.back a{color:#145da0;text-decoration:none;font-weight:900}
 @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}.work{grid-template-columns:1fr}.mark{text-align:left}}
+
+.parentNav{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+.parentNav a{
+  flex:1;
+  min-width:150px;
+  text-align:center;
+  text-decoration:none;
+  border-radius:11px;
+  padding:11px 12px;
+  font-weight:900;
+  background:#eef6ff;
+  color:#145da0;
+  border:1px solid #cfe0f2;
+}
 </style>
 </head>
 <body>
@@ -37,11 +56,24 @@ button,input{font:inherit}.hidden{display:none!important}
     <div class="field"><label>PIN Pelajar</label><input id="studentPin" type="password" inputmode="numeric" placeholder="6 digit"></div>
     <button class="btn" onclick="parentLogin()">Lihat Rekod Anak</button>
     <div id="loginMsg" class="msg"></div>
+<div class="parentNav">
+  <a href="<?!= webAppUrl ?>" target="_top">🎓 Kembali ke Login Pelajar</a>
+</div>
     <div class="back"><a href="?">← Kembali ke LMS Pelajar</a></div>
   </div>
 </div>
 
 <div id="appView" class="app hidden">
+  <div style="max-width:1050px;margin:10px auto 0;padding:0 12px;text-align:right">
+    <a
+      href="<?!= webAppUrl ?>"
+      target="_top"
+      style="display:inline-block;text-decoration:none;background:#145da0;color:#fff;border-radius:10px;padding:9px 12px;font-weight:900"
+    >
+      🎓 Paparan Pelajar
+    </a>
+  </div>
+
   <div class="topbar"><b>👨‍👩‍👧 Paparan Ibu Bapa</b><button onclick="logout()">Keluar</button></div>
   <div class="wrap">
     <section class="hero"><h2 id="studentName"></h2><p id="studentMeta"></p></section>

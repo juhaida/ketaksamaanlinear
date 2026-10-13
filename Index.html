@@ -308,6 +308,33 @@ button,input,select,textarea{font:inherit}
   .stickerInbox{grid-template-columns:repeat(2,1fr)}
 }
 
+
+.roleLinks{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:12px;
+}
+.roleLink{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  border-radius:11px;
+  text-decoration:none;
+  font-weight:900;
+  border:1px solid #cdd9e5;
+  background:#f7fbff;
+  color:#145da0;
+}
+.roleLink.parent{
+  background:#fff7e8;
+  color:#9a5b00;
+  border-color:#efd39a;
+}
+@media(max-width:480px){
+  .roleLinks{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -321,7 +348,24 @@ button,input,select,textarea{font:inherit}
     <div class="field"><label>PIN</label><input id="studentPin" type="password" inputmode="numeric" placeholder="6 digit" autocomplete="current-password"></div>
     <button class="btn full" onclick="studentLogin()">Login Pelajar</button>
     <div id="loginMsg" class="msg"></div>
-    <div class="teacherLink"><button onclick="openTeacherLogin()">🔐 Login Guru</button></div>
+
+    <div class="roleLinks">
+      <a
+        class="roleLink parent"
+        href="<?!= webAppUrl ?>?view=parent"
+        target="_top"
+      >
+        👪 Login Ibu Bapa
+      </a>
+
+      <button
+        class="roleLink"
+        type="button"
+        onclick="openTeacherLogin()"
+      >
+        🔐 Login Guru
+      </button>
+    </div>
   </div>
 </div>
 
@@ -333,6 +377,11 @@ button,input,select,textarea{font:inherit}
     </div>
     <div>
       <button onclick="openAvatar()">Avatar</button>
+      <a
+        href="<?!= webAppUrl ?>?view=parent"
+        target="_top"
+        style="display:inline-block;text-decoration:none;background:#fff1;border:1px solid #ffffff44;color:#fff;border-radius:9px;padding:8px 10px;font-size:.82rem"
+      >Ibu Bapa</a>
       <button onclick="logout()">Keluar</button>
     </div>
   </div>
