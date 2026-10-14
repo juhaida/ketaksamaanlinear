@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Set Tingkatan 1 KSSM</title>
+<style>
+:root{
+  --blue:#145da0; --navy:#0e2f4f; --bg:#f4f7fb; --card:#fff; --line:#dfe7ef;
+  --ok:#167a44; --bad:#b42318; --muted:#667085; --soft:#f8fbff;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#172033}
+.wrap{max-width:1000px;margin:auto;padding:14px}
+.hero{background:linear-gradient(135deg,#0f3d66,#1677bd);color:#fff;border-radius:20px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}
+.hero h1{margin:0 0 6px;font-size:1.55rem}
+.hero p{margin:4px 0;color:#eaf5ff}
+.panel,.q{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px;box-shadow:0 4px 14px rgba(0,0,0,.05)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{display:block;font-weight:800;font-size:.82rem;margin-bottom:5px}
+input,select{width:100%;padding:10px;border:1px solid #ccd7e3;border-radius:10px;background:#fff;font:inherit}
+.sectionTitle{margin:18px 0 8px;font-weight:900;color:var(--navy);font-size:1.15rem}
+.q h3{margin:0 0 8px;font-size:1rem;color:#10395f}
+.opts label{display:block;font-weight:normal;padding:7px 8px;border:1px solid #e5ebf1;border-radius:9px;margin:6px 0;cursor:pointer}
+.opts input{width:auto;margin-right:7px}
+.diagram{display:flex;justify-content:center;align-items:center;margin:10px 0}
+.diagram svg{max-width:100%;height:auto;background:#fff;border:1px solid #e1e8ef;border-radius:12px}
+.hint{font-size:.78rem;color:var(--muted);background:var(--soft);border-left:4px solid #73a6d9;padding:8px 10px;border-radius:8px;margin:7px 0}
+.feedback{font-size:.78rem;font-weight:800;margin-top:6px}
+.ok{color:var(--ok)} .bad{color:var(--bad)}
+.btn{border:none;border-radius:11px;padding:12px 15px;font-weight:900;cursor:pointer;background:var(--blue);color:#fff}
+.btn.full{width:100%;margin-top:12px}
+.result{display:none;margin-top:12px;border-radius:14px;padding:14px;background:#ecfdf3;border:1px solid #b7e3c4}
+.status{font-size:.8rem;color:var(--muted);margin-top:8px;text-align:center}
+.small{font-size:.76rem;color:#555}
+@media(max-width:680px){.grid{grid-template-columns:1fr} .wrap{padding:8px} .hero{padding:14px} .q{padding:11px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <h1>📘 Set Tingkatan 1 KSSM</h1>
+    <p>10 soalan objektif + 5 soalan subjektif</p>
+    <p>Topik: elemen, bilangan elemen, subset, pelengkap dan set semesta</p>
+  </section>
+
+  <section class="panel">
+    <div class="grid">
+      <div>
+        <label>Kelas</label>
+        <select id="kelas" onchange="updateNamaList()">
+          <option value="">-- Pilih kelas --</option>
+          <option>1DIAMOND</option>
+          <option>1EMERALD</option>
+          <option>1RUBY</option>
+          <option>1SAPPHIRE</option>
+        </select>
+      </div>
+      <div>
+        <label>Nama Pelajar</label>
+        <select id="nama">
+          <option value="">-- Pilih nama pelajar --</option>
+        </select>
+      </div>
+    </div>
+    <div class="hint">Senarai nama pelajar telah dimasukkan. Jika nama tiada dalam senarai, taip di bawah.</div>
+    <div style="margin-top:10px">
+      <label>Jika nama tiada dalam senarai</label>
+      <input id="namaManual" placeholder="Taip nama sendiri jika perlu">
+    </div>
+    <div class="small" style="margin-top:8px">Markah direkod dalam Google Sheet yang sama dengan nama set <b>SET - TINGKATAN 1 KSSM</b>.</div>
+  </section>
+
+  <div class="sectionTitle">Bahagian A — Objektif (10 markah)</div>
+
+  <div class="q"><h3>1. Diberi A = {2, 4, 6, 8}. Pernyataan yang manakah benar?</h3>
+    <div class="opts">
+      <label><input type="radio" name="q1" value="A"> 5 ∈ A</label>
+      <label><input type="radio" name="q1" value="B"> 6 ∈ A</label>
+      <label><input type="radio" name="q1" value="C"> 8 ∉ A</label>
+      <label><input type="radio" name="q1" value="D"> 2 ∉ A</label>
+    </div><div class="feedback" id="f1"></div>
+  </div>
+
+  <div class="q"><h3>2. Diberi B = {a, e, i, o, u}. Apakah n(B)?</h3>
+    <div class="opts">
+      <label><input type="radio" name="q2" value="A"> 4</label>
+      <label><input type="radio" name="q2" value="B"> 5</label>
+      <label><input type="radio" name="q2" value="C"> 6</label>
+      <label><input type="radio" name="q2" value="D"> 10</label>
+    </div><div class="feedback" id="f2"></div>
+  </div>
+
+  <div class="q"><h3>3. Diberi C = {1, 2, 3}. Yang manakah merupakan subset C?</h3>
+    <div class="opts">
+      <label><input type="radio" name="q3" value="A"> {1,4}</label>
+      <label><input type="radio" name="q3" value="B"> {2,3}</label>
+      <label><input type="radio" name="q3" value="C"> {0,1}</label>
+      <label><input type="radio" name="q3" value="D"> {3,5}</label>
+    </div><div class="feedback" id="f3"></div>
+  </div>
+
+  <div class="q"><h3>4. Berdasarkan rajah, apakah pelengkap bagi set P, iaitu P′?</h3>
+    <div class="diagram">
+      <svg width="390" height="230" viewBox="0 0 390 230" aria-label="Rajah set P">
+        <text x="18" y="28" font-size="22" font-weight="700">ξ</text>
+        <rect x="40" y="18" width="320" height="180" fill="#fff" stroke="#1d4f70" stroke-width="3"/>
+        <circle cx="185" cy="108" r="62" fill="none" stroke="#2b668a" stroke-width="3"/>
+        <text x="134" y="52" fill="#b51620" font-size="20" font-weight="700">P</text>
+
+        <circle cx="165" cy="90" r="4" fill="#1f8f66"/><text x="174" y="95" font-size="18">1</text>
+        <circle cx="145" cy="120" r="4" fill="#1f8f66"/><text x="154" y="125" font-size="18">2</text>
+        <circle cx="192" cy="112" r="4" fill="#1f8f66"/><text x="201" y="117" font-size="18">3</text>
+
+        <circle cx="275" cy="88" r="4" fill="#1f8f66"/><text x="284" y="93" font-size="18">4</text>
+        <circle cx="92" cy="160" r="4" fill="#1f8f66"/><text x="101" y="165" font-size="18">5</text>
+        <circle cx="250" cy="150" r="4" fill="#1f8f66"/><text x="259" y="155" font-size="18">6</text>
+      </svg>
+    </div>
+    <div class="opts">
+      <label><input type="radio" name="q4" value="A"> {1,2,3}</label>
+      <label><input type="radio" name="q4" value="B"> {4,5,6}</label>
+      <label><input type="radio" name="q4" value="C"> {1,2,3,4,5,6}</label>
+      <label><input type="radio" name="q4" value="D"> {2,4,6}</label>
+    </div><div class="feedback" id="f4"></div>
+  </div>
+
+  <div class="q"><h3>5. Berdasarkan rajah, apakah set A ∩ B?</h3>
+    <div class="diagram">
+      <svg width="430" height="250" viewBox="0 0 430 250" aria-label="Rajah Venn A dan B">
+        <text x="20" y="30" font-size="22" font-weight="700">ξ</text>
+        <rect x="42" y="18" width="350" height="190" fill="#fff" stroke="#1d4f70" stroke-width="3"/>
+        <circle cx="170" cy="108" r="68" fill="none" stroke="#2b668a" stroke-width="3"/>
+        <circle cx="245" cy="108" r="68" fill="none" stroke="#2b668a" stroke-width="3"/>
+        <text x="126" y="48" fill="#b51620" font-size="20" font-weight="700">A</text>
+        <text x="287" y="48" fill="#b51620" font-size="20" font-weight="700">B</text>
+
+        <circle cx="138" cy="90" r="4" fill="#1f8f66"/><text x="147" y="95" font-size="18">1</text>
+        <circle cx="150" cy="125" r="4" fill="#1f8f66"/><text x="159" y="130" font-size="18">2</text>
+        <circle cx="200" cy="92" r="4" fill="#1f8f66"/><text x="209" y="97" font-size="18">3</text>
+        <circle cx="207" cy="125" r="4" fill="#1f8f66"/><text x="216" y="130" font-size="18">6</text>
+        <circle cx="275" cy="85" r="4" fill="#1f8f66"/><text x="284" y="90" font-size="18">4</text>
+        <circle cx="277" cy="122" r="4" fill="#1f8f66"/><text x="286" y="127" font-size="18">5</text>
+        <circle cx="272" cy="154" r="4" fill="#1f8f66"/><text x="281" y="159" font-size="18">10</text>
+        <circle cx="82" cy="168" r="4" fill="#1f8f66"/><text x="91" y="173" font-size="18">8</text>
+        <circle cx="224" cy="182" r="4" fill="#1f8f66"/><text x="233" y="187" font-size="18">9</text>
+      </svg>
+    </div>
+    <div class="opts">
+      <label><input type="radio" name="q5" value="A"> {1,2}</label>
+      <label><input type="radio" name="q5" value="B"> {3,6}</label>
+      <label><input type="radio" name="q5" value="C"> {4,5,10}</label>
+      <label><input type="radio" name="q5" value="D"> {8,9}</label>
+    </div><div class="feedback" id="f5"></div>
+  </div>
+
+  <div class="q"><h3>6. Berdasarkan rajah berikut, apakah nilai n(Q)?</h3>
+    <div class="diagram">
+      <svg width="390" height="230" viewBox="0 0 390 230" aria-label="Rajah set Q">
+        <text x="18" y="28" font-size="22" font-weight="700">ξ</text>
+        <rect x="40" y="18" width="320" height="180" fill="#fff" stroke="#1d4f70" stroke-width="3"/>
+        <circle cx="190" cy="108" r="70" fill="none" stroke="#2b668a" stroke-width="3"/>
+        <text x="184" y="34" fill="#b51620" font-size="20" font-weight="700">Q</text>
+
+        <circle cx="165" cy="83" r="4" fill="#1f8f66"/><text x="174" y="88" font-size="18">2</text>
+        <circle cx="210" cy="83" r="4" fill="#1f8f66"/><text x="219" y="88" font-size="18">4</text>
+        <circle cx="155" cy="122" r="4" fill="#1f8f66"/><text x="164" y="127" font-size="18">6</text>
+        <circle cx="205" cy="122" r="4" fill="#1f8f66"/><text x="214" y="127" font-size="18">8</text>
+        <circle cx="182" cy="155" r="4" fill="#1f8f66"/><text x="191" y="160" font-size="18">10</text>
+      </svg>
+    </div>
+    <div class="opts">
+      <label><input type="radio" name="q6" value="A"> 4</label>
+      <label><input type="radio" name="q6" value="B"> 5</label>
+      <label><input type="radio" name="q6" value="C"> 6</label>
+      <label><input type="radio" name="q6" value="D"> 10</label>
+    </div><div class="feedback" id="f6"></div>
+  </div>
+
+  <div class="q"><h3>7. Diberi ξ = {1,2,3,4,5,6} dan A = {2,4,6}. Apakah A′?</h3>
+    <div class="opts">
+      <label><input type="radio" name="q7" value="A"> {1,3,5}</label>
+      <label><input type="radio" name="q7" value="B"> {2,4,6}</label>
+      <label><input type="radio" name="q7" value="C"> {1,2,3}</label>
+      <label><input type="radio" name="q7" value="D"> {4,5,6}</label>
+    </div><div class="feedback" id="f7"></div>
+  </div>
+
+  <div class="q"><h3>8. Jika satu set mempunyai 3 elemen, berapakah bilangan subset bagi set itu?</h3>
+    <div class="opts">
+      <label><input type="radio" name="q8" value="A"> 3</label>
+      <label><input type="radio" name="q8" value="B"> 6</label>
+      <label><input type="radio" name="q8" value="C"> 8</label>
+      <label><input type="radio" name="q8" value="D"> 9</label>
+    </div><div class="feedback" id="f8"></div>
+  </div>
+
+  <div class="q"><h3>9. Berdasarkan rajah, hubungan yang betul bagi set R dan S ialah...</h3>
+    <div class="diagram">
+      <svg width="430" height="250" viewBox="0 0 430 250" aria-label="Rajah set R dan S tak bersilang">
+        <text x="18" y="30" font-size="22" font-weight="700">ξ</text>
+        <rect x="42" y="18" width="350" height="190" fill="#fff" stroke="#1d4f70" stroke-width="3"/>
+        <circle cx="145" cy="108" r="58" fill="none" stroke="#2b668a" stroke-width="3"/>
+        <circle cx="285" cy="108" r="58" fill="none" stroke="#2b668a" stroke-width="3"/>
+        <text x="108" y="50" fill="#b51620" font-size="20" font-weight="700">R</text>
+        <text x="320" y="50" fill="#b51620" font-size="20" font-weight="700">S</text>
+
+        <circle cx="130" cy="90" r="4" fill="#1f8f66"/><text x="139" y="95" font-size="18">1</text>
+        <circle cx="150" cy="125" r="4" fill="#1f8f66"/><text x="159" y="130" font-size="18">2</text>
+        <circle cx="270" cy="90" r="4" fill="#1f8f66"/><text x="279" y="95" font-size="18">3</text>
+        <circle cx="287" cy="125" r="4" fill="#1f8f66"/><text x="296" y="130" font-size="18">4</text>
+      </svg>
+    </div>
+    <div class="opts">
+      <label><input type="radio" name="q9" value="A"> R ∩ S = ∅</label>
+      <label><input type="radio" name="q9" value="B"> R = S</label>
+      <label><input type="radio" name="q9" value="C"> R ⊂ S</label>
+      <label><input type="radio" name="q9" value="D"> S ⊂ R</label>
+    </div><div class="feedback" id="f9"></div>
+  </div>
+
+  <div class="q"><h3>10. Antara berikut, yang manakah sesuai menjadi set semesta bagi A = {2,4,6}?</h3>
+    <div class="opts">
+      <label><input type="radio" name="q10" value="A"> {1,3,5}</label>
+      <label><input type="radio" name="q10" value="B"> {2,4}</label>
+      <label><input type="radio" name="q10" value="C"> {1,2,3,4,5,6}</label>
+      <label><input type="radio" name="q10" value="D"> {7,8,9}</label>
+    </div><div class="feedback" id="f10"></div>
+  </div>
+
+  <div class="sectionTitle">Bahagian B — Subjektif (10 markah)</div>
+
+  <div class="q"><h3>11. A ialah set nombor genap positif kurang daripada 10. Senaraikan elemen A.</h3>
+    <div class="hint">Tulis jawapan dalam bentuk set, contoh: {1,2,3}</div>
+    <input id="q11" placeholder="{...}"><div class="feedback" id="f11"></div>
+  </div>
+
+  <div class="q"><h3>12. Diberi B = {2,4,6,8,10,12}. Nyatakan bilangan elemen B.</h3>
+    <input id="q12" inputmode="numeric" placeholder="n(B) ="><div class="feedback" id="f12"></div>
+  </div>
+
+  <div class="q"><h3>13. Diberi C = {a,b,c}. Senaraikan semua subset C yang mempunyai tepat 2 elemen.</h3>
+    <div class="hint">Contoh: {a,b}, {a,c}, {b,c}</div>
+    <input id="q13" placeholder="{...}, {...}, {...}"><div class="feedback" id="f13"></div>
+  </div>
+
+  <div class="q"><h3>14. Diberi ξ = {1,2,3,4,5,6,7,8} dan D = {2,4,6,8}. Nyatakan D′.</h3>
+    <input id="q14" placeholder="{...}"><div class="feedback" id="f14"></div>
+  </div>
+
+  <div class="q"><h3>15. Diberi E = {1,3,5} dan F = {2,4,6}. Nyatakan satu set semesta yang sesuai yang mengandungi semua elemen E dan F.</h3>
+    <input id="q15" placeholder="{...}"><div class="feedback" id="f15"></div>
+  </div>
+
+  <button class="btn full" id="submitBtn" onclick="submitAll()">Hantar Jawapan & Rekod Markah</button>
+  <div id="result" class="result"></div>
+  <div id="status" class="status"></div>
+</div>
+
+<script>
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyGrp9QEtqecdMCPHGNCwuhdAXiLK_MXG51qwUrOmQa1RBRp2D-9-bgJPqDIUAqL6JI/exec";
+const SET_NAME = "SET - TINGKATAN 1 KSSM";
+const START_TIME = Date.now();
+const STUDENTS = {"1DIAMOND": ["ALLY ZULFADHLI BIN MOHD ZAHID", "AMNI QAISARA BINTI MOHD FAIRUS", "ANGEL LAYCOOL BAJIK ANAK ROBERT", "AWADAH NUR RIZQAH BINTI MOHD IKHRAM", "CHONG JING XIN", "FATIN AQILAH NAFISAH BINTI MOHD SHUKOR", "FONG JIN RU", "HAWA DAMIA NURAIN BINTI MOHD HUSAINI", "LIEW RUO QI", "LIM JING XIN", "MOHAMAD SYAHMIRUL BIN MOHD SHAHNIZA", "MUHAMMAD ABDULLAH SALAM ALI BIN GHAZALY ALI", "MUHAMMAD AIDID AMERUL BIN MUHAMMAD NAZRI", "MUHAMMAD AISY RIZQIN BIN MUHAMMAD GHAZALI", "MUHAMMAD AMIR KAZIM BIN SUDARMAN", "MUHAMMAD AQIFF HAKIMI BIN SHARUL IZUAN", "MUHAMMAD DANISH SHAZRIL BIN ABDULLAH", "MUHAMMAD FITRI HAMIZAN BIN ZAMEER AKMAL", "MUHAMMAD HAZIQ FAIZ BIN HASHIM", "MUHAMMAD IRFAN NAUFAL BIN NOORHAFIZAN", "MUHAMMAD RYAN ZAFRIL BIN MOHD NIZEM", "NAFIZ MURSYID BIN MOHD NOR KHAIRIL", "NUR HANI DARINA BINTI KAMARUL ARIFFIN", "NUR HUSNA FAQIHAH BINTI ISHAK", "NUR SYAFA ADILA BINTI ISMAIL", "NURUL FAIQAH HUSNA BINTI MOHD FARID", "PONG YIN XIN", "RIA ZARA BINTI MOHD HAZWAN", "THONG SZE YANG", "WONG LIEK KAI"], "1EMERALD": ["YONG SHENG XIANG", "KIEW RUI BIN", "TAN XUAN QI", "ADAM EEHAN BIN HARNIE SHA FARDLY", "HSU HAO XUAN", "LAI TECK FOCK", "SIM YUK SHAN", "NUR FATHIAH SAKINA BINTI MOHAMAD FIRDHAUS", "TEOH XIN CI", "NUR AMNI ELLISYA BINTI SYAIFUL IZWAN", "QASEH QAISARA BINTI SAZALI", "RADIN RAYYAN HAFIZ", "ANISSA SOFIA BINTI MOHAMAD HAIRULNIZAM", "MUHAMMAD FAIZ ZAKWAN BIN MOHD NAJIB", "MUHAMMAD YOUNES BIN MOHD YAZID", "NUR AINA MAISARAH BINTI KHAIRUL AZMI", "NURISYA AFIRA BINTI ABDULLAH", "SITI NUR RAQIAH BINTI ABDULLAH", "AISYAH BINTI MUHAMAD MUSTAKIM", "NURIN INSYIRAH BINTI NIZARUDIN", "MUHAMMAD HADI JAZLI BIN MD ALMUTAKIL", "MUHAMMAD AIMANSHAH BIN AZIZUL", "MUHAMMAD NASRAWI BIN MOHAMMAD FETRIE", "DARSHANASRI A/P KRISHNAN", "NUR ELFFIFARISAH QOYYIMAH BINTI MOHD RAIS", "KAMIL IMRAN BIN JEFRY"], "1RUBY": ["LIONG SHENG KANG", "AFNI ELVINA BINTI ARAFI", "NUR DELISHA AMANI BINTI MOHD NOOR RAMDAN", "WONG KA HUI", "UMAIRAH QAISARA BINTI IZHAR", "NUR ELYANA BINTI ABDULLAH", "THAM ZHI HONG", "MUHAMMAD QAWI NAUFAL BIN MUHAMMAD SAFUAN", "SAHET NAUFAL BIN MD NASIR", "SYLVESTER SHEN KAI BING", "CHONG JIA JIA", "MUHAMMAD HAQQEM BIN KHAIRULIZAM", "NURHAQESSYA BINTI SYAHAFIZ", "SITI NUR ASYIKIN BINTI IRWIN", "TAKESH A/L R.G. BABU", "MUHAMMAD DANISH HAZIQ BIN NORARMIZAN", "MUHAMMAD ILHAM MUHAYYAD BIN MESWAN", "MUHAMMAD UMAR BIN KAMARUL ZAMAN", "CHONG LE XUAN", "DINESH A/L LECHUMANAN", "MOHAMAD AISY ADWA BIN MOHD FIRDAUS", "MUHAMAD SYAMIL ASYRAFF BIN HISHAM", "WONG KIAN RONG", "ADAM DAZLY BIN SHAHALWI", "LEONG ZI QI", "NUR KHAIRA QALISYA BINTI MOHD KHAIR", "NUR IRIS HUMAIRA BINTI MOHD NOOR", "MOHAMMAD SYAHRIZAD RAYYAN BIN SAHRUDIN"], "1SAPPHIRE": ["LOY XIN TIAN", "UMAIRAH QALISYA BINTI IZHAR", "CHONG XIAO NING", "INTAN NUR SYAFIQAH BINTI MUHAMMAD FIRDAUS", "NERONDY SHAHLAN", "ADAM DAZRYN BIN SHAHALWI", "MUHAMMAD QALIFF ASHRAFF BIN MD SYAH", "YAP ZHI JIE", "CHONG YI XIN", "LEONG YEE ROU", "PUTERI NUR DAMIA BINTI ZULTIKA", "RAISHA SUTRA BINTI RAFIUDDIN", "WONG JIA JIA", "MOHAMAD DANIEL DANESH BIN MOSLIM", "MUHAMMAD ADAM ISKANDAR BIN MOHD SANI", "SOLEHUDDINULHAFIZ BIN MOHD SHAFIEE", "MUHAMMAD ADAM ARIEF BIN OSMAN", "RAYQAL ISKANDAR BIN RIZAL", "GAN CHIK CHEN", "CHANG JIE QI", "NUR HAZIQAH NASRIN BINTI ABDULLAH", "JUSTIN PANG HAO JUN", "MOHAMAD ZUHAER BIN MOHAMAD NIZAM", "MUHAMMAD SUFIY BIN SALAHUDIN", "LAM JUN YI"]};
+const OBJ_ANS = {
+  q1:"B", q2:"B", q3:"B", q4:"B", q5:"B",
+  q6:"B", q7:"A", q8:"C", q9:"A", q10:"C"
+};
+
+function updateNamaList(){
+  const kelas = document.getElementById("kelas").value;
+  const nama = document.getElementById("nama");
+  nama.innerHTML = '<option value="">-- Pilih nama pelajar --</option>';
+  if(!kelas || !STUDENTS[kelas]) return;
+  STUDENTS[kelas].forEach(n=>{
+    const opt = document.createElement("option");
+    opt.value = n;
+    opt.textContent = n;
+    nama.appendChild(opt);
+  });
+}
+
+function getNamaPelajar(){
+  const selected = document.getElementById("nama").value.trim();
+  const manual = document.getElementById("namaManual").value.trim();
+  return manual || selected;
+}
+
+function normSet(s){
+  return String(s||"").toLowerCase().replace(/\s+/g,"").replace(/[{}]/g,"")
+    .split(",").map(x=>x.trim()).filter(Boolean).sort().join(",");
+}
+function normText(s){ return String(s||"").toLowerCase().replace(/\s+/g,"").replace(/[{}]/g,""); }
+function markFeedback(id, ok, msg){
+  const el = document.getElementById(id);
+  el.className = "feedback " + (ok ? "ok" : "bad");
+  el.textContent = (ok ? "✓ " : "✗ ") + msg;
+}
+function getRadio(name){
+  const x = document.querySelector('input[name="' + name + '"]:checked');
+  return x ? x.value : "";
+}
+
+function checkSubjective(){
+  let score = 0;
+
+  let ok = normSet(document.getElementById("q11").value) === "2,4,6,8";
+  if(ok) score += 2;
+  markFeedback("f11", ok, ok ? "Betul" : "Jawapan yang betul: {2,4,6,8}");
+
+  ok = normText(document.getElementById("q12").value) === "6";
+  if(ok) score += 2;
+  markFeedback("f12", ok, ok ? "Betul" : "Jawapan yang betul: 6");
+
+  const raw13 = String(document.getElementById("q13").value || "").toLowerCase().replace(/\s+/g,"");
+  const subsets13 = (raw13.match(/\{[^}]+\}/g) || []).map(normSet).sort();
+  const target13 = ["a,b","a,c","b,c"].sort();
+  ok = JSON.stringify(subsets13) === JSON.stringify(target13);
+  if(ok) score += 2;
+  markFeedback("f13", ok, ok ? "Betul" : "Jawapan yang betul: {a,b}, {a,c}, {b,c}");
+
+  ok = normSet(document.getElementById("q14").value) === "1,3,5,7";
+  if(ok) score += 2;
+  markFeedback("f14", ok, ok ? "Betul" : "Jawapan yang betul: {1,3,5,7}");
+
+  ok = ["1,2,3,4,5,6","1,2,3,4,5,6,7","1,2,3,4,5,6,7,8"].includes(normSet(document.getElementById("q15").value));
+  if(ok) score += 2;
+  markFeedback("f15", ok, ok ? "Betul" : "Contoh jawapan: {1,2,3,4,5,6}");
+
+  return score;
+}
+
+async function submitAll(){
+  const nama = getNamaPelajar();
+  const kelas = document.getElementById("kelas").value.trim();
+  if(!kelas || !nama){
+    alert("Sila pilih kelas dan nama pelajar.");
+    return;
+  }
+
+  let objScore = 0;
+  for(let i=1;i<=10;i++){
+    const chosen = getRadio("q"+i);
+    const ok = chosen === OBJ_ANS["q"+i];
+    if(ok) objScore++;
+    markFeedback("f"+i, ok, ok ? "Betul" : "Semak semula jawapan.");
+  }
+
+  const subjScore = checkSubjective();
+  const totalScore = objScore + subjScore;
+  const total = 20;
+  const pct = Math.round(totalScore/total*10000)/100;
+  const masaSaat = Math.round((Date.now()-START_TIME)/1000);
+
+  const result = document.getElementById("result");
+  result.style.display = "block";
+  result.innerHTML = "<b>Markah: " + totalScore + "/" + total + "</b><br>Peratus: " + pct.toFixed(1) + "%";
+
+  document.getElementById("status").textContent = "Menghantar markah ke Google Sheet...";
+
+  const form = new URLSearchParams();
+  form.set("action","submit");
+  form.set("set", SET_NAME);
+  form.set("kelas", kelas);
+  form.set("nama", nama);
+  form.set("markah", String(totalScore));
+  form.set("jumlah", String(total));
+  form.set("masaSaat", String(masaSaat));
+
+  try {
+    const r = await fetch(WEB_APP_URL, {
+      method:"POST",
+      headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},
+      body: form.toString()
+    });
+    const data = await r.json();
+
+    if(data.ok){
+      document.getElementById("status").textContent = "✓ Markah berjaya direkod. Percubaan " + (data.percubaan || 1) + "/2.";
+      document.getElementById("submitBtn").disabled = true;
+      document.getElementById("submitBtn").textContent = "Markah Sudah Direkod";
+    } else {
+      document.getElementById("status").textContent = data.message || "Markah tidak dapat direkod.";
+    }
+  } catch(e) {
+    document.getElementById("status").textContent = "Markah pada skrin sudah dikira tetapi penghantaran gagal: " + e.message;
+  }
+}
+</script>
+</body>
+</html>

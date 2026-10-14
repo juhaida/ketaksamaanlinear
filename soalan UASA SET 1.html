@@ -1,0 +1,1247 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UPSA Matematik Tingkatan 1 - Set 2</title>
+<style>
+:root{--navy:#183d6d;--blue:#2e5eaa;--bg:#eef3f8;--line:#d8e1ea;--ok:#147a45;--bad:#b42318}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#182230}
+.wrap{max-width:900px;margin:auto;padding:10px}
+.cover{background:#fff;border:1px solid #cdd8e3;border-radius:8px;overflow:hidden;box-shadow:0 8px 25px #0001;margin-top:10px}
+.coverHead{background:#203f70;color:#fff;text-align:center;font-size:1.35rem;font-weight:900;line-height:1.45;padding:26px 12px}
+.coverBody{display:grid;grid-template-columns:105px 1fr;min-height:630px}
+.coverSide{background:#365f9d;color:#fff;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);font-size:1.65rem;font-weight:900}
+.coverMain{padding:18px}
+.titleRow{display:flex;justify-content:space-between;border-bottom:2px solid #304f79;padding-bottom:6px;font-weight:900;font-size:1.1rem}
+.instructions{line-height:1.5;font-size:.88rem}
+.markTable{width:100%;border-collapse:collapse;margin:12px 0;font-size:.79rem}
+.markTable th,.markTable td{border:1px solid #667;padding:5px;text-align:center}.markTable th{background:#f1f5f9}
+.loginGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{font-weight:800;font-size:.8rem;display:block;margin-bottom:5px}
+input,select{width:100%;padding:10px;border:1px solid #cad5df;border-radius:9px;font:inherit;background:#fff}
+.startBtn,.navBtn{border:0;border-radius:10px;padding:12px 16px;background:var(--blue);color:#fff;font-weight:900;cursor:pointer}
+.startBtn{width:100%;margin-top:12px}
+.timerBar{display:none;position:sticky;top:0;z-index:50;background:#102f52;color:#fff;padding:9px 13px;border-radius:0 0 12px 12px;justify-content:space-between;align-items:center;box-shadow:0 4px 12px #0003}
+.progress{height:6px;background:#d9e3ec;border-radius:99px;overflow:hidden;margin-top:6px}.progress>div{height:100%;background:#4db1ff;width:0}
+.exam{display:none}.qpage{display:none;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 6px 18px #0001;min-height:78vh}.qpage.active{display:block}
+.qhead{display:flex;justify-content:space-between;font-size:1.15rem;font-weight:900;color:#123e68;margin-bottom:14px}
+.questionText{font-size:1.02rem;line-height:1.55}.math{font-family:"Times New Roman",serif;font-size:1.35rem;text-align:center;margin:18px 0}.frac{display:inline-grid;grid-template-rows:auto auto;vertical-align:middle;text-align:center;line-height:1;margin:0 2px}.frac span:first-child{border-bottom:1.4px solid #222;padding:0 5px 2px}.frac span:last-child{padding-top:2px}.mixed{display:inline-flex;align-items:center;gap:2px}.originalBox{border:1px solid #222;padding:14px;border-radius:4px;margin:12px 0;background:#fff}.numberGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px 20px;align-items:center;text-align:center;font-family:"Times New Roman",serif;font-size:1.25rem}.diagramDraw{display:flex;justify-content:center;margin:14px 0}.diagramDraw svg{max-width:100%;height:auto}
+.frac{display:inline-grid;grid-template-rows:auto auto;vertical-align:middle;text-align:center;line-height:1}.frac span:first-child{border-bottom:1px solid #222;padding:0 4px 2px}.frac span:last-child{padding-top:2px}
+.choiceGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}.choiceGrid label{margin:0}.choiceGrid input{display:none}
+.choiceGrid label > span{display:block;border:2px solid #d4dce5;border-radius:12px;padding:13px;cursor:pointer;min-height:52px}.choiceGrid input:checked+span{border-color:#2e5eaa;background:#eaf2ff;color:#174d89}
+.diagram{display:flex;justify-content:center;margin:14px 0}.diagram img{max-width:100%;height:auto;border:1px solid #e0e6ed;border-radius:10px;background:#fff}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}.field{background:#f9fbfd;border:1px solid #e1e7ed;border-radius:10px;padding:9px}
+.listBoxes{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.listBoxes input{width:78px;text-align:center;font-weight:800}
+.ratioBoxes{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:center;margin-top:12px;font-size:1.1rem;font-weight:900}.ratioBoxes input{width:72px;text-align:center}
+.singleAnswer{max-width:420px;margin:8px 0 16px}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:22px}.secondary{background:#667788}
+.result,.review{display:none;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin:14px 0}.result{background:#ecfdf3;border-color:#b9e6ca}
+.reviewRow{padding:8px 0;border-bottom:1px dashed #d9e1e8}.ok{color:var(--ok);font-weight:900}.bad{color:var(--bad);font-weight:900}
+.status{font-size:.8rem;color:#667085;text-align:center;margin:8px 0}.warn{background:#fff4e6;border-left:4px solid #f59e0b;padding:9px;border-radius:8px;font-size:.8rem;margin-top:10px}
+@media(max-width:650px){.coverBody{grid-template-columns:62px 1fr}.coverSide{font-size:1.05rem}.coverMain{padding:11px}.loginGrid,.fields,.choiceGrid{grid-template-columns:1fr}.qpage{padding:12px;min-height:85vh}}
+
+.mathKeyToggle{
+  position:fixed;
+  right:14px;
+  bottom:14px;
+  z-index:120;
+  width:58px;
+  height:58px;
+  border:none;
+  border-radius:50%;
+  background:#173d6d;
+  color:#fff;
+  font-size:1.35rem;
+  font-weight:900;
+  box-shadow:0 8px 22px rgba(0,0,0,.28);
+  cursor:pointer;
+}
+.mathKeypad{
+  position:fixed;
+  right:12px;
+  bottom:82px;
+  z-index:119;
+  width:min(360px,calc(100vw - 24px));
+  background:#fff;
+  border:1px solid #cfd9e3;
+  border-radius:16px;
+  box-shadow:0 12px 32px rgba(0,0,0,.28);
+  padding:10px;
+  display:none;
+}
+.mathKeypad.open{display:block}
+.mathKeyHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:8px;
+}
+.mathKeyHead b{color:#173d6d}
+.mathKeyHead button{
+  border:0;
+  background:#eef3f8;
+  border-radius:8px;
+  padding:6px 9px;
+  font-weight:900;
+  cursor:pointer;
+}
+.mathPreview{
+  min-height:42px;
+  border:1px solid #d8e1ea;
+  border-radius:10px;
+  background:#f8fbff;
+  padding:8px 10px;
+  margin-bottom:8px;
+  font-family:"Times New Roman",serif;
+  font-size:1.15rem;
+  overflow:auto;
+}
+.mathKeys{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:6px;
+}
+.mathKeys button{
+  border:1px solid #d4dde6;
+  background:#fff;
+  border-radius:9px;
+  min-height:42px;
+  font-size:1rem;
+  font-weight:800;
+  cursor:pointer;
+}
+.mathKeys button:active{transform:scale(.97)}
+.mathKeys .wide{grid-column:span 2}
+.mathKeys .accent{background:#eaf2ff;color:#174d89;border-color:#9fc0e8}
+.mathKeys .danger{background:#fff2f2;color:#a61b1b}
+.mathKeys .op{background:#f6f8fb;color:#173d6d}
+@media(max-width:520px){
+  .mathKeypad{right:6px;bottom:74px;width:calc(100vw - 12px)}
+  .mathKeyToggle{right:8px;bottom:8px}
+  .mathKeys{grid-template-columns:repeat(5,1fr)}
+}
+
+
+.guideBox{
+  margin:12px 0;
+  border:1px solid #b9d6ee;
+  border-left:5px solid #2e5eaa;
+  background:#f6fbff;
+  border-radius:12px;
+  overflow:hidden;
+}
+.guideBox summary{
+  cursor:pointer;
+  padding:11px 13px;
+  font-weight:900;
+  color:#174d89;
+  user-select:none;
+}
+.guideBody{
+  padding:0 14px 13px 14px;
+  font-size:.9rem;
+  line-height:1.55;
+}
+.guideBody ol,.guideBody ul{margin:7px 0 7px 20px;padding:0}
+.guideBody .formula{
+  font-family:"Times New Roman",serif;
+  font-size:1.05rem;
+  background:#fff;
+  border:1px solid #dfe8f1;
+  border-radius:9px;
+  padding:8px 10px;
+  margin:7px 0;
+}
+
+
+.mixed{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  white-space:nowrap;
+  vertical-align:middle;
+}
+.mixed .whole{
+  font-size:1em;
+  line-height:1;
+}
+.mixed .frac{
+  font-size:.82em;
+  margin-left:1px;
+}
+.frac{
+  display:inline-grid;
+  grid-template-rows:auto auto;
+  vertical-align:middle;
+  text-align:center;
+  line-height:1;
+  margin:0 2px;
+}
+.frac span:first-child{
+  border-bottom:1.2px solid currentColor;
+  padding:0 3px 1px;
+}
+.frac span:last-child{
+  padding-top:1px;
+}
+
+
+.choiceGrid .frac{
+  display:inline-grid !important;
+  grid-template-rows:auto auto !important;
+  vertical-align:middle !important;
+  text-align:center !important;
+  line-height:1 !important;
+  margin:0 3px !important;
+  font-family:"Times New Roman",serif;
+  min-height:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  padding:0 !important;
+  cursor:inherit !important;
+  background:transparent !important;
+}
+.choiceGrid .frac > span{
+  display:block !important;
+  border:0 !important;
+  border-radius:0 !important;
+  padding:0 4px !important;
+  min-height:0 !important;
+  background:transparent !important;
+  cursor:inherit !important;
+}
+.choiceGrid .frac > span:first-child{
+  border-bottom:1.3px solid currentColor !important;
+  padding-bottom:2px !important;
+}
+.choiceGrid .frac > span:last-child{
+  padding-top:2px !important;
+}
+.choiceGrid .mixed{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:4px !important;
+  vertical-align:middle !important;
+}
+.choiceGrid .mixed .whole{
+  display:inline !important;
+  border:0 !important;
+  padding:0 !important;
+  min-height:0 !important;
+  background:transparent !important;
+}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<section id="cover" class="cover">
+<div class="coverHead">UJIAN PERTENGAHAN SESI AKADEMIK (UPSA)<br>SESI 2023/2024<br>TINGKATAN SATU</div>
+<div class="coverBody"><div class="coverSide">Matematik Tingkatan 1</div><div class="coverMain">
+<div class="titleRow"><span>UJIAN BERTULIS (Set 2)</span><span>2 Jam</span></div>
+<div class="instructions"><b>ARAHAN:</b><ol>
+<li>Satu soalan dipaparkan pada satu halaman.</li><li>Tekan <b>Seterusnya</b> selepas menjawab.</li><li>Soalan berrajah sahaja menggunakan rajah asal; soalan lain telah ditaip semula supaya lebih kemas.</li><li>Bahagian C: jawapan akhir sahaja.</li><li>Jawapan betul hanya keluar selepas <b>Hantar & Semak</b>.</li>
+</ol></div>
+<table class="markTable"><thead><tr><th>Bahagian</th><th>Soalan</th><th>Markah Penuh</th><th>Markah Diperoleh</th></tr></thead><tbody>
+<tr><td>A</td><td>1-20</td><td>20</td><td id="mA">-</td></tr>
+<tr><td rowspan="5">B</td><td>21</td><td>4</td><td id="m21">-</td></tr><tr><td>22</td><td>4</td><td id="m22">-</td></tr><tr><td>23</td><td>4</td><td id="m23">-</td></tr><tr><td>24</td><td>4</td><td id="m24">-</td></tr><tr><td>25</td><td>4</td><td id="m25">-</td></tr>
+<tr><td rowspan="6">C</td><td>26</td><td>10</td><td id="m26">-</td></tr><tr><td>27</td><td>10</td><td id="m27">-</td></tr><tr><td>28</td><td>10</td><td id="m28">-</td></tr><tr><td>29</td><td>10</td><td id="m29">-</td></tr><tr><td>30</td><td>10</td><td id="m30">-</td></tr><tr><td>31</td><td>10</td><td id="m31">-</td></tr>
+<tr><th colspan="2">JUMLAH</th><th>100</th><th id="mTotal">-</th></tr></tbody></table>
+<div class="loginGrid"><div><label>KELAS</label><select id="kelas" onchange="updateNamaList()"><option value="">-- Pilih kelas --</option><option>1DIAMOND</option><option>1EMERALD</option><option>1RUBY</option><option>1SAPPHIRE</option></select></div>
+<div><label>NAMA</label><select id="nama"><option value="">-- Pilih nama pelajar --</option></select></div></div>
+<div style="margin-top:8px"><label>Jika nama tiada dalam senarai</label><input id="namaManual" placeholder="Taip nama sendiri"></div>
+<button class="startBtn" onclick="startExam()">Mula Ujian</button><div class="warn">Had masa 2 jam bermula apabila ujian dimulakan.</div>
+</div></div></section>
+
+<div id="timerBar" class="timerBar"><div><b id="topQ">Soalan 1/31</b><div class="progress"><div id="progressFill"></div></div></div><div id="timer">02:00:00</div></div>
+<main id="exam" class="exam">
+<section class="qpage" id="page1">
+  <div class="qhead"><span>Soalan 1</span><span>1/31</span></div>
+  <div class="questionText">
+<p>Rajah garis nombor di bawah mempunyai tanda yang sama jarak. Tentukan nilai <i>x</i>.</p>
+<div class="diagram"><img src="data:image/webp;base64,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" alt="Garis nombor"></div>
+<div class="choiceGrid"><label><input type="radio" name="q1" value="A"><span><b>A</b> 3.20</span></label><label><input type="radio" name="q1" value="B"><span><b>B</b> 3.35</span></label><label><input type="radio" name="q1" value="C"><span><b>C</b> 3.40</span></label><label><input type="radio" name="q1" value="D"><span><b>D</b> 3.45</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" disabled>← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page2">
+  <div class="qhead"><span>Soalan 2</span><span>2/31</span></div>
+  <div class="questionText">
+<p>Hitung nilai:</p>
+<div class="math">7 − 16 ÷ (−4) + (−9)</div>
+<div class="choiceGrid"><label><input type="radio" name="q2" value="A"><span><b>A</b> 2</span></label><label><input type="radio" name="q2" value="B"><span><b>B</b> 3</span></label><label><input type="radio" name="q2" value="C"><span><b>C</b> 5</span></label><label><input type="radio" name="q2" value="D"><span><b>D</b> 7</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page3">
+  <div class="qhead"><span>Soalan 3</span><span>3/31</span></div>
+  <div class="questionText">
+<p>Pilih nombor nisbah daripada pilihan berikut.</p>
+<div class="choiceGrid"><label><input type="radio" name="q3" value="A"><span><b>A</b> √2</span></label><label><input type="radio" name="q3" value="B"><span><b>B</b> π</span></label><label><input type="radio" name="q3" value="C"><span><b>C</b> √39</span></label><label><input type="radio" name="q3" value="D"><span><b>D</b> 1.5</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page4">
+  <div class="qhead"><span>Soalan 4</span><span>4/31</span></div>
+  <div class="questionText">
+<p>Cari nilai <i>x</i> jika</p>
+<div class="math">2.58 + <span class="frac"><span>3</span><span>4</span></span>(−1.5) = 0.5x</div>
+<div class="choiceGrid"><label><input type="radio" name="q4" value="A"><span><b>A</b> 2.81</span></label><label><input type="radio" name="q4" value="B"><span><b>B</b> 2.87</span></label><label><input type="radio" name="q4" value="C"><span><b>C</b> 2.91</span></label><label><input type="radio" name="q4" value="D"><span><b>D</b> 2.95</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page5">
+  <div class="qhead"><span>Soalan 5</span><span>5/31</span></div>
+  <div class="questionText">
+<p>Antara senarai berikut, yang manakah mengandungi semua faktor sepunya bagi 16 dan 24?</p>
+<div class="choiceGrid"><label><input type="radio" name="q5" value="A"><span><b>A</b> 1, 2, 4, 6, 8</span></label><label><input type="radio" name="q5" value="B"><span><b>B</b> 1, 2, 4, 8</span></label><label><input type="radio" name="q5" value="C"><span><b>C</b> 1, 2, 4, 6</span></label><label><input type="radio" name="q5" value="D"><span><b>D</b> 1, 4, 6, 8</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page6">
+  <div class="qhead"><span>Soalan 6</span><span>6/31</span></div>
+  <div class="questionText">
+<p>GSTK bagi <i>x</i> dan 8 ialah 48. Pilih satu nilai yang mungkin bagi <i>x</i>.</p>
+<div class="choiceGrid"><label><input type="radio" name="q6" value="A"><span><b>A</b> 36</span></label><label><input type="radio" name="q6" value="B"><span><b>B</b> 40</span></label><label><input type="radio" name="q6" value="C"><span><b>C</b> 48</span></label><label><input type="radio" name="q6" value="D"><span><b>D</b> 52</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page7">
+  <div class="qhead"><span>Soalan 7</span><span>7/31</span></div>
+  <div class="questionText">
+<p>Tentukan FSTB bagi 27, 45 dan 63.</p>
+<div class="choiceGrid"><label><input type="radio" name="q7" value="A"><span><b>A</b> 9</span></label><label><input type="radio" name="q7" value="B"><span><b>B</b> 12</span></label><label><input type="radio" name="q7" value="C"><span><b>C</b> 27</span></label><label><input type="radio" name="q7" value="D"><span><b>D</b> 36</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page8">
+  <div class="qhead"><span>Soalan 8</span><span>8/31</span></div>
+  <div class="questionText">
+<p>Tiga lampu isyarat berubah setiap 20 s, 30 s dan 40 s. Jika semuanya berubah serentak pada 7:00 pagi, bilakah ketiga-tiganya akan berubah serentak sekali lagi?</p>
+<div class="choiceGrid"><label><input type="radio" name="q8" value="A"><span><b>A</b> 7:01 pagi</span></label><label><input type="radio" name="q8" value="B"><span><b>B</b> 7:02 pagi</span></label><label><input type="radio" name="q8" value="C"><span><b>C</b> 7:03 pagi</span></label><label><input type="radio" name="q8" value="D"><span><b>D</b> 7:04 pagi</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page9">
+  <div class="qhead"><span>Soalan 9</span><span>9/31</span></div>
+  <div class="questionText">
+<p>Hitung nilai:</p>
+<div class="math">√64 ÷ (−<span class="frac"><span>3</span><span>4</span></span>)<sup>3</sup></div>
+<div class="choiceGrid"><label><input type="radio" name="q9" value="A"><span><b>A</b> <span class="mixed">−<span class="whole">11</span><span class="frac"><span>7</span><span>9</span></span></span></span></label><label><input type="radio" name="q9" value="B"><span><b>B</b> <span class="mixed">−<span class="whole">17</span><span class="frac"><span>2</span><span>3</span></span></span></span></label><label><input type="radio" name="q9" value="C"><span><b>C</b> <span class="mixed">−<span class="whole">12</span><span class="frac"><span>26</span><span>27</span></span></span></span></label><label><input type="radio" name="q9" value="D"><span><b>D</b> <span class="mixed">−<span class="whole">18</span><span class="frac"><span>26</span><span>27</span></span></span></span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page10">
+  <div class="qhead"><span>Soalan 10</span><span>10/31</span></div>
+  <div class="questionText">
+<p>Luas sebuah segi empat sama ialah 441 cm². Cari panjang sisinya.</p>
+<div class="choiceGrid"><label><input type="radio" name="q10" value="A"><span><b>A</b> 11 cm</span></label><label><input type="radio" name="q10" value="B"><span><b>B</b> 16 cm</span></label><label><input type="radio" name="q10" value="C"><span><b>C</b> 21 cm</span></label><label><input type="radio" name="q10" value="D"><span><b>D</b> 23 cm</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page11">
+  <div class="qhead"><span>Soalan 11</span><span>11/31</span></div>
+  <div class="questionText">
+<p>Pilih kuasa dua sempurna.</p>
+<div class="choiceGrid"><label><input type="radio" name="q11" value="A"><span><b>A</b> 121</span></label><label><input type="radio" name="q11" value="B"><span><b>B</b> 216</span></label><label><input type="radio" name="q11" value="C"><span><b>C</b> 223</span></label><label><input type="radio" name="q11" value="D"><span><b>D</b> 440</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page12">
+  <div class="qhead"><span>Soalan 12</span><span>12/31</span></div>
+  <div class="questionText">
+<p>Hitung nilai ungkapan berikut:</p>
+<div class="math">∛(−<span class="frac"><span>1</span><span>216</span></span>) × (3<sup>3</sup> − √(<span class="mixed"><span class="whole">2</span><span class="frac"><span>7</span><span>9</span></span></span>))</div>
+<div class="choiceGrid"><label><input type="radio" name="q12" value="A"><span><b>A</b> <span class="mixed">−<span class="whole">2</span><span class="frac"><span>6</span><span>7</span></span></span></span></label><label><input type="radio" name="q12" value="B"><span><b>B</b> <span class="mixed"><span class="whole">4</span><span class="frac"><span>3</span><span>11</span></span></span></span></label><label><input type="radio" name="q12" value="C"><span><b>C</b> <span class="mixed"><span class="whole">2</span><span class="frac"><span>5</span><span>7</span></span></span></span></label><label><input type="radio" name="q12" value="D"><span><b>D</b> <span class="mixed">−<span class="whole">4</span><span class="frac"><span>2</span><span>9</span></span></span></span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page13">
+  <div class="qhead"><span>Soalan 13</span><span>13/31</span></div>
+  <div class="questionText">
+<p>Ringkaskan nisbah 0.07 : 0.28.</p>
+<div class="choiceGrid"><label><input type="radio" name="q13" value="A"><span><b>A</b> 1 : 2</span></label><label><input type="radio" name="q13" value="B"><span><b>B</b> 1 : 4</span></label><label><input type="radio" name="q13" value="C"><span><b>C</b> 1 : 7</span></label><label><input type="radio" name="q13" value="D"><span><b>D</b> 1 : 9</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page14">
+  <div class="qhead"><span>Soalan 14</span><span>14/31</span></div>
+  <div class="questionText">
+<p>Pilih pasangan nisbah yang kedua-duanya setara dengan 16 : 12 : 36.</p>
+<div class="choiceGrid"><label><input type="radio" name="q14" value="A"><span><b>A</b> 4 : 3 : 7 dan <span class="frac"><span>2</span><span>9</span></span> : <span class="frac"><span>1</span><span>4</span></span> : <span class="frac"><span>1</span><span>3</span></span></span></label><label><input type="radio" name="q14" value="B"><span><b>B</b> 8 : 6 : 19 dan 12 : 16 : 9</span></label><label><input type="radio" name="q14" value="C"><span><b>C</b> 8 : 6 : 18 dan 35 : 21 : 12</span></label><label><input type="radio" name="q14" value="D"><span><b>D</b> 32 : 24 : 72 dan <span class="frac"><span>4</span><span>9</span></span> : <span class="frac"><span>1</span><span>3</span></span> : 1</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page15">
+  <div class="qhead"><span>Soalan 15</span><span>15/31</span></div>
+  <div class="questionText">
+<p>Sebuah motosikal bergerak 184 km dalam 2 jam. Jika jarak berkadar terus dengan masa, berapakah jarak yang ditempuh dalam 3 jam?</p>
+<div class="choiceGrid"><label><input type="radio" name="q15" value="A"><span><b>A</b> 250 km</span></label><label><input type="radio" name="q15" value="B"><span><b>B</b> 265 km</span></label><label><input type="radio" name="q15" value="C"><span><b>C</b> 276 km</span></label><label><input type="radio" name="q15" value="D"><span><b>D</b> 397 km</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page16">
+  <div class="qhead"><span>Soalan 16</span><span>16/31</span></div>
+  <div class="questionText">
+<p>Diberi x : y = 6 : 5 dan y : z = 4 : 1. Jika x = 96, cari z.</p>
+<div class="choiceGrid"><label><input type="radio" name="q16" value="A"><span><b>A</b> 20</span></label><label><input type="radio" name="q16" value="B"><span><b>B</b> 24</span></label><label><input type="radio" name="q16" value="C"><span><b>C</b> 28.2</span></label><label><input type="radio" name="q16" value="D"><span><b>D</b> 32.6</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page17">
+  <div class="qhead"><span>Soalan 17</span><span>17/31</span></div>
+  <div class="questionText">
+<p>Permudahkan ungkapan:</p>
+<div class="math">(5ab + 9c) − (−3c + 7) + (15ab − 2c)</div>
+<div class="choiceGrid"><label><input type="radio" name="q17" value="A"><span><b>A</b> 18ab − 12c + 7</span></label><label><input type="radio" name="q17" value="B"><span><b>B</b> 20ab + 4c − 5</span></label><label><input type="radio" name="q17" value="C"><span><b>C</b> 20ab − 10c − 7</span></label><label><input type="radio" name="q17" value="D"><span><b>D</b> 25ab − 8c + 27</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page18">
+  <div class="qhead"><span>Soalan 18</span><span>18/31</span></div>
+  <div class="questionText">
+<p>Diberi p² + 3q = −8 dan 12pr = 9. Cari nilai p² − (12pr − 3q).</p>
+<div class="choiceGrid"><label><input type="radio" name="q18" value="A"><span><b>A</b> −12</span></label><label><input type="radio" name="q18" value="B"><span><b>B</b> −17</span></label><label><input type="radio" name="q18" value="C"><span><b>C</b> 11</span></label><label><input type="radio" name="q18" value="D"><span><b>D</b> 20</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page19">
+  <div class="qhead"><span>Soalan 19</span><span>19/31</span></div>
+  <div class="questionText">
+<p>Nadilah membeli 12 buah dan Alisa membeli 5 buah. Harga setiap buah ialah RM3.75. Berapakah beza bayaran mereka?</p>
+<div class="choiceGrid"><label><input type="radio" name="q19" value="A"><span><b>A</b> RM15.90</span></label><label><input type="radio" name="q19" value="B"><span><b>B</b> RM18.53</span></label><label><input type="radio" name="q19" value="C"><span><b>C</b> RM22.76</span></label><label><input type="radio" name="q19" value="D"><span><b>D</b> RM26.25</span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page20">
+  <div class="qhead"><span>Soalan 20</span><span>20/31</span></div>
+  <div class="questionText">
+<p>Permudahkan:</p>
+<div class="math">
+<span class="frac"><span>−12mn × 16n²p</span><span>3mp³</span></span> × (4m²n)
+</div>
+<div class="choiceGrid"><label><input type="radio" name="q20" value="A"><span><b>A</b> −<span class="frac"><span>256m³n⁴</span><span>p²</span></span></span></label><label><input type="radio" name="q20" value="B"><span><b>B</b> −<span class="frac"><span>153m²n⁴</span><span>p³</span></span></span></label><label><input type="radio" name="q20" value="C"><span><b>C</b> <span class="frac"><span>26m²n</span><span>3p</span></span></span></label><label><input type="radio" name="q20" value="D"><span><b>D</b> <span class="frac"><span>93m³n⁴</span><span>4p</span></span></span></label></div></div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page21">
+  <div class="qhead"><span>Soalan 21</span><span>21/31</span></div>
+  <div class="questionText">
+<details class="guideBox">
+  <summary>💡 Panduan Menjawab Soalan 21</summary>
+  <div class="guideBody">
+    <b>(a) Kenal pasti integer</b>
+    <ul>
+      <li>Integer ialah nombor bulat positif, nombor bulat negatif dan sifar.</li>
+      <li>Nombor perpuluhan yang sebenarnya sama dengan nombor bulat, seperti 2.0 atau −6.0, masih bernilai integer.</li>
+      <li>Pecahan yang bukan nombor bulat dan nombor seperti √2 bukan integer.</li>
+      <li>Masukkan setiap integer dalam satu kotak jawapan.</li>
+    </ul>
+
+    <b>(b) Susun dalam tertib menurun</b>
+    <ol>
+      <li>Mulakan dengan integer yang paling besar.</li>
+      <li>Teruskan hingga integer yang paling kecil.</li>
+      <li>Ingat: bagi nombor negatif, nombor yang lebih hampir kepada sifar adalah lebih besar.</li>
+    </ol>
+  </div>
+</details>
+
+<p><b>(a)</b> Bulatkan integer-integer daripada senarai nombor di bawah.</p>
+<div class="originalBox">
+  <div class="numberGrid">
+    <span>−8</span>
+    <span>2.0</span>
+    <span class="mixed">−<span class="whole">3</span><span class="frac"><span>1</span><span>2</span></span></span>
+    <span>13</span>
+    <span>−6.0</span>
+    <span>−12</span>
+
+    <span>6.31</span>
+    <span>−3</span>
+    <span>5</span>
+    <span>√2</span>
+    <span>1</span>
+    <span class="frac"><span>5</span><span>2</span></span>
+  </div>
+</div>
+<p><b>Jawapan 21(a):</b> Masukkan integer yang dipilih, satu nombor dalam setiap kotak.</p>
+<div class="listBoxes">
+  <input id="q21a_1"><input id="q21a_2"><input id="q21a_3"><input id="q21a_4">
+  <input id="q21a_5"><input id="q21a_6"><input id="q21a_7"><input id="q21a_8">
+</div>
+
+<p><b>(b)</b> Susun integer-integer itu dalam tertib menurun.</p>
+<p><b>Jawapan 21(b):</b> Satu nombor dalam setiap kotak, dari terbesar ke terkecil.</p>
+<div class="listBoxes">
+  <input id="q21b_1"><input id="q21b_2"><input id="q21b_3"><input id="q21b_4">
+  <input id="q21b_5"><input id="q21b_6"><input id="q21b_7"><input id="q21b_8">
+</div>
+</div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page22">
+  <div class="qhead"><span>Soalan 22</span><span>22/31</span></div>
+  <div class="questionText">
+<details class="guideBox">
+  <summary>💡 Panduan Menjawab Soalan 22</summary>
+  <div class="guideBody">
+    <b>(a) Faktor bagi 85</b>
+    <ol>
+      <li>Cari nombor yang boleh membahagi 85 tanpa baki.</li>
+      <li>Mulakan dengan 1 dan 85.</li>
+      <li>Cuba nombor kecil yang lain dan cari pasangan faktornya.</li>
+      <li>Masukkan setiap faktor dalam satu kotak.</li>
+    </ol>
+
+    <b>(b) Faktor perdana</b>
+    <ul>
+      <li>Daripada senarai faktor tadi, pilih hanya nombor perdana.</li>
+      <li>Nombor perdana mempunyai tepat dua faktor: 1 dan dirinya sendiri.</li>
+    </ul>
+  </div>
+</details>
+
+<p><b>(a)</b> Senaraikan semua faktor bagi 85.</p>
+<div class="listBoxes"><input id="q22a_1" placeholder="1"><input id="q22a_2" placeholder="2"><input id="q22a_3" placeholder="3"><input id="q22a_4" placeholder="4"></div>
+<p><b>(b)</b> Nyatakan faktor perdana bagi 85.</p>
+<div class="listBoxes"><input id="q22b_1" placeholder="1"><input id="q22b_2" placeholder="2"></div>
+</div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page23">
+  <div class="qhead"><span>Soalan 23</span><span>23/31</span></div>
+  <div class="questionText">
+<details class="guideBox">
+  <summary>💡 Panduan Menjawab Soalan 23</summary>
+  <div class="guideBody">
+    <b>(a) Benar atau palsu</b>
+    <ol>
+      <li>Kira nilai di sebelah kiri pernyataan.</li>
+      <li>Bandingkan dengan nilai yang diberi.</li>
+      <li>Jika sama, pilih <b>Benar</b>. Jika tidak sama, pilih <b>Palsu</b>.</li>
+    </ol>
+
+    <b>(b) Kuasa tiga</b>
+    <ul>
+      <li>Kuasa tiga bermaksud nombor didarab dengan dirinya sebanyak tiga kali.</li>
+      <li>Perhatikan tanda negatif.</li>
+      <li>Untuk nombor bercampur, tukarkan kepada bentuk yang lebih mudah dikira sebelum dikuasakan.</li>
+      <li>Beri jawapan kepada <b>dua tempat perpuluhan</b>.</li>
+    </ul>
+  </div>
+</details>
+
+<p><b>(a)</b> Tentukan sama ada setiap pernyataan adalah benar atau palsu.</p>
+<div class="fields">
+  <div class="field"><b>(i)</b> 7.82 ialah hasil darab 7.8 × 2.
+    <select id="q23ai"><option value="">-- pilih --</option><option value="benar">Benar</option><option value="palsu">Palsu</option></select>
+  </div>
+  <div class="field"><b>(ii)</b> Hasil darab <span class="frac"><span>1</span><span>5</span></span> × <span class="frac"><span>1</span><span>5</span></span> ialah <span class="frac"><span>1</span><span>5²</span></span>.
+    <select id="q23aii"><option value="">-- pilih --</option><option value="benar">Benar</option><option value="palsu">Palsu</option></select>
+  </div>
+</div>
+<p><b>(b)</b> Hitung dan beri jawapan tepat kepada dua tempat perpuluhan.</p>
+<div class="fields">
+  <div class="field"><b>(i)</b> (−2.7)³<input id="q23bi"></div>
+  <div class="field"><b>(ii)</b> (<span class="mixed"><span class="whole">3</span><span class="frac"><span>5</span><span>2</span></span></span>)³<input id="q23bii"></div>
+</div>
+</div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page24">
+  <div class="qhead"><span>Soalan 24</span><span>24/31</span></div>
+  <div class="questionText">
+<details class="guideBox">
+  <summary>💡 Panduan Menjawab Soalan 24</summary>
+  <div class="guideBody">
+    <b>Nisbah setara</b>
+    <ol>
+      <li>Perhatikan bahagian berlorek dan jumlah bahagian pada setiap rajah.</li>
+      <li>Tentukan nisbah yang mewakili kuantiti yang sama.</li>
+      <li>Untuk mendapatkan nisbah setara, darab atau bahagi kedua-dua nombor dengan nilai yang sama.</li>
+      <li>Isi nombor yang hilang pada setiap kotak jawapan.</li>
+    </ol>
+    <div class="formula">Contoh: 3 : 4 = 6 : 8 kerana kedua-duanya didarab dengan 2.</div>
+  </div>
+</details>
+
+<p>Lengkapkan nisbah setara berdasarkan bahagian berlorek dalam rajah.</p>
+<div class="diagram"><img src="data:image/webp;base64,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" alt="Rajah nisbah berlorek"></div>
+<div class="ratioBoxes">
+  <div>3 : <input id="q24a"></div>
+  <div><input id="q24b"> : 8</div>
+  <div><input id="q24c"> : <input id="q24d"></div>
+</div>
+</div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page25">
+  <div class="qhead"><span>Soalan 25</span><span>25/31</span></div>
+  <div class="questionText">
+<details class="guideBox">
+  <summary>💡 Panduan Menjawab Soalan 25</summary>
+  <div class="guideBody">
+    <b>(a) Sebutan algebra sejenis dengan pecahan</b>
+    <ol>
+      <li>Pastikan kedua-dua sebutan mempunyai pembolehubah dan kuasa yang sama.</li>
+      <li>Operasikan pekali sahaja.</li>
+      <li>Jika terdapat pecahan, samakan penyebut sebelum menolak.</li>
+      <li>Kekalkan bahagian pembolehubah yang sama.</li>
+    </ol>
+
+    <b>(b) Kumpulkan sebutan sejenis</b>
+    <ol>
+      <li>Kumpulkan semua sebutan yang mempunyai pembolehubah yang sama.</li>
+      <li>Tambah atau tolak pekali sahaja.</li>
+      <li>Jangan gabungkan sebutan yang bukan sejenis.</li>
+    </ol>
+  </div>
+</details>
+
+<p><b>(a)</b> Permudahkan: 7p³q − <span class="frac"><span>3p³q</span><span>2</span></span></p>
+<div class="singleAnswer"><input id="q25a" placeholder="Jawapan akhir"></div>
+<p><b>(b)</b> Permudahkan: 3znm − 17mwy + 8nzm − 2ymw</p>
+<div class="singleAnswer"><input id="q25b" placeholder="Jawapan akhir"></div>
+</div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page26">
+  <div class="qhead"><span>Soalan 26</span><span>26/31</span></div>
+  <div class="questionText">
+<details class="guideBox">
+  <summary>💡 Panduan Menjawab Soalan 26</summary>
+  <div class="guideBody">
+    <b>(a) Untung dan rugi empat tahun</b>
+    <ol>
+      <li>Ambil untung sebagai nilai positif dan rugi sebagai nilai negatif.</li>
+      <li>Tulis nilai bagi Tahun 1, Tahun 2 dan Tahun 3.</li>
+      <li>Untuk Tahun 4, gandakan kerugian Tahun 2 sebanyak 3 kali.</li>
+      <li>Jumlahkan keempat-empat nilai. Tanda akhir menentukan sama ada untung atau rugi.</li>
+    </ol>
+
+    <b>(b)(i) Operasi integer</b>
+    <ul>
+      <li>Buat operasi bahagi dan darab dahulu.</li>
+      <li>Kemudian lakukan penambahan.</li>
+      <li>Perhatikan tanda negatif.</li>
+    </ul>
+
+    <b>(b)(ii) Kurungan</b>
+    <ol>
+      <li>Selesaikan setiap kurungan dahulu.</li>
+      <li>Kemudian darabkan kedua-dua hasil.</li>
+    </ol>
+
+    <b>(c) Pecahan dalam situasi harian</b>
+    <ol>
+      <li>Cari gula untuk sebuah kek biasa.</li>
+      <li>Cari gula untuk sebuah kek kurang manis dengan menolak <span class="frac"><span>1</span><span>2</span></span> cawan.</li>
+      <li>Darab setiap kuantiti dengan bilangan kek.</li>
+      <li>Jumlahkan kedua-dua kuantiti.</li>
+    </ol>
+  </div>
+</details>
+
+<p><b>(a)</b> Sebuah syarikat untung RM21,700 pada tahun pertama, kemudian rugi RM6,500 bagi setiap tahun pada tahun kedua dan ketiga. Kerugian tahun keempat ialah tiga kali kerugian tahun kedua. Cari untung atau rugi keseluruhan bagi empat tahun.</p>
+<input id="26a" placeholder="Jawapan akhir">
+<p><b>(b)(i)</b> Hitung (−25) ÷ 4 + (−9) × 6.</p><input id="26bi" placeholder="Jawapan akhir">
+<p><b>(b)(ii)</b> Hitung [−112 + (−75)] × [1 − (−3)].</p><input id="26bii" placeholder="Jawapan akhir">
+<p><b>(c)</b> Sebiji kek biasa menggunakan <span class="mixed"><span class="whole">2</span><span class="frac"><span>3</span><span>4</span></span></span> cawan gula. Kek kurang manis menggunakan <span class="frac"><span>1</span><span>2</span></span> cawan kurang. Cari jumlah gula untuk 6 kek biasa dan 4 kek kurang manis.</p><input id="26c" placeholder="Jawapan akhir">
+</div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page27">
+  <div class="qhead"><span>Soalan 27</span><span>27/31</span></div>
+  <div class="questionText">
+<details class="guideBox">
+  <summary>💡 Panduan Menjawab Soalan 27</summary>
+  <div class="guideBody">
+    <b>(a) Suhu dan ketinggian</b>
+    <ol>
+      <li>Cari jumlah penurunan suhu: kadar penurunan × bilangan kilometer.</li>
+      <li>Tolak jumlah penurunan itu daripada suhu aras laut.</li>
+    </ol>
+
+    <b>(b) Operasi nombor</b>
+    <ol>
+      <li>Darabkan nombor negatif dengan pecahan terlebih dahulu.</li>
+      <li>Kemudian tambah dengan nombor yang lain mengikut tertib operasi.</li>
+    </ol>
+
+    <b>(c) Bekas X, Y dan Z</b>
+    <ol>
+      <li>Gunakan maklumat bahawa <span class="frac"><span>5</span><span>9</span></span> daripada air dalam X menjadi isi padu di Z.</li>
+      <li>Daripada itu, cari jumlah air dalam X sebelum dipindahkan ke Z.</li>
+      <li>Tolak 65 ml untuk mendapatkan air yang datang daripada Y.</li>
+      <li>Bahagian itu ialah <span class="frac"><span>2</span><span>3</span></span> daripada air dalam Y. Gunakan operasi songsang untuk mencari jumlah asal Y.</li>
+    </ol>
+  </div>
+</details>
+
+<p><b>(a)</b> Suhu di aras laut ialah 30°C dan turun 5°C bagi setiap kenaikan 1 km. Cari suhu pada ketinggian 3 km.</p><input id="27a" placeholder="Jawapan akhir">
+<p><b>(b)</b> Hitung 7 + (−4.03) × <span class="frac"><span>1</span><span>5</span></span> + 8.47. Beri jawapan perpuluhan.</p><input id="27b" placeholder="Jawapan akhir">
+<p><b>(c)</b> Bekas X mengandungi 65 ml air. Sebanyak <span class="frac"><span>2</span><span>3</span></span> air dari bekas Y dimasukkan ke X. Kemudian <span class="frac"><span>5</span><span>9</span></span> air dalam X dipindah ke bekas Z sehingga Z mengandungi 50 ml. Cari isipadu air asal dalam Y.</p><input id="27c" placeholder="Jawapan akhir">
+</div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page28">
+  <div class="qhead"><span>Soalan 28</span><span>28/31</span></div>
+  <div class="questionText">
+<details class="guideBox">
+  <summary>💡 Panduan Menjawab Soalan 28</summary>
+  <div class="guideBody">
+    <b>(a) Pen dan pemadam</b>
+    <ol>
+      <li>Cari GSTK bagi bilangan pen dalam sekotak dan bilangan pemadam dalam sepeket.</li>
+      <li>GSTK itu memberi bilangan minimum item yang boleh dipadankan tanpa baki.</li>
+    </ol>
+
+    <b>(b)(i) Gandaan 6</b>
+    <ul>
+      <li>Mulakan dengan gandaan 6 pertama yang lebih besar daripada 25.</li>
+      <li>Tambah 6 berulang kali sehingga sebelum 65.</li>
+      <li>Masukkan setiap gandaan dalam satu kotak.</li>
+    </ul>
+
+    <b>(b)(ii) Hasil tambah gandaan 12</b>
+    <ol>
+      <li>Senaraikan gandaan 12 yang berada dalam julat yang diberi.</li>
+      <li>Jumlahkan semua nilai tersebut.</li>
+    </ol>
+
+    <b>(c) Hari hidangan serentak</b>
+    <ol>
+      <li>Cari GSTK bagi 2 hari dan 7 hari.</li>
+      <li>Tambah bilangan hari itu bermula dari hari Selasa.</li>
+    </ol>
+  </div>
+</details>
+
+<p><b>(a)</b> Pen dijual 12 batang sekotak dan pemadam 5 ketul sepeket. Cari bilangan minimum pen yang perlu dibeli supaya semua pen boleh dipadankan satu-satu dengan pemadam.</p><input id="28a" placeholder="Jawapan akhir">
+<p><b>(b)(i)</b> Senaraikan gandaan 6 di antara 25 dan 65.</p>
+<div class="listBoxes"><input id="q28bi_1" placeholder="1"><input id="q28bi_2" placeholder="2"><input id="q28bi_3" placeholder="3"><input id="q28bi_4" placeholder="4"><input id="q28bi_5" placeholder="5"><input id="q28bi_6" placeholder="6"></div>
+<p><b>(b)(ii)</b> Cari hasil tambah semua gandaan 12 di antara 90 dan 170.</p><input id="28bii" placeholder="Jawapan akhir">
+<p><b>(c)</b> Bubur pulut hitam dihidang setiap 2 hari dan mee kari setiap 7 hari. Jika kedua-duanya dihidang pada hari Selasa, hari apakah kedua-duanya akan dihidang serentak lagi?</p><input id="28c" placeholder="Jawapan akhir">
+</div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page29">
+  <div class="qhead"><span>Soalan 29</span><span>29/31</span></div>
+  <div class="questionText">
+<details class="guideBox">
+  <summary>💡 Panduan Menjawab Soalan 29</summary>
+  <div class="guideBody">
+    <b>(a) Rangka kubus</b>
+    <ol>
+      <li>Cari panjang sisi kubus dengan mengambil punca kuasa tiga isipadu.</li>
+      <li>Sebuah kubus mempunyai 12 rusuk.</li>
+      <li>Darab panjang satu rusuk dengan 12.</li>
+      <li>Bandingkan jumlah panjang yang diperlukan dengan 146 cm.</li>
+    </ol>
+
+    <b>(b)(i)</b>
+    <ul>
+      <li>Kuasa tiga bermaksud darab nombor yang sama sebanyak 3 kali.</li>
+    </ul>
+
+    <b>(b)(ii)</b>
+    <ol>
+      <li>Cari punca kuasa tiga dahulu.</li>
+      <li>Tambah dengan 2.5.</li>
+      <li>Akhir sekali kuasakan hasil itu kepada kuasa dua.</li>
+    </ol>
+
+    <b>(c) 64 kubus kecil</b>
+    <ol>
+      <li>64 = 4³, jadi setiap sisi kubus besar dibahagi kepada 4 bahagian sama.</li>
+      <li>Cari panjang sisi sebuah kubus kecil.</li>
+      <li>Luas muka atas = sisi × sisi.</li>
+    </ol>
+  </div>
+</details>
+
+<p><b>(a)</b> Rangka kubus hendak dibuat daripada dawai 146 cm. Isipadu kubus ialah 2197 cm³. Tentukan sama ada dawai itu mencukupi.</p><input id="29a" placeholder="Jawapan akhir">
+<p><b>(b)(i)</b> Hitung 1.5³.</p><input id="29bi" placeholder="Jawapan akhir">
+<p><b>(b)(ii)</b> Hitung (2.5 + ∛0.729)².</p><input id="29bii" placeholder="Jawapan akhir">
+<p><b>(c)(i)</b> Kubus besar bersisi 40 cm dipotong kepada 64 kubus kecil sama saiz. Cari panjang sisi sebuah kubus kecil.</p><input id="29ci" placeholder="Jawapan akhir">
+<p><b>(c)(ii)</b> Cari luas muka atas sebuah kubus kecil.</p><input id="29cii" placeholder="Jawapan akhir">
+</div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page30">
+  <div class="qhead"><span>Soalan 30</span><span>30/31</span></div>
+  <div class="questionText">
+<details class="guideBox">
+  <summary>💡 Panduan Menjawab Soalan 30</summary>
+  <div class="guideBody">
+    <b>(a) Nisbah jisim</b>
+    <ol>
+      <li>Cari beza bahagian antara Q dan R.</li>
+      <li>Padankan beza bahagian itu dengan beza jisim yang diberi.</li>
+      <li>Cari nilai 1 bahagian.</li>
+      <li>Jumlahkan semua bahagian P + Q + R, kemudian darab dengan nilai 1 bahagian.</li>
+    </ol>
+
+    <b>(b)(i) Nisbah pecahan</b>
+    <ol>
+      <li>Cari GSTK penyebut pecahan.</li>
+      <li>Darab semua nisbah dengan nilai yang sama supaya tiada pecahan.</li>
+      <li>Ringkaskan jika masih boleh.</li>
+    </ol>
+
+    <b>(b)(ii) Nisbah perpuluhan</b>
+    <ol>
+      <li>Darab semua nombor dengan 10 untuk menghapuskan perpuluhan.</li>
+      <li>Bahagi semua nombor dengan faktor sepunya terbesar.</li>
+    </ol>
+
+    <b>(c) Pertambahan peratus</b>
+    <div class="formula">Nilai baharu = nilai asal + (peratus pertambahan × nilai asal)</div>
+  </div>
+</details>
+
+<p><b>(a)</b> Jisim paket P, Q dan R dalam nisbah 6 : 13 : 5. Beza jisim Q dan R ialah 270 g. Cari jumlah jisim ketiga-tiga paket.</p><input id="30a" placeholder="Jawapan akhir">
+<p><b>(b)(i)</b> Ringkaskan nisbah <span class="frac"><span>3</span><span>4</span></span> : <span class="frac"><span>2</span><span>5</span></span> : <span class="frac"><span>1</span><span>2</span></span>.</p><input id="30bi" placeholder="Jawapan akhir">
+<p><b>(b)(ii)</b> Ringkaskan nisbah 4.5 : 2.4 : 3.6.</p><input id="30bii" placeholder="Jawapan akhir">
+<p><b>(c)</b> Populasi ayam ialah 65,000 pada 2022 dan bertambah 3% pada tahun berikutnya. Cari populasi pada 2023.</p><input id="30c" placeholder="Jawapan akhir">
+</div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Seterusnya →</button>
+  </div>
+</section>
+
+<section class="qpage" id="page31">
+  <div class="qhead"><span>Soalan 31</span><span>31/31</span></div>
+  <div class="questionText">
+<details class="guideBox">
+  <summary>💡 Panduan Menjawab Soalan 31</summary>
+  <div class="guideBody">
+    <b>(a) Luas kawasan berwarna</b>
+    <ol>
+      <li>Cari luas keseluruhan segi empat tepat menggunakan panjang × lebar.</li>
+      <li>Kawasan yang dipotong ialah segi empat sama dengan sisi 11 cm.</li>
+      <li>Cari luas segi empat sama itu.</li>
+      <li>Luas berwarna = luas segi empat tepat − luas segi empat sama.</li>
+    </ol>
+
+    <b>(b)(i) Darab pecahan algebra</b>
+    <ol>
+      <li>Darab pembilang dengan pembilang.</li>
+      <li>Darab penyebut dengan penyebut.</li>
+      <li>Batalkan faktor/pembolehubah yang sama di atas dan bawah.</li>
+      <li>Tulis jawapan akhir sebagai pecahan yang telah dipermudahkan.</li>
+    </ol>
+
+    <b>(b)(ii) Sebutan sejenis</b>
+    <ol>
+      <li>Kumpulkan sebutan <i>mp</i> bersama.</li>
+      <li>Kumpulkan sebutan <i>qh²</i> bersama.</li>
+      <li>Tambah pekali bagi setiap kumpulan.</li>
+    </ol>
+
+    <b>(c) Ungkapan algebra</b>
+    <ol>
+      <li>Andaikan markah Qistina sebagai satu pembolehubah.</li>
+      <li>Adam mendapat dua kali markah Qistina.</li>
+      <li>Gunakan jumlah 3n untuk membentuk hubungan antara mereka.</li>
+      <li>Markah Fahmi = markah Adam + 7.</li>
+    </ol>
+  </div>
+</details>
+
+<p><b>(a)</b> Rajah di bawah menunjukkan sebuah segi empat tepat dan kawasan yang berlorek yang berbentuk segi empat sama dipotong keluar. Kawasan yang selebihnya dilitupi kertas berwarna.</p>
+<p>Tulis satu ungkapan bagi luas kawasan dilitupi kertas berwarna.</p>
+
+<div class="diagramDraw">
+<svg width="460" height="250" viewBox="0 0 460 250" aria-label="Segi empat tepat dengan segi empat sama dipotong keluar">
+  <rect x="65" y="35" width="300" height="155" fill="#ffffff" stroke="#111" stroke-width="2.2"/>
+  <rect x="175" y="88" width="75" height="60" fill="#14a9e0" stroke="#111" stroke-width="2"/>
+  <text x="195" y="80" font-size="19" font-family="Arial">11 cm</text>
+  <text x="375" y="118" font-size="19" font-family="Arial" font-style="italic">x cm</text>
+  <text x="205" y="218" font-size="19" font-family="Arial" font-style="italic">y cm</text>
+</svg>
+</div>
+<input id="31a" placeholder="Jawapan akhir">
+
+<p><b>(b)(i)</b> Cari hasil darab bagi
+<span class="frac"><span>2</span><span>5</span></span>xyz
+×
+<span class="frac"><span>4</span><span>9xz</span></span>.
+</p>
+<input id="31bi" placeholder="Jawapan akhir">
+
+<p><b>(b)(ii)</b> Permudahkan:</p>
+<div class="math">(3mp − 7qh²) + (5mp − 2qh²)</div>
+<input id="31bii" placeholder="Jawapan akhir">
+
+<p><b>(c)</b> Adam memperoleh dua kali markah yang diperoleh oleh Qistina dalam suatu kuiz pop. Jumlah markah mereka ialah 3n. Jika Fahmi memperoleh 7 markah lebih daripada Adam, nyatakan markah Fahmi dalam sebutan n.</p>
+<input id="31c" placeholder="Jawapan akhir">
+</div>
+  <div class="nav">
+    <button class="navBtn secondary" onclick="goPrev()" >← Sebelum</button>
+    <button class="navBtn" onclick="goNext()">Hantar & Semak</button>
+  </div>
+</section>
+
+<div id="result" class="result"></div><div id="status" class="status"></div><div id="review" class="review"><h3>Semakan Semua Jawapan</h3><div id="reviewBody"></div></div>
+</main>
+</div>
+
+<script>
+const WEB_APP_URL="https://script.google.com/macros/s/AKfycbyGrp9QEtqecdMCPHGNCwuhdAXiLK_MXG51qwUrOmQa1RBRp2D-9-bgJPqDIUAqL6JI/exec";
+const SET_NAME="UPSA SET 2 TINGKATAN 1 2023/2024";
+const STUDENTS={"1DIAMOND": ["ALLY ZULFADHLI BIN MOHD ZAHID", "AMNI QAISARA BINTI MOHD FAIRUS", "ANGEL LAYCOOL BAJIK ANAK ROBERT", "AWADAH NUR RIZQAH BINTI MOHD IKHRAM", "CHONG JING XIN", "FATIN AQILAH NAFISAH BINTI MOHD SHUKOR", "FONG JIN RU", "HAWA DAMIA NURAIN BINTI MOHD HUSAINI", "LIEW RUO QI", "LIM JING XIN", "MOHAMAD SYAHMIRUL BIN MOHD SHAHNIZA", "MUHAMMAD ABDULLAH SALAM ALI BIN GHAZALY ALI", "MUHAMMAD AIDID AMERUL BIN MUHAMMAD NAZRI", "MUHAMMAD AISY RIZQIN BIN MUHAMMAD GHAZALI", "MUHAMMAD AMIR KAZIM BIN SUDARMAN", "MUHAMMAD AQIFF HAKIMI BIN SHARUL IZUAN", "MUHAMMAD DANISH SHAZRIL BIN ABDULLAH", "MUHAMMAD FITRI HAMIZAN BIN ZAMEER AKMAL", "MUHAMMAD HAZIQ FAIZ BIN HASHIM", "MUHAMMAD IRFAN NAUFAL BIN NOORHAFIZAN", "MUHAMMAD RYAN ZAFRIL BIN MOHD NIZEM", "NAFIZ MURSYID BIN MOHD NOR KHAIRIL", "NUR HANI DARINA BINTI KAMARUL ARIFFIN", "NUR HUSNA FAQIHAH BINTI ISHAK", "NUR SYAFA ADILA BINTI ISMAIL", "NURUL FAIQAH HUSNA BINTI MOHD FARID", "PONG YIN XIN", "RIA ZARA BINTI MOHD HAZWAN", "THONG SZE YANG", "WONG LIEK KAI"], "1EMERALD": ["YONG SHENG XIANG", "KIEW RUI BIN", "TAN XUAN QI", "ADAM EEHAN BIN HARNIE SHA FARDLY", "HSU HAO XUAN", "LAI TECK FOCK", "SIM YUK SHAN", "NUR FATHIAH SAKINA BINTI MOHAMAD FIRDHAUS", "TEOH XIN CI", "NUR AMNI ELLISYA BINTI SYAIFUL IZWAN", "QASEH QAISARA BINTI SAZALI", "RADIN RAYYAN HAFIZ", "ANISSA SOFIA BINTI MOHAMAD HAIRULNIZAM", "MUHAMMAD FAIZ ZAKWAN BIN MOHD NAJIB", "MUHAMMAD YOUNES BIN MOHD YAZID", "NUR AINA MAISARAH BINTI KHAIRUL AZMI", "NURISYA AFIRA BINTI ABDULLAH", "SITI NUR RAQIAH BINTI ABDULLAH", "AISYAH BINTI MUHAMAD MUSTAKIM", "NURIN INSYIRAH BINTI NIZARUDIN", "MUHAMMAD HADI JAZLI BIN MD ALMUTAKIL", "MUHAMMAD AIMANSHAH BIN AZIZUL", "MUHAMMAD NASRAWI BIN MOHAMMAD FETRIE", "DARSHANASRI A/P KRISHNAN", "NUR ELFFIFARISAH QOYYIMAH BINTI MOHD RAIS", "KAMIL IMRAN BIN JEFRY"], "1RUBY": ["LIONG SHENG KANG", "AFNI ELVINA BINTI ARAFI", "NUR DELISHA AMANI BINTI MOHD NOOR RAMDAN", "WONG KA HUI", "UMAIRAH QAISARA BINTI IZHAR", "NUR ELYANA BINTI ABDULLAH", "THAM ZHI HONG", "MUHAMMAD QAWI NAUFAL BIN MUHAMMAD SAFUAN", "SAHET NAUFAL BIN MD NASIR", "SYLVESTER SHEN KAI BING", "CHONG JIA JIA", "MUHAMMAD HAQQEM BIN KHAIRULIZAM", "NURHAQESSYA BINTI SYAHAFIZ", "SITI NUR ASYIKIN BINTI IRWIN", "TAKESH A/L R.G. BABU", "MUHAMMAD DANISH HAZIQ BIN NORARMIZAN", "MUHAMMAD ILHAM MUHAYYAD BIN MESWAN", "MUHAMMAD UMAR BIN KAMARUL ZAMAN", "CHONG LE XUAN", "DINESH A/L LECHUMANAN", "MOHAMAD AISY ADWA BIN MOHD FIRDAUS", "MUHAMAD SYAMIL ASYRAFF BIN HISHAM", "WONG KIAN RONG", "ADAM DAZLY BIN SHAHALWI", "LEONG ZI QI", "NUR KHAIRA QALISYA BINTI MOHD KHAIR", "NUR IRIS HUMAIRA BINTI MOHD NOOR", "MOHAMMAD SYAHRIZAD RAYYAN BIN SAHRUDIN"], "1SAPPHIRE": ["LOY XIN TIAN", "UMAIRAH QALISYA BINTI IZHAR", "CHONG XIAO NING", "INTAN NUR SYAFIQAH BINTI MUHAMMAD FIRDAUS", "NERONDY SHAHLAN", "ADAM DAZRYN BIN SHAHALWI", "MUHAMMAD QALIFF ASHRAFF BIN MD SYAH", "YAP ZHI JIE", "CHONG YI XIN", "LEONG YEE ROU", "PUTERI NUR DAMIA BINTI ZULTIKA", "RAISHA SUTRA BINTI RAFIUDDIN", "WONG JIA JIA", "MOHAMAD DANIEL DANESH BIN MOSLIM", "MUHAMMAD ADAM ISKANDAR BIN MOHD SANI", "SOLEHUDDINULHAFIZ BIN MOHD SHAFIEE", "MUHAMMAD ADAM ARIEF BIN OSMAN", "RAYQAL ISKANDAR BIN RIZAL", "GAN CHIK CHEN", "CHANG JIE QI", "NUR HAZIQAH NASRIN BINTI ABDULLAH", "JUSTIN PANG HAO JUN", "MOHAMAD ZUHAER BIN MOHAMAD NIZAM", "MUHAMMAD SUFIY BIN SALAHUDIN", "LAM JUN YI"]};
+const DURATION_SEC=7200;
+let current=1,startedAt=0,timerHandle=null,submitted=false;
+const AKEY={1:"B",2:"A",3:"D",4:"C",5:"B",6:"C",7:"A",8:"B",9:"D",10:"C",11:"A",12:"D",13:"B",14:"D",15:"C",16:"A",17:"C",18:"B",19:"D",20:"A"};
+
+function updateNamaList(){const k=kelas.value;nama.innerHTML='<option value="">-- Pilih nama pelajar --</option>';(STUDENTS[k]||[]).forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;nama.appendChild(o)})}
+function getName(){return namaManual.value.trim()||nama.value.trim()}
+function startExam(){if(!kelas.value||!getName()){alert("Sila pilih kelas dan nama.");return}startedAt=Date.now();cover.style.display="none";exam.style.display="block";timerBar.style.display="flex";showPage(1);tick();timerHandle=setInterval(tick,1000)}
+function showPage(n){current=Math.max(1,Math.min(31,n));document.querySelectorAll(".qpage").forEach(x=>x.classList.remove("active"));document.getElementById("page"+current).classList.add("active");topQ.textContent="Soalan "+current+"/31";progressFill.style.width=((current/31)*100)+"%";window.scrollTo(0,0)}
+function goPrev(){showPage(current-1)} function goNext(){if(current===31)submitAndCheck(false);else showPage(current+1)}
+function tick(){if(submitted)return;const e=Math.floor((Date.now()-startedAt)/1000),left=Math.max(0,DURATION_SEC-e);timer.textContent=[Math.floor(left/3600),Math.floor((left%3600)/60),left%60].map(x=>String(x).padStart(2,"0")).join(":");if(left<=0){clearInterval(timerHandle);submitAndCheck(true)}}
+function radioVal(q){const x=document.querySelector('input[name="q'+q+'"]:checked');return x?x.value:""}
+function val(id){return String(document.getElementById(id).value||"").trim()}
+function norm(s){return String(s||"").toLowerCase().replace(/\s+/g,"").replace(/[×·]/g,"*").replace(/⁄/g,"/").replace(/[−–]/g,"-").replace(/²/g,"^2").replace(/³/g,"^3")}
+function exactText(s,arr){const x=norm(s).replace(/[()]/g,"");return arr.some(a=>x===norm(a).replace(/[()]/g,""))}
+function numEq(s,t,tol=.01){const x=Number(String(s).replace(/,/g,""));return Number.isFinite(x)&&Math.abs(x-t)<=tol}
+function getList(prefix,n){return Array.from({length:n},(_,i)=>val(prefix+(i+1)))}
+function listEqArray(got,arr){const a=got.map(x=>String(x).trim()).filter(Boolean).sort();const b=arr.map(String).sort();return JSON.stringify(a)===JSON.stringify(b)}
+function allAnswered(){for(let q=1;q<=20;q++)if(!radioVal(q))return false;
+const ids=["q23ai","q23aii","q23bi","q23bii","q24a","q24b","q24c","q24d","q25a","q25b","26a","26bi","26bii","26c","27a","27b","27c","28a","28bii","28c","29a","29bi","29bii","29ci","29cii","30a","30bi","30bii","30c","31a","31bi","31bii","31c"];
+if(!ids.every(id=>val(id)!==""))return false;
+return getList("q21a_",8).every(Boolean)&&getList("q21b_",8).every(Boolean)&&getList("q22a_",4).every(Boolean)&&getList("q22b_",2).every(Boolean)&&getList("q28bi_",6).every(Boolean)}
+
+function markAll(){
+ const scores={A:0,21:0,22:0,23:0,24:0,25:0,26:0,27:0,28:0,29:0,30:0,31:0},review=[];
+ for(let q=1;q<=20;q++){const z=radioVal(q)===AKEY[q];if(z)scores.A++;review.push(["Soalan "+q,radioVal(q),AKEY[q],z])}
+ let z=listEqArray(getList("q21a_",8),["-8","2","13","-6","-12","-3","5","1"]);if(z)scores[21]+=2;review.push(["21(a)",getList("q21a_",8).join(", "),"-8, 2, 13, -6, -12, -3, 5, 1",z]);
+ z=listEqArray(getList("q21b_",8),["13","5","2","1","-3","-6","-8","-12"]);if(z)scores[21]+=2;review.push(["21(b)",getList("q21b_",8).join(", "),"13, 5, 2, 1, -3, -6, -8, -12",z]);
+ z=listEqArray(getList("q22a_",4),["1","5","17","85"]);if(z)scores[22]+=2;review.push(["22(a)",getList("q22a_",4).join(", "),"1, 5, 17, 85",z]);
+ z=listEqArray(getList("q22b_",2),["5","17"]);if(z)scores[22]+=2;review.push(["22(b)",getList("q22b_",2).join(", "),"5, 17",z]);
+ z=val("q23ai")==="palsu";if(z)scores[23]++;review.push(["23(a)(i)",val("q23ai"),"Palsu",z]); z=val("q23aii")==="benar";if(z)scores[23]++;review.push(["23(a)(ii)",val("q23aii"),"Benar",z]);
+ z=numEq(val("q23bi"),-19.68,.005);if(z)scores[23]++;review.push(["23(b)(i)",val("q23bi"),"-19.68",z]); z=numEq(val("q23bii"),166.38,.005);if(z)scores[23]++;review.push(["23(b)(ii)",val("q23bii"),"166.38",z]);
+ [["q24a","4"],["q24b","6"],["q24c","6"],["q24d","12"]].forEach(([id,a])=>{const ok=norm(val(id))===a;if(ok)scores[24]++;review.push([id,val(id),a,ok])});
+ z=exactText(val("q25a"),["11p^3q/2","(11/2)p^3q","5.5p^3q"]);if(z)scores[25]+=2;review.push(["25(a)",val("q25a"),"(11/2)p³q",z]); z=exactText(val("q25b"),["11mnz-19mwy","11nzm-19mwy"]);if(z)scores[25]+=2;review.push(["25(b)",val("q25b"),"11mnz - 19mwy",z]);
+ function c(id,marks,check,ans,q){const ok=check(val(id));if(ok)scores[q]+=marks;review.push([id,val(id),ans,ok])}
+ c("26a",3,s=>numEq(s,-10800,.1)||(/10800/.test(s)&&/rugi/i.test(s)),"-RM10,800 (kerugian)",26);c("26bi",1.5,s=>numEq(s,-60.25,.01),"-60.25",26);c("26bii",1.5,s=>numEq(s,-748,.01),"-748",26);c("26c",4,s=>numEq(s,25.5,.01),"25.5 cawan",26);
+ c("27a",3,s=>numEq(s,15,.01),"15°C",27);c("27b",3,s=>numEq(s,14.664,.001),"14.664",27);c("27c",4,s=>numEq(s,37.5,.01),"37.5 ml",27);
+ c("28a",3,s=>numEq(s,60,.01),"60",28);z=listEqArray(getList("q28bi_",6),["30","36","42","48","54","60"]);if(z)scores[28]+=2;review.push(["28(b)(i)",getList("q28bi_",6).join(", "),"30,36,42,48,54,60",z]);c("28bii",2,s=>numEq(s,924,.01),"924",28);c("28c",3,s=>/selasa/i.test(s),"Selasa",28);
+ c("29a",3,s=>(/tidak|tak/i.test(s)&&/156/.test(s)),"Tidak mencukupi; perlu 156 cm",29);c("29bi",1.5,s=>numEq(s,3.375,.001),"3.375",29);c("29bii",1.5,s=>numEq(s,11.56,.01),"11.56",29);c("29ci",2,s=>numEq(s,10,.01),"10 cm",29);c("29cii",2,s=>numEq(s,100,.01),"100 cm²",29);
+ c("30a",3,s=>numEq(s,810,.01),"810 g",30);c("30bi",2,s=>exactText(s,["15:8:10"]),"15:8:10",30);c("30bii",2,s=>exactText(s,["15:8:12"]),"15:8:12",30);c("30c",3,s=>numEq(s,66950,.01),"66,950",30);
+ c("31a",3,s=>exactText(s,["xy-121","yx-121"]),"xy - 121",31);c("31bi",2,s=>exactText(s,["8y/45","8/45y"]),"8y/45",31);c("31bii",2,s=>exactText(s,["8mp-9qh^2"]),"8mp - 9qh²",31);c("31c",3,s=>exactText(s,["2n+7","7+2n"]),"2n + 7",31);
+ return {scores,review};
+}
+
+function prettyExpected(s){
+  const map={
+    "(11/2)p³q":'<span class="frac"><span>11</span><span>2</span></span>p³q',
+    "8y/45":'<span class="frac"><span>8y</span><span>45</span></span>'
+  };
+  return map[s] || escapeHtml(s);
+}
+
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+async function submitAndCheck(auto){if(submitted)return;if(!auto&&!allAnswered()){alert("Sila jawab semua soalan dahulu.");return}submitted=true;clearInterval(timerHandle);const {scores,review}=markAll(),total=Object.values(scores).reduce((a,b)=>a+b,0);
+mA.textContent=scores.A;[21,22,23,24,25,26,27,28,29,30,31].forEach(q=>document.getElementById("m"+q).textContent=scores[q]);mTotal.textContent=total;result.style.display="block";result.innerHTML=`<b>Markah Keseluruhan: ${total}/100</b><br>Peratus: ${total.toFixed(1)}%`;reviewBody.innerHTML=review.map(r=>`<div class="reviewRow"><b>${r[0]}</b><br>Jawapan anda: ${escapeHtml(r[1]||"-")}<br><span class="${r[3]?"ok":"bad"}">${r[3]?"✓ Betul":"✗ Jawapan: "+prettyExpected(r[2])}</span></div>`).join("");review.style.display="block";
+document.querySelectorAll("input,select,button").forEach(el=>el.disabled=true);timerBar.style.display="none";cover.style.display="block";cover.scrollIntoView({behavior:"smooth"});
+const form=new URLSearchParams();form.set("action","submit");form.set("set",SET_NAME);form.set("kelas",kelas.value);form.set("nama",getName());form.set("markah",String(total));form.set("jumlah","100");form.set("masaSaat",String(Math.min(DURATION_SEC,Math.floor((Date.now()-startedAt)/1000))));status.textContent="Menghantar markah...";
+try{const r=await fetch(WEB_APP_URL,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},body:form.toString()});const data=await r.json();status.textContent=data.ok?`✓ Markah direkod. Percubaan ${data.percubaan||1}/2.`:(data.message||"Rekod gagal.")}catch(e){status.textContent="Semakan selesai tetapi rekod Google Sheet gagal: "+e.message}}
+
+let activeMathInput = null;
+
+document.addEventListener('focusin', function(e){
+  const t = e.target;
+  if(t && t.tagName === 'INPUT' && t.type !== 'radio'){
+    activeMathInput = t;
+    updateMathPreview();
+  }
+});
+
+document.addEventListener('input', function(e){
+  if(e.target === activeMathInput){
+    updateMathPreview();
+  }
+});
+
+function toggleMathKeypad(){
+  document.getElementById('mathKeypad').classList.toggle('open');
+  updateMathPreview();
+}
+
+function insertMath(txt){
+  if(!activeMathInput){
+    document.getElementById('mathPreview').textContent = 'Pilih ruang jawapan dahulu.';
+    return;
+  }
+
+  const el = activeMathInput;
+  const start = Number.isFinite(el.selectionStart) ? el.selectionStart : el.value.length;
+  const end = Number.isFinite(el.selectionEnd) ? el.selectionEnd : el.value.length;
+
+  el.value =
+    el.value.slice(0,start) +
+    txt +
+    el.value.slice(end);
+
+  const pos = start + txt.length;
+  el.focus();
+
+  try{
+    el.setSelectionRange(pos,pos);
+  }catch(_){}
+
+  el.dispatchEvent(new Event('input',{bubbles:true}));
+  updateMathPreview();
+}
+
+function insertFractionTemplate(){
+  if(!activeMathInput){
+    document.getElementById('mathPreview').textContent = 'Pilih ruang jawapan dahulu.';
+    return;
+  }
+
+  // Masukkan format pecahan yang mudah ditaip dan masih boleh disemak oleh sistem.
+  insertMath('()/()');
+
+  const el = activeMathInput;
+  const pos = Math.max(1, el.selectionStart - 4);
+
+  try{
+    el.setSelectionRange(pos,pos);
+  }catch(_){}
+}
+
+function mathBackspace(){
+  if(!activeMathInput) return;
+
+  const el = activeMathInput;
+  let start = Number.isFinite(el.selectionStart) ? el.selectionStart : el.value.length;
+  let end = Number.isFinite(el.selectionEnd) ? el.selectionEnd : el.value.length;
+
+  if(start === end && start > 0){
+    start--;
+  }
+
+  el.value =
+    el.value.slice(0,start) +
+    el.value.slice(end);
+
+  el.focus();
+
+  try{
+    el.setSelectionRange(start,start);
+  }catch(_){}
+
+  el.dispatchEvent(new Event('input',{bubbles:true}));
+  updateMathPreview();
+}
+
+function mathClear(){
+  if(!activeMathInput) return;
+
+  activeMathInput.value = '';
+  activeMathInput.focus();
+  activeMathInput.dispatchEvent(new Event('input',{bubbles:true}));
+  updateMathPreview();
+}
+
+function updateMathPreview(){
+  const p = document.getElementById('mathPreview');
+
+  if(!activeMathInput){
+    p.textContent = 'Pilih ruang jawapan dahulu.';
+    return;
+  }
+
+  const raw = activeMathInput.value || '…';
+  p.innerHTML = renderMathPreview(raw);
+}
+
+function renderMathPreview(raw){
+  let s = escapeHtml(String(raw));
+
+  // Paparkan kuasa secara kemas.
+  s = s
+    .replace(/\^2/g,'²')
+    .replace(/\^3/g,'³');
+
+  // Paparkan pecahan mudah a/b atau (a)/(b) sebagai numerator/denominator.
+  const wrapped = s.match(/^\(([^()]+)\)\/\(([^()]+)\)$/);
+
+  if(wrapped){
+    return '<span class="frac"><span>'+wrapped[1]+'</span><span>'+wrapped[2]+'</span></span>';
+  }
+
+  const simple = s.match(/^([A-Za-z0-9²³+\-]+)\/([A-Za-z0-9²³+\-]+)$/);
+
+  if(simple){
+    return '<span class="frac"><span>'+simple[1]+'</span><span>'+simple[2]+'</span></span>';
+  }
+
+  return s;
+}
+
+</script>
+
+<button id="mathKeyToggle" class="mathKeyToggle" type="button" onclick="toggleMathKeypad()">∑</button>
+
+<div id="mathKeypad" class="mathKeypad" aria-label="Papan kekunci matematik">
+  <div class="mathKeyHead">
+    <b>⌨️ Papan Kekunci Matematik</b>
+    <button type="button" onclick="toggleMathKeypad()">✕</button>
+  </div>
+
+  <div id="mathPreview" class="mathPreview">Pilih ruang jawapan dahulu.</div>
+
+  <div class="mathKeys">
+    <button type="button" class="accent" onclick="insertMath('²')">x²</button>
+    <button type="button" class="accent" onclick="insertMath('³')">x³</button>
+    <button type="button" class="accent" onclick="insertMath('√')">√</button>
+    <button type="button" class="accent" onclick="insertMath('∛')">∛</button>
+    <button type="button" class="accent" onclick="insertMath('π')">π</button>
+    <button type="button" class="accent" onclick="insertFractionTemplate()">a⁄b</button>
+
+    <button type="button" class="op" onclick="insertMath('+')">+</button>
+    <button type="button" class="op" onclick="insertMath('−')">−</button>
+    <button type="button" class="op" onclick="insertMath('×')">×</button>
+    <button type="button" class="op" onclick="insertMath('÷')">÷</button>
+    <button type="button" class="op" onclick="insertMath('=')">=</button>
+    <button type="button" class="op" onclick="insertMath('/')">/</button>
+
+    <button type="button" onclick="insertMath('(')">(</button>
+    <button type="button" onclick="insertMath(')')">)</button>
+    <button type="button" onclick="insertMath('{')">{</button>
+    <button type="button" onclick="insertMath('}')">}</button>
+    <button type="button" onclick="insertMath(',')">,</button>
+    <button type="button" onclick="insertMath(':')">:</button>
+
+    <button type="button" onclick="insertMath('x')">x</button>
+    <button type="button" onclick="insertMath('y')">y</button>
+    <button type="button" onclick="insertMath('m')">m</button>
+    <button type="button" onclick="insertMath('n')">n</button>
+    <button type="button" onclick="insertMath('p')">p</button>
+    <button type="button" onclick="insertMath('q')">q</button>
+
+    <button type="button" onclick="insertMath('0')">0</button>
+    <button type="button" onclick="insertMath('1')">1</button>
+    <button type="button" onclick="insertMath('2')">2</button>
+    <button type="button" onclick="insertMath('3')">3</button>
+    <button type="button" onclick="insertMath('4')">4</button>
+    <button type="button" onclick="insertMath('5')">5</button>
+
+    <button type="button" onclick="insertMath('6')">6</button>
+    <button type="button" onclick="insertMath('7')">7</button>
+    <button type="button" onclick="insertMath('8')">8</button>
+    <button type="button" onclick="insertMath('9')">9</button>
+    <button type="button" onclick="insertMath('.')">.</button>
+    <button type="button" onclick="insertMath('∞')">∞</button>
+
+    <button type="button" class="wide danger" onclick="mathBackspace()">⌫ Padam</button>
+    <button type="button" class="wide danger" onclick="mathClear()">Kosongkan</button>
+    <button type="button" class="wide" onclick="toggleMathKeypad()">Tutup</button>
+  </div>
+</div>
+
+</body></html>
