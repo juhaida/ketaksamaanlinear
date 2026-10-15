@@ -10,22 +10,15 @@
 input,select{border:1px solid #cbd5e1}button{border:0;background:#6d28d9;color:#fff;font-weight:800;cursor:pointer}a{text-decoration:none;background:#e2e8f0;color:#0f172a;font-weight:700}
 .card{background:#fff;border-radius:16px;padding:12px;box-shadow:0 4px 14px #0001;overflow:auto}table{border-collapse:collapse;width:100%;min-width:980px}
 th,td{padding:10px;border-bottom:1px solid #e5e7eb;text-align:left}th{background:#faf5ff;position:sticky;top:0}.rank{font-size:18px;font-weight:900;color:#6d28d9}
-.token{display:flex;align-items:center;gap:10px;min-width:190px}.token img{width:74px;height:74px;object-fit:cover;border-radius:16px;border:3px solid #fff;box-shadow:0 4px 12px #0002}.token strong{display:block;font-size:15px}.token small{color:#64748b}.token-count{display:inline-block;margin-top:4px;padding:4px 8px;border-radius:999px;background:#fce7f3;color:#9d174d;font-weight:800}.muted{color:#64748b;font-size:13px}
+.token{display:flex;align-items:center;gap:10px;min-width:190px}.token img{width:74px;height:74px;object-fit:cover;border-radius:16px;border:3px solid #fff;box-shadow:0 4px 12px #0002}.token strong{display:block;font-size:15px}.token small{color:#64748b}.token-count{display:inline-block;margin-top:4px;padding:4px 8px;border-radius:999px;background:#fce7f3;color:#9d174d;font-weight:800}.legend-card{width:150px;background:#faf5ff;border:1px solid #eadcff;border-radius:18px;padding:10px;text-align:center;box-shadow:0 2px 8px #0001}.legend-card img{width:96px;height:96px;object-fit:cover;border-radius:16px;border:3px solid #fff;box-shadow:0 4px 12px #0002;margin-bottom:8px}.legend-card b{display:block;color:#6d28d9}.legend-card small{display:block;color:#64748b;margin-top:4px}.muted{color:#64748b;font-size:13px}
 .gold{background:#fffbeb}.incomplete{opacity:.65}
 </style></head>
 <body><div class="wrap">
-<div class="hero"><h1>🏆 Ranking Purata PJPK Tingkatan 3</h1><div>Purata = Set 1 (%) + Set 2 (%) ÷ 2. Watak token ditentukan oleh markah Set 2, manakala jumlah token turut menerima bonus penghantaran awal.</div></div>
+<div class="hero"><h1>🏆 Ranking Purata PJPK Tingkatan 3</h1><div>Purata = Set 1 (%) + Set 2 (%) ÷ 2. Setiap set yang telah dijawab memberi reward sendiri. Watak token ikut markah set, dan jumlah token turut menerima bonus penghantaran awal bagi set tersebut.</div></div>
 
 <div class="card" style="margin-top:14px">
-  <b>🎁 Ganjaran berdasarkan markah Set 2</b>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">
-    <span>100% → Hello Kitty</span>
-    <span>90–99% → Kuromi</span>
-    <span>80–89% → Cinnamoroll</span>
-    <span>70–79% → Pompompurin</span>
-    <span>60–69% → My Melody</span>
-    <span>&lt;60% → Pochacco</span>
-  </div>
+  <b>🎁 Ganjaran untuk SETIAP set yang telah dijawab</b>
+  <div id="rewardLegend" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:12px"></div>
 </div>
 
 <div class="tools">
@@ -37,9 +30,9 @@ th,td{padding:10px;border-bottom:1px solid #e5e7eb;text-align:left}th{background
 </div>
 <div class="card"><div id="load">Memuatkan...</div>
 <table id="tbl" style="display:none"><thead><tr>
-<th>Rank</th><th>Nama</th><th>Kelas</th><th>Set 1</th><th>Set 2</th><th>Purata</th><th>Awal</th><th>Ganjaran Token</th><th>Status</th>
+<th>Rank</th><th>Nama</th><th>Kelas</th><th>Set 1</th><th>Reward Set 1</th><th>Set 2</th><th>Reward Set 2</th><th>Purata</th><th>Jumlah Token</th><th>Status</th>
 </tr></thead><tbody id="body"></tbody></table></div>
-<p class="muted">Ranking bernombor hanya untuk pelajar yang telah melengkapkan kedua-dua set. Pelajar yang belum lengkap tetap dipaparkan tanpa ranking.</p>
+<p class="muted">Reward diberi untuk setiap set yang telah dijawab. Ranking purata bernombor hanya selepas kedua-dua set lengkap; token tetap dipaparkan walaupun baru satu set selesai.</p>
 </div>
 <script>
 const API='https://script.google.com/macros/s/AKfycby7106daJ7mIXwa5K4Qqr1R4HV52JD3Jc5DVwdd_TZssvP3Kc5QpesSiXvB0XcdScY/exec';
@@ -52,27 +45,61 @@ function loadData(){
    if(!x.ok) throw Error(x.error||'Gagal'); rows=x.data||[]; document.getElementById('load').style.display='none';document.getElementById('tbl').style.display='table';render();
  }).catch(e=>document.getElementById('load').textContent='Gagal memuatkan: '+e.message);
 }
+
+
+function renderLegend(){
+  const items = [
+    {name:'Hello Kitty', rule:'100%'},
+    {name:'Kuromi', rule:'90–99%'},
+    {name:'Cinnamoroll', rule:'80–89%'},
+    {name:'Pompompurin', rule:'70–79%'},
+    {name:'My Melody', rule:'60–69%'},
+    {name:'Pochacco', rule:'<60%'}
+  ];
+  const box=document.getElementById('rewardLegend');
+  if(!box) return;
+  box.innerHTML = items.map(x=>{
+    const img = TOKEN_IMAGES[x.name] || '';
+    return `<div class="legend-card">
+      ${img?`<img src="${img}" alt="${esc(x.name)}">`:''}
+      <b>${esc(x.name)}</b>
+      <small>${x.rule}</small>
+    </div>`;
+  }).join('');
+}
+
+function rewardCell(name,count,pct,earlyRank){
+  if(!name) return '<span class="muted">Belum jawab</span>';
+  const img=TOKEN_IMAGES[name]||'';
+  return `<div class="token">${img?`<img src="${img}" alt="${esc(name)}">`:''}
+    <span><strong>${esc(name)}</strong>
+    <span class="token-count">${count||0} token</span><br>
+    <small>Markah reward: ${pct==null?'-':Number(pct).toFixed(1)+'%'} • Kedudukan awal: ${earlyRank||'-'}</small>
+    </span></div>`;
+}
+
 function render(){
  const k=document.getElementById('kelas').value,q=document.getElementById('cari').value.toLowerCase();
  const f=rows.filter(r=>(!k||r.kelas===k)&&(!q||r.nama.toLowerCase().includes(q)));
  document.getElementById('body').innerHTML=f.map(r=>{
-   const img=TOKEN_IMAGES[r.tokenName]||'';
    return `<tr class="${r.complete?'':'incomplete'}">
     <td class="rank">${r.rank||'-'}</td><td>${esc(r.nama)}</td><td>${esc(r.kelas)}</td>
     <td>${r.set1Pct==null?'-':Number(r.set1Pct).toFixed(1)+'%'}</td>
+    <td>${rewardCell(r.set1TokenName,r.set1TokenCount,r.set1RewardPct,r.set1EarlyRank)}</td>
     <td>${r.set2Pct==null?'-':Number(r.set2Pct).toFixed(1)+'%'}</td>
+    <td>${rewardCell(r.set2TokenName,r.set2TokenCount,r.set2RewardPct,r.set2EarlyRank)}</td>
     <td><b>${r.averagePct==null?'-':Number(r.averagePct).toFixed(1)+'%'}</b></td>
-    <td>${r.earlyRank||'-'}</td>
-    <td><div class="token">${img?`<img src="${img}" alt="${esc(r.tokenName||'Token')}">`:''}<span><strong>${esc(r.tokenName||'Tiada token')}</strong><span class="token-count">${r.tokenCount??0} token</span><br><small>Markah: ${Number(r.set2Pct||0).toFixed(1)}% • Bonus awal: ${r.earlyRank||'-'}</small></span></div></td>
+    <td><b>${r.totalTokens||0} token</b></td>
     <td>${r.complete?'Lengkap':'Belum lengkap'}</td></tr>`;
  }).join('');
 }
 function shareWhatsApp(){
  const top=rows.filter(r=>r.complete).slice(0,10);
  let msg='🏆 *RANKING PURATA PJPK TINGKATAN 3*\n\n';
- top.forEach(r=>msg+=`${r.rank}. ${r.nama} (${r.kelas}) - ${Number(r.averagePct).toFixed(1)}% | 🎁 ${r.tokenCount} token ${r.tokenName}\n`);
+ top.forEach(r=>msg+=`${r.rank}. ${r.nama} (${r.kelas}) - ${Number(r.averagePct).toFixed(1)}% | 🎁 Set1 ${r.set1TokenCount||0} + Set2 ${r.set2TokenCount||0} = ${r.totalTokens||0} token\n`);
  msg+='\nSet 1 + Set 2 • Purata berdasarkan peratus kedua-dua set.';
  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
 }
+renderLegend();
 loadData();
 </script></body></html>
