@@ -10,11 +10,24 @@
 input,select{border:1px solid #cbd5e1}button{border:0;background:#6d28d9;color:#fff;font-weight:800;cursor:pointer}a{text-decoration:none;background:#e2e8f0;color:#0f172a;font-weight:700}
 .card{background:#fff;border-radius:16px;padding:12px;box-shadow:0 4px 14px #0001;overflow:auto}table{border-collapse:collapse;width:100%;min-width:980px}
 th,td{padding:10px;border-bottom:1px solid #e5e7eb;text-align:left}th{background:#faf5ff;position:sticky;top:0}.rank{font-size:18px;font-weight:900;color:#6d28d9}
-.token{display:flex;align-items:center;gap:7px}.token img{width:48px;height:48px;object-fit:cover;border-radius:10px}.muted{color:#64748b;font-size:13px}
+.token{display:flex;align-items:center;gap:10px;min-width:190px}.token img{width:74px;height:74px;object-fit:cover;border-radius:16px;border:3px solid #fff;box-shadow:0 4px 12px #0002}.token strong{display:block;font-size:15px}.token small{color:#64748b}.token-count{display:inline-block;margin-top:4px;padding:4px 8px;border-radius:999px;background:#fce7f3;color:#9d174d;font-weight:800}.muted{color:#64748b;font-size:13px}
 .gold{background:#fffbeb}.incomplete{opacity:.65}
 </style></head>
 <body><div class="wrap">
-<div class="hero"><h1>🏆 Ranking Purata PJPK Tingkatan 3</h1><div>Purata = Set 1 (%) + Set 2 (%) ÷ 2. Token Set 2 mengambil kira markah dan penghantaran awal.</div></div>
+<div class="hero"><h1>🏆 Ranking Purata PJPK Tingkatan 3</h1><div>Purata = Set 1 (%) + Set 2 (%) ÷ 2. Watak token ditentukan oleh markah Set 2, manakala jumlah token turut menerima bonus penghantaran awal.</div></div>
+
+<div class="card" style="margin-top:14px">
+  <b>🎁 Ganjaran berdasarkan markah Set 2</b>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">
+    <span>100% → Hello Kitty</span>
+    <span>90–99% → Kuromi</span>
+    <span>80–89% → Cinnamoroll</span>
+    <span>70–79% → Pompompurin</span>
+    <span>60–69% → My Melody</span>
+    <span>&lt;60% → Pochacco</span>
+  </div>
+</div>
+
 <div class="tools">
 <select id="kelas" onchange="render()"><option value="">Semua kelas</option><option>3DIAMOND</option><option>3EMERALD</option><option>3RUBY</option><option>3SAPPHIRE</option><option>3ZIRCON</option></select>
 <input id="cari" placeholder="Cari nama" oninput="render()">
@@ -24,7 +37,7 @@ th,td{padding:10px;border-bottom:1px solid #e5e7eb;text-align:left}th{background
 </div>
 <div class="card"><div id="load">Memuatkan...</div>
 <table id="tbl" style="display:none"><thead><tr>
-<th>Rank</th><th>Nama</th><th>Kelas</th><th>Set 1</th><th>Set 2</th><th>Purata</th><th>Awal</th><th>Token</th><th>Status</th>
+<th>Rank</th><th>Nama</th><th>Kelas</th><th>Set 1</th><th>Set 2</th><th>Purata</th><th>Awal</th><th>Ganjaran Token</th><th>Status</th>
 </tr></thead><tbody id="body"></tbody></table></div>
 <p class="muted">Ranking bernombor hanya untuk pelajar yang telah melengkapkan kedua-dua set. Pelajar yang belum lengkap tetap dipaparkan tanpa ranking.</p>
 </div>
@@ -50,7 +63,7 @@ function render(){
     <td>${r.set2Pct==null?'-':Number(r.set2Pct).toFixed(1)+'%'}</td>
     <td><b>${r.averagePct==null?'-':Number(r.averagePct).toFixed(1)+'%'}</b></td>
     <td>${r.earlyRank||'-'}</td>
-    <td><div class="token">${img?`<img src="${img}">`:''}<span>${r.tokenCount??0} token<br><small>${esc(r.tokenName||'')}</small></span></div></td>
+    <td><div class="token">${img?`<img src="${img}" alt="${esc(r.tokenName||'Token')}">`:''}<span><strong>${esc(r.tokenName||'Tiada token')}</strong><span class="token-count">${r.tokenCount??0} token</span><br><small>Markah: ${Number(r.set2Pct||0).toFixed(1)}% • Bonus awal: ${r.earlyRank||'-'}</small></span></div></td>
     <td>${r.complete?'Lengkap':'Belum lengkap'}</td></tr>`;
  }).join('');
 }
