@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UASA Tingkatan 1 - Bahagian B Penuh Nilai Baharu</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#eef7ff,#fff9f2);font-family:Arial,Helvetica,sans-serif;color:#17324a}
+.wrap{max-width:980px;margin:auto;padding:14px 14px 90px}
+.card,.page,.result{background:#fff;border:1px solid #d9e5ef;border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,.07)}
+.card{padding:20px;margin-top:12px}
+h1{margin:0 0 10px;color:#1a63a8}
+.info{background:#f6fbff;border-left:6px solid #2f6fb2;padding:12px 14px;border-radius:12px;line-height:1.55}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+label{display:block;font-weight:800;margin-bottom:6px}
+select,input{width:100%;padding:11px;border:1px solid #c8d7e6;border-radius:10px;font:inherit}
+button{border:0;border-radius:11px;padding:11px 15px;font:inherit;font-weight:900;cursor:pointer}
+.primary{background:#2f6fb2;color:#fff}.secondary{background:#718396;color:#fff}
+.startBtn,.checkBtn,.submitBtn{width:100%}
+.exam{display:none}.page{display:none;padding:18px;margin-top:12px;min-height:76vh}.page.active{display:block}
+.qhead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:900;color:#1b5f9f}
+.markTag{display:inline-block;background:#eaf3ff;color:#1f5f9b;border-radius:999px;padding:4px 9px;font-size:.86rem;font-weight:900}
+.qtitle{font-size:1.15rem;font-weight:900;line-height:1.5;margin:14px 0}
+.sub{background:#f9fbfd;border:1px solid #dce7f1;border-radius:14px;padding:13px;margin:12px 0}
+.diagram{background:#fff;border:1px solid #e1eaf2;border-radius:16px;padding:12px;text-align:center;margin:10px 0}
+.diagram svg{width:100%;max-width:720px;height:auto}
+.choiceGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.choice{display:flex;align-items:center;gap:8px;border:2px solid #d8e2ec;border-radius:12px;padding:11px;background:#fff;font-weight:800;cursor:pointer}
+.choice input{width:auto;transform:scale(1.25)}
+.cardChoices{display:flex;gap:9px;flex-wrap:wrap}
+.numCard{border:2px solid #d5dfeb;border-radius:12px;padding:10px 14px;background:#fff;font-weight:900}
+.numCard input{width:auto;margin-right:6px}
+.table{width:100%;border-collapse:collapse;margin-top:8px}
+.table th,.table td{border:1px solid #9eabb7;padding:9px;text-align:center}
+.table th{background:#edf3f8}
+.tickBox{display:flex;gap:8px;justify-content:center;align-items:center}
+.tickBox button{min-width:58px;background:#edf3f8;color:#17324a;border:1px solid #c7d6e4}
+.tickBox button.selected{background:#2f6fb2;color:#fff}
+.eqRow{display:grid;grid-template-columns:1fr 110px;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #edf1f4}
+.work{margin-top:12px;background:#fff8e8;border:1px solid #f0da93;border-left:5px solid #dfa000;border-radius:12px;padding:10px 12px}
+.work summary{font-weight:900;color:#855f00;cursor:pointer}
+.feedback{display:none;margin-top:12px;padding:12px;border-radius:12px;font-weight:900;line-height:1.5}
+.feedback.good{display:block;background:#eaf8ef;color:#116b35}.feedback.bad{display:block;background:#fff4ea;color:#a45500}
+.nav{display:flex;gap:10px;margin-top:16px}.nav button{flex:1}
+.result{display:none;padding:22px;margin-top:12px}.score{font-size:2rem;font-weight:900;color:#19753b}
+.small{font-size:.92rem;color:#607282}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;align-items:center;line-height:1;margin:0 .12em}
+.frac .num{padding:0 .12em .08em;border-bottom:1.5px solid currentColor}.frac .den{padding:.08em .12em 0}
+
+/* Floating keypad */
+#keypadFab{display:none;position:fixed;right:18px;bottom:18px;z-index:1001;width:58px;height:58px;border-radius:50%;background:#6a4bc3;color:#fff;font-size:25px;box-shadow:0 7px 20px rgba(0,0,0,.25);padding:0}
+#floatingKeypad{display:none;position:fixed;right:16px;bottom:86px;z-index:1000;width:min(420px,calc(100vw - 32px));max-height:62vh;overflow:auto;background:#fff;border:2px solid #cabced;border-radius:18px;box-shadow:0 12px 30px rgba(0,0,0,.25);padding:12px}
+#floatingKeypad.show{display:block}
+.keyHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-weight:900;color:#5d3bb1}
+.keyGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.keyGrid button{padding:10px 4px;background:#f7f4ff;color:#2f244b;border:1px solid #d8cdef;border-radius:9px}
+.keyGrid button.action{background:#fff2dd}.keyGrid button.clear{background:#ffebee;color:#b71c1c}.keyGrid button.back{background:#eceff1}
+.targetLabel{font-size:.8rem;color:#677789;margin-bottom:7px}
+
+@media(max-width:680px){
+ .grid2,.choiceGrid{grid-template-columns:1fr}
+ .keyGrid{grid-template-columns:repeat(5,1fr)}
+ .eqRow{grid-template-columns:1fr 90px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section id="cover" class="card">
+<h1>📝 UASA Tingkatan 1 — Bahagian B Penuh (Nilai Baharu)</h1>
+<div class="info">
+<b>20 markah.</b> Bentuk semua soalan mengikut Bahagian B asal, tetapi nilai/nombor telah ditukar.
+Untuk jawapan yang perlu ditaip, tekan ikon <b>⌨️</b> di bawah kanan untuk membuka <b>keypad matematik floating</b>.
+</div>
+<div class="grid2">
+<div><label>Kelas</label><select id="kelas" onchange="updateNamaList()"><option value="">-- Pilih kelas --</option><option>1DIAMOND</option><option>1EMERALD</option><option>1RUBY</option><option>1SAPPHIRE</option></select></div>
+<div><label>Nama Pelajar</label><select id="nama"><option value="">-- Pilih nama --</option></select></div>
+</div>
+<button class="primary startBtn" onclick="startQuiz()">Mula Bahagian B</button>
+</section>
+
+<main id="exam" class="exam">
+
+<!-- QUESTION 1 -->
+<section class="page" id="page1">
+<div class="qhead"><span>Soalan 1 / 5</span><span class="markTag">4 markah</span></div>
+
+<div class="sub">
+<div class="qtitle">(a) Lengkapkan rajah faktor perdana bagi 390. <span class="markTag">2 markah</span></div>
+<div class="diagram">
+<svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg">
+ <circle cx="360" cy="190" r="92" fill="#e5e7eb" stroke="#6b7280" stroke-width="3"/>
+ <text x="360" y="175" text-anchor="middle" font-size="28" font-weight="700">Faktor</text>
+ <text x="360" y="210" text-anchor="middle" font-size="28" font-weight="700">perdana bagi</text>
+ <text x="360" y="255" text-anchor="middle" font-size="34" font-weight="800">390</text>
+ <line x1="295" y1="125" x2="190" y2="70" stroke="#888" stroke-width="3"/>
+ <line x1="425" y1="125" x2="530" y2="70" stroke="#888" stroke-width="3"/>
+ <line x1="295" y1="255" x2="190" y2="315" stroke="#888" stroke-width="3"/>
+ <line x1="425" y1="255" x2="530" y2="315" stroke="#888" stroke-width="3"/>
+ <circle cx="150" cy="55" r="45" fill="#fff" stroke="#888" stroke-width="3"/><text x="150" y="67" text-anchor="middle" font-size="30">2</text>
+ <circle cx="570" cy="55" r="45" fill="#fff" stroke="#888" stroke-width="3"/><text x="570" y="67" text-anchor="middle" font-size="30">13</text>
+ <circle cx="150" cy="330" r="45" fill="#fff" stroke="#888" stroke-width="3"/><text x="150" y="342" text-anchor="middle" font-size="30">?</text>
+ <circle cx="570" cy="330" r="45" fill="#fff" stroke="#888" stroke-width="3"/><text x="570" y="342" text-anchor="middle" font-size="30">?</text>
+</svg>
+</div>
+<div class="grid2">
+<div><label>Faktor kosong 1</label><input id="q1a1" onfocus="setTarget(this,'Soalan 1(a) - faktor 1')" inputmode="numeric" placeholder="?"></div>
+<div><label>Faktor kosong 2</label><input id="q1a2" onfocus="setTarget(this,'Soalan 1(a) - faktor 2')" inputmode="numeric" placeholder="?"></div>
+</div>
+</div>
+
+<div class="sub">
+<div class="qtitle">(b) Pilih semua gandaan sepunya yang betul daripada kad. <span class="markTag">2 markah</span></div>
+<p><b>Kad:</b></p>
+<div class="cardChoices" id="multCards">
+<label class="numCard"><input type="checkbox" value="84">84</label>
+<label class="numCard"><input type="checkbox" value="120">120</label>
+<label class="numCard"><input type="checkbox" value="168">168</label>
+<label class="numCard"><input type="checkbox" value="210">210</label>
+<label class="numCard"><input type="checkbox" value="240">240</label>
+<label class="numCard"><input type="checkbox" value="360">360</label>
+</div>
+<p><b>(i)</b> 14 dan 21</p>
+<input id="q1bi" onfocus="setTarget(this,'Soalan 1(b)(i)')" placeholder="Taip semua jawapan, contoh: 84, 168">
+<p><b>(ii)</b> 12, 20 dan 30</p>
+<input id="q1bii" onfocus="setTarget(this,'Soalan 1(b)(ii)')" placeholder="Taip semua jawapan">
+</div>
+
+<details class="work"><summary>💡 Lihat Jalan Kerja</summary>
+<p>390 = 2 × 3 × 5 × 13. Jadi dua faktor kosong ialah 3 dan 5.</p>
+<p>GSTK(14,21)=42 → daripada kad: 84, 168, 210.</p>
+<p>GSTK(12,20,30)=60 → daripada kad: 120, 240, 360.</p>
+</details>
+<button class="primary checkBtn" style="margin-top:14px" onclick="checkQ1()">✓ Semak Soalan 1</button>
+<div id="fb1" class="feedback"></div>
+<div class="nav"><button class="secondary" disabled>← Sebelum</button><button class="secondary" onclick="goTo(2)">Seterusnya →</button></div>
+</section>
+
+<!-- QUESTION 2 -->
+<section class="page" id="page2">
+<div class="qhead"><span>Soalan 2 / 5</span><span class="markTag">4 markah</span></div>
+
+<div class="sub">
+<div class="qtitle">(a) Pilih dua ungkapan yang mempunyai sebutan algebra yang sama. <span class="markTag">2 markah</span></div>
+<div class="choiceGrid">
+<label class="choice"><input type="checkbox" class="q2a" value="A"><span>A. 6xyz</span></label>
+<label class="choice"><input type="checkbox" class="q2a" value="B"><span>B. <span class="frac"><span class="num">4</span><span class="den">7</span></span>mn</span></label>
+<label class="choice"><input type="checkbox" class="q2a" value="C"><span>C. 1.5xy + 2z</span></label>
+<label class="choice"><input type="checkbox" class="q2a" value="D"><span>D. 9zyx</span></label>
+</div>
+</div>
+
+<div class="sub">
+<div class="qtitle">(b) Pilih dua ungkapan yang boleh dipermudahkan menjadi 20ab². <span class="markTag">2 markah</span></div>
+<div class="choiceGrid">
+<label class="choice"><input type="checkbox" class="q2b" value="A"><span>A. 4ab × 5ab</span></label>
+<label class="choice"><input type="checkbox" class="q2b" value="B"><span>B. 15ab × 4ab</span></label>
+<label class="choice"><input type="checkbox" class="q2b" value="C"><span>C. 80a ÷ 4b²</span></label>
+<label class="choice"><input type="checkbox" class="q2b" value="D"><span>D. 40ab³ ÷ 2b</span></label>
+<label class="choice"><input type="checkbox" class="q2b" value="E"><span>E. −a × (−20b²)</span></label>
+<label class="choice"><input type="checkbox" class="q2b" value="F"><span>F. 12ab² + 8ab²</span></label>
+<label class="choice"><input type="checkbox" class="q2b" value="G"><span>G. 25ab² − 5a²b</span></label>
+</div>
+</div>
+
+<details class="work"><summary>💡 Lihat Jalan Kerja</summary>
+<p>(a) 6xyz dan 9zyx mempunyai pemboleh ubah serta kuasa yang sama.</p>
+<p>(b) −a × (−20b²)=20ab² dan 12ab² + 8ab²=20ab².</p>
+</details>
+<button class="primary checkBtn" style="margin-top:14px" onclick="checkQ2()">✓ Semak Soalan 2</button>
+<div id="fb2" class="feedback"></div>
+<div class="nav"><button class="secondary" onclick="goTo(1)">← Sebelum</button><button class="secondary" onclick="goTo(3)">Seterusnya →</button></div>
+</section>
+
+<!-- QUESTION 3 -->
+<section class="page" id="page3">
+<div class="qhead"><span>Soalan 3 / 5</span><span class="markTag">4 markah</span></div>
+
+<div class="sub">
+<div class="qtitle">(a) Diberi S = {2, 4, 6, 8}. Tandakan √ subset yang mungkin. <span class="markTag">2 markah</span></div>
+<table class="table">
+<thead><tr><th>Subset</th><th>√</th></tr></thead>
+<tbody>
+<tr><td>{}</td><td><input type="checkbox" class="q3a" value="empty"></td></tr>
+<tr><td>{4,8}</td><td><input type="checkbox" class="q3a" value="48"></td></tr>
+<tr><td>{2,5}</td><td><input type="checkbox" class="q3a" value="25"></td></tr>
+<tr><td>{2,4,6,8,10}</td><td><input type="checkbox" class="q3a" value="all5"></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="sub">
+<div class="qtitle">(b) Tandakan ✓ bagi segi tiga bersudut tegak dan ✗ jika bukan. <span class="markTag">2 markah</span></div>
+<div class="diagram">
+<svg viewBox="0 0 760 370" xmlns="http://www.w3.org/2000/svg">
+ <polygon points="80,80 330,80 330,260" fill="#f4f9ff" stroke="#222" stroke-width="3"/>
+ <text x="190" y="65" font-size="23">12 cm</text><text x="345" y="185" font-size="23">9 cm</text><text x="185" y="190" font-size="23">15 cm</text>
+ <rect x="345" y="130" width="80" height="70" fill="#fff" stroke="#222" stroke-width="3"/>
+ <text x="370" y="175" font-size="34" font-weight="700">?</text>
+ <polygon points="455,250 570,105 700,260" fill="#fff8ee" stroke="#222" stroke-width="3"/>
+ <text x="485" y="185" font-size="23">8 cm</text><text x="625" y="190" font-size="23">10 cm</text><text x="565" y="285" font-size="23">13 cm</text>
+ <rect x="595" y="90" width="80" height="70" fill="#fff" stroke="#222" stroke-width="3"/>
+ <text x="620" y="135" font-size="34" font-weight="700">?</text>
+</svg>
+</div>
+<div class="grid2">
+<div><label>Segi tiga 1</label><select id="q3b1"><option value="">-- Pilih --</option><option value="yes">✓</option><option value="no">✗</option></select></div>
+<div><label>Segi tiga 2</label><select id="q3b2"><option value="">-- Pilih --</option><option value="yes">✓</option><option value="no">✗</option></select></div>
+</div>
+</div>
+
+<details class="work"><summary>💡 Lihat Jalan Kerja</summary>
+<p>(a) Semua unsur subset mesti datang daripada S. Jadi {} dan {4,8} ialah subset.</p>
+<p>(b) 9² + 12² = 15², jadi segi tiga pertama bersudut tegak. 8² + 10² ≠ 13², jadi segi tiga kedua bukan.</p>
+</details>
+<button class="primary checkBtn" style="margin-top:14px" onclick="checkQ3()">✓ Semak Soalan 3</button>
+<div id="fb3" class="feedback"></div>
+<div class="nav"><button class="secondary" onclick="goTo(2)">← Sebelum</button><button class="secondary" onclick="goTo(4)">Seterusnya →</button></div>
+</section>
+
+<!-- QUESTION 4 -->
+<section class="page" id="page4">
+<div class="qhead"><span>Soalan 4 / 5</span><span class="markTag">4 markah</span></div>
+
+<div class="sub">
+<div class="qtitle">(a) Tandakan persamaan linear dalam satu pemboleh ubah. <span class="markTag">2 markah</span></div>
+<table class="table">
+<thead><tr><th>Persamaan</th><th>√</th></tr></thead>
+<tbody>
+<tr><td>r + 2s = 10</td><td><input type="checkbox" class="q4a" value="A"></td></tr>
+<tr><td>g − 3 = <span class="frac"><span class="num">7</span><span class="den">4</span></span></td><td><input type="checkbox" class="q4a" value="B"></td></tr>
+<tr><td>c = 5c + 8</td><td><input type="checkbox" class="q4a" value="C"></td></tr>
+<tr><td>t² = 16</td><td><input type="checkbox" class="q4a" value="D"></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="sub">
+<div class="qtitle">(b) Diberi 4x + y = 20. Lengkapkan jadual. <span class="markTag">2 markah</span></div>
+<table class="table">
+<thead><tr><th>x</th><th>y</th></tr></thead>
+<tbody>
+<tr><td>2</td><td>12</td></tr>
+<tr><td>3</td><td><input id="q4b1" onfocus="setTarget(this,'Soalan 4(b), x=3')" inputmode="numeric" placeholder="?"></td></tr>
+<tr><td>4</td><td><input id="q4b2" onfocus="setTarget(this,'Soalan 4(b), x=4')" inputmode="numeric" placeholder="?"></td></tr>
+</tbody>
+</table>
+</div>
+
+<details class="work"><summary>💡 Lihat Jalan Kerja</summary>
+<p>(a) Persamaan linear satu pemboleh ubah mempunyai hanya satu pemboleh ubah dan kuasa pemboleh ubah ialah 1. Jawapan: g − 3 = 7/4 dan c = 5c + 8.</p>
+<p>(b) y = 20 − 4x. Jika x=3, y=8. Jika x=4, y=4.</p>
+</details>
+<button class="primary checkBtn" style="margin-top:14px" onclick="checkQ4()">✓ Semak Soalan 4</button>
+<div id="fb4" class="feedback"></div>
+<div class="nav"><button class="secondary" onclick="goTo(3)">← Sebelum</button><button class="secondary" onclick="goTo(5)">Seterusnya →</button></div>
+</section>
+
+<!-- QUESTION 5 -->
+<section class="page" id="page5">
+<div class="qhead"><span>Soalan 5 / 5</span><span class="markTag">4 markah</span></div>
+<div class="qtitle">(a) Berdasarkan rajah garis selari, isikan = atau ≠. <span class="markTag">4 markah</span></div>
+<div class="diagram">
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg">
+ <line x1="90" y1="120" x2="610" y2="120" stroke="#1e3a5f" stroke-width="5"/>
+ <line x1="90" y1="300" x2="610" y2="300" stroke="#1e3a5f" stroke-width="5"/>
+ <line x1="360" y1="45" x2="305" y2="370" stroke="#222" stroke-width="5"/>
+ <text x="315" y="100" font-size="27">a</text><text x="365" y="100" font-size="27">b</text>
+ <text x="310" y="150" font-size="27">d</text><text x="360" y="150" font-size="27">c</text>
+ <text x="292" y="282" font-size="27">w</text><text x="345" y="282" font-size="27">x</text>
+ <text x="282" y="335" font-size="27">z</text><text x="335" y="335" font-size="27">y</text>
+ <text x="625" y="128" font-size="30">∥</text><text x="625" y="308" font-size="30">∥</text>
+</svg>
+</div>
+
+<div class="eqRow"><div>(i) a ___ w</div><select id="q5i"><option value="">-- Pilih --</option><option>=</option><option>≠</option></select></div>
+<div class="eqRow"><div>(ii) b ___ y</div><select id="q5ii"><option value="">-- Pilih --</option><option>=</option><option>≠</option></select></div>
+<div class="eqRow"><div>(iii) x ___ z</div><select id="q5iii"><option value="">-- Pilih --</option><option>=</option><option>≠</option></select></div>
+<div class="eqRow"><div>(iv) c ___ d</div><select id="q5iv"><option value="">-- Pilih --</option><option>=</option><option>≠</option></select></div>
+
+<details class="work"><summary>💡 Lihat Jalan Kerja</summary>
+<p>Sudut sepadan adalah sama: a = w. Sudut bertentangan bucu adalah sama: x = z.</p>
+<p>b dan y bukan pasangan sudut yang sama; c dan d ialah sudut bersebelahan pada garis lurus, jadi secara umum nilainya tidak sama.</p>
+</details>
+<button class="primary checkBtn" style="margin-top:14px" onclick="checkQ5()">✓ Semak Soalan 5</button>
+<div id="fb5" class="feedback"></div>
+<div class="nav"><button class="secondary" onclick="goTo(4)">← Sebelum</button><button class="secondary" onclick="showResult()">Lihat Keputusan</button></div>
+</section>
+
+</main>
+
+<section id="result" class="result">
+<h2>Keputusan Bahagian B</h2>
+<div id="scoreText" class="score">0 / 20</div>
+<p id="scoreDetail" class="small"></p>
+<p id="saveStatus" class="small">Markah belum dihantar.</p>
+<button class="primary submitBtn" onclick="submitFinal()">Hantar Markah ke Google Sheet</button>
+</section>
+</div>
+
+<button id="keypadFab" onclick="toggleKeypad()" title="Keypad Matematik">⌨️</button>
+<div id="floatingKeypad">
+ <div class="keyHead"><span>⌨️ Keypad Matematik</span><button onclick="toggleKeypad()" style="padding:4px 9px;background:#eee;color:#333">✕</button></div>
+ <div id="targetLabel" class="targetLabel">Klik kotak jawapan dahulu.</div>
+ <div class="keyGrid">
+  <button onclick="insertKey('1')">1</button><button onclick="insertKey('2')">2</button><button onclick="insertKey('3')">3</button>
+  <button onclick="insertKey('4')">4</button><button onclick="insertKey('5')">5</button><button onclick="insertKey('6')">6</button>
+  <button onclick="insertKey('7')">7</button><button onclick="insertKey('8')">8</button><button onclick="insertKey('9')">9</button>
+  <button onclick="insertKey('0')">0</button><button onclick="insertKey('.')">.</button><button onclick="insertKey(',')">,</button>
+  <button onclick="insertKey('x')">x</button><button onclick="insertKey('y')">y</button><button onclick="insertKey('a')">a</button>
+  <button onclick="insertKey('b')">b</button><button onclick="insertKey('c')">c</button><button onclick="insertKey('p')">p</button>
+  <button onclick="insertKey('+')">+</button><button onclick="insertKey('−')">−</button><button onclick="insertKey('×')">×</button>
+  <button onclick="insertKey('÷')">÷</button><button onclick="insertKey('=')">=</button><button onclick="insertKey('≠')">≠</button>
+  <button onclick="insertKey('(')">(</button><button onclick="insertKey(')')">)</button><button onclick="insertKey('²')">²</button>
+  <button onclick="insertKey('³')">³</button><button onclick="insertKey('√')">√</button><button onclick="insertKey('∛')">∛</button>
+  <button onclick="insertKey('{')">{</button><button onclick="insertKey('}')">}</button><button onclick="insertKey('∩')">∩</button>
+  <button onclick="insertKey('∪')">∪</button><button onclick="insertKey('≤')">≤</button><button onclick="insertKey('≥')">≥</button>
+  <button onclick="insertKey('<')">&lt;</button><button onclick="insertKey('>')">&gt;</button><button onclick="insertKey('°')">°</button>
+  <button class="back" onclick="backspaceKey()">⌫</button><button class="clear" onclick="clearTarget()">C</button>
+ </div>
+</div>
+
+<script>
+const STUDENTS={"1DIAMOND": ["ALLY ZULFADHLI BIN MOHD ZAHID", "AMNI QAISARA BINTI MOHD FAIRUS", "ANGEL LAYCOOL BAJIK ANAK ROBERT", "AWADAH NUR RIZQAH BINTI MOHD IKHRAM", "CHONG JING XIN", "FATIN AQILAH NAFISAH BINTI MOHD SHUKOR", "FONG JIN RU", "HAWA DAMIA NURAIN BINTI MOHD HUSAINI", "LIEW RUO QI", "LIM JING XIN", "MOHAMAD SYAHMIRUL BIN MOHD SHAHNIZA", "MUHAMMAD ABDULLAH SALAM ALI BIN GHAZALY ALI", "MUHAMMAD AIDID AMERUL BIN MUHAMMAD NAZRI", "MUHAMMAD AISY RIZQIN BIN MUHAMMAD GHAZALI", "MUHAMMAD AMIR KAZIM BIN SUDARMAN", "MUHAMMAD AQIFF HAKIMI BIN SHARUL IZUAN", "MUHAMMAD DANISH SHAZRIL BIN ABDULLAH", "MUHAMMAD FITRI HAMIZAN BIN ZAMEER AKMAL", "MUHAMMAD HAZIQ FAIZ BIN HASHIM", "MUHAMMAD IRFAN NAUFAL BIN NOORHAFIZAN", "MUHAMMAD RYAN ZAFRIL BIN MOHD NIZEM", "NAFIZ MURSYID BIN MOHD NOR KHAIRIL", "NUR HANI DARINA BINTI KAMARUL ARIFFIN", "NUR HUSNA FAQIHAH BINTI ISHAK", "NUR SYAFA ADILA BINTI ISMAIL", "NURUL FAIQAH HUSNA BINTI MOHD FARID", "PONG YIN XIN", "RIA ZARA BINTI MOHD HAZWAN", "THONG SZE YANG", "WONG LIEK KAI"], "1EMERALD": ["YONG SHENG XIANG", "KIEW RUI BIN", "TAN XUAN QI", "ADAM EEHAN BIN HARNIE SHA FARDLY", "HSU HAO XUAN", "LAI TECK FOCK", "SIM YUK SHAN", "NUR FATHIAH SAKINA BINTI MOHAMAD FIRDHAUS", "TEOH XIN CI", "NUR AMNI ELLISYA BINTI SYAIFUL IZWAN", "QASEH QAISARA BINTI SAZALI", "RADIN RAYYAN HAFIZ", "ANISSA SOFIA BINTI MOHAMAD HAIRULNIZAM", "MUHAMMAD FAIZ ZAKWAN BIN MOHD NAJIB", "NUR AINA MAISARAH BINTI KHAIRUL AZMI", "NURISYA AFIRA BINTI ABDULLAH", "SITI NUR RAQIAH BINTI ABDULLAH", "AISYAH BINTI MUHAMAD MUSTAKIM", "NURIN INSYIRAH BINTI NIZARUDIN", "MUHAMMAD HADI JAZLI BIN MD ALMUTAKIL", "MUHAMMAD AIMANSHAH BIN AZIZUL", "MUHAMMAD NASRAWI BIN MOHAMMAD FETRIE", "DARSHANASRI A/P KRISHNAN", "NUR ELFFIFARISAH QOYYIMAH BINTI MOHD RAIS", "KAMIL IMRAN BIN JEFRY"], "1RUBY": ["ADAM DAZLY BIN SHAHALWI", "AFNI ELVINA BINTI ARAFI", "CHONG JIA JIA", "CHONG LE XUAN", "DINESH A/L LECHUMANAN", "LEONG ZI QI", "LIONG SHENG KANG", "MOHAMAD AISY ADWA BIN MOHD FIRDAUS", "MOHAMMAD SYAHRIZAD RAYYAN BIN SAHRUDIN", "MUHAMAD SYAMIL ASYRAFF BIN HISHAM", "MUHAMMAD DANISH HAZIQ BIN NORARMIZAN", "MUHAMMAD HAQQEM BIN KHAIRULIZAM", "MUHAMMAD ILHAM MUHAYYAD BIN MESWAN", "MUHAMMAD QAWI NAUFAL BIN MUHAMMAD SAFUAN", "MUHAMMAD UMAR BIN KAMARUL ZAMAN", "MUHAMMAD YOUNES BIN MOHD YAZID", "NUR DELISHA AMANI BINTI MOHD NOOR RAMDAN", "NUR ELYANA BINTI ABDULLAH", "NUR IRIS HUMAIRA BINTI MOHD NOOR", "NUR KHAIRA QALISYA BINTI MOHD KHAIR", "NURHAQESSYA BINTI SYAHAFIZ", "SAHET NAUFAL BIN MD NASIR", "SITI NUR ASYIKIN BINTI IRWIN", "SYLVESTER SHEN KAI BING", "TAKESH A/L R.G. BABU", "THAM ZHI HONG", "UMAIRAH QAISARA BINTI IZHAR", "WONG KA HUI", "WONG KIAN RONG"], "1SAPPHIRE": ["LOY XIN TIAN", "UMAIRAH QALISYA BINTI IZHAR", "CHONG XIAO NING", "INTAN NUR SYAFIQAH BINTI MUHAMMAD FIRDAUS", "NERONDY SHAHLAN", "ADAM DAZRYN BIN SHAHALWI", "MUHAMMAD QALIFF ASHRAFF BIN MD SYAH", "YAP ZHI JIE", "CHONG YI XIN", "LEONG YEE ROU", "PUTERI NUR DAMIA BINTI ZULTIKA", "RAISHA SUTRA BINTI RAFIUDDIN", "WONG JIA JIA", "MOHAMAD DANIEL DANESH BIN MOSLIM", "MUHAMMAD ADAM ISKANDAR BIN MOHD SANI", "SOLEHUDDINULHAFIZ BIN MOHD SHAFIEE", "MUHAMMAD ADAM ARIEF BIN OSMAN", "RAYQAL ISKANDAR BIN RIZAL", "GAN CHIK CHEN", "CHANG JIE QI", "NUR HAZIQAH NASRIN BINTI ABDULLAH", "JUSTIN PANG HAO JUN", "MOHAMAD ZUHAER BIN MOHAMAD NIZAM", "MUHAMMAD SUFIY BIN SALAHUDIN", "LAM JUN YI"]};
+const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbz4gRgjjlzOfb4nKgPNHmLw3wFzl6oWSYm4vptNf0uRLIWrurPxKbTvglfjlHWUFuOYww/exec';
+const SET_NAME='UASA T1 SET 2026 - Bahagian B Penuh Nilai Baharu';
+let startedAt=0,marks={1:0,2:0,3:0,4:0,5:0},activeMathInput=null;
+
+function updateNamaList(){
+ const k=document.getElementById('kelas').value,n=document.getElementById('nama');
+ n.innerHTML='<option value="">-- Pilih nama --</option>';
+ (STUDENTS[k]||[]).forEach(x=>{const o=document.createElement('option');o.value=x;o.textContent=x;n.appendChild(o);});
+}
+function startQuiz(){
+ if(!document.getElementById('kelas').value||!document.getElementById('nama').value){alert('Sila pilih kelas dan nama pelajar.');return;}
+ startedAt=Date.now();
+ document.getElementById('cover').style.display='none';
+ document.getElementById('exam').style.display='block';
+ document.getElementById('keypadFab').style.display='block';
+ goTo(1);
+}
+function goTo(n){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById('page'+n).classList.add('active');
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function setTarget(el,label){
+ activeMathInput=el;
+ document.getElementById('targetLabel').textContent='Mengisi: '+label;
+}
+function toggleKeypad(){document.getElementById('floatingKeypad').classList.toggle('show');}
+function insertKey(k){
+ if(!activeMathInput){alert('Klik kotak jawapan dahulu.');return;}
+ const s=activeMathInput.selectionStart??activeMathInput.value.length,e=activeMathInput.selectionEnd??s,v=activeMathInput.value;
+ activeMathInput.value=v.slice(0,s)+k+v.slice(e);
+ const p=s+k.length;activeMathInput.focus();try{activeMathInput.setSelectionRange(p,p);}catch(err){}
+}
+function backspaceKey(){
+ if(!activeMathInput)return;
+ const s=activeMathInput.selectionStart??activeMathInput.value.length,e=activeMathInput.selectionEnd??s,v=activeMathInput.value;
+ if(s!==e){activeMathInput.value=v.slice(0,s)+v.slice(e);activeMathInput.setSelectionRange(s,s);}
+ else if(s>0){activeMathInput.value=v.slice(0,s-1)+v.slice(e);activeMathInput.setSelectionRange(s-1,s-1);}
+ activeMathInput.focus();
+}
+function clearTarget(){if(activeMathInput){activeMathInput.value='';activeMathInput.focus();}}
+function values(cls){return [...document.querySelectorAll('.'+cls+':checked')].map(x=>x.value).sort().join(',');}
+function nums(v){return (String(v).match(/\d+/g)||[]).map(Number).sort((a,b)=>a-b).join(',');}
+function fb(id,m,max){
+ const e=document.getElementById(id);
+ if(m===max){e.className='feedback good';e.textContent=`✅ Betul. Markah: ${m}/${max}`;}
+ else{e.className='feedback bad';e.textContent=`Markah semasa: ${m}/${max}. Semak semula atau buka Jalan Kerja.`;}
+}
+function checkQ1(){
+ let m=0;
+ const f=[Number(q1a1.value),Number(q1a2.value)].sort((a,b)=>a-b).join(',');
+ if(f==='3,5')m+=2;
+ if(nums(q1bi.value)==='84,168,210' && nums(q1bii.value)==='120,240,360')m+=2;
+ marks[1]=m;fb('fb1',m,4);
+}
+function checkQ2(){
+ let m=0;
+ if(values('q2a')==='A,D')m+=2;
+ if(values('q2b')==='E,F')m+=2;
+ marks[2]=m;fb('fb2',m,4);
+}
+function checkQ3(){
+ let m=0;
+ if(values('q3a')==='48,empty')m+=2;
+ if(q3b1.value==='yes'&&q3b2.value==='no')m+=2;
+ marks[3]=m;fb('fb3',m,4);
+}
+function checkQ4(){
+ let m=0;
+ if(values('q4a')==='B,C')m+=2;
+ if(Number(q4b1.value)===8&&Number(q4b2.value)===4)m+=2;
+ marks[4]=m;fb('fb4',m,4);
+}
+function checkQ5(){
+ let m=0;
+ if(q5i.value==='=')m++;
+ if(q5ii.value==='≠')m++;
+ if(q5iii.value==='=')m++;
+ if(q5iv.value==='≠')m++;
+ marks[5]=m;fb('fb5',m,4);
+}
+function total(){return Object.values(marks).reduce((a,b)=>a+b,0);}
+function showResult(){
+ document.getElementById('exam').style.display='none';
+ document.getElementById('floatingKeypad').classList.remove('show');
+ document.getElementById('result').style.display='block';
+ const t=total();
+ scoreText.textContent=t+' / 20';
+ scoreDetail.textContent=`S1 ${marks[1]}/4 • S2 ${marks[2]}/4 • S3 ${marks[3]}/4 • S4 ${marks[4]}/4 • S5 ${marks[5]}/4`;
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+async function submitFinal(){
+ const t=total(),elapsed=Math.floor((Date.now()-startedAt)/1000);
+ const f=new URLSearchParams();
+ f.set('action','submitUASABFull');
+ f.set('set',SET_NAME);
+ f.set('nama',nama.value);f.set('kelas',kelas.value);
+ f.set('markah',String(t));f.set('jumlah','20');f.set('masaSaat',String(elapsed));
+ f.set('pecahanMarkah',`S1:${marks[1]}/4|S2:${marks[2]}/4|S3:${marks[3]}/4|S4:${marks[4]}/4|S5:${marks[5]}/4`);
+ saveStatus.textContent='Menghantar markah...';
+ try{
+  const r=await fetch(APPS_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:f.toString()});
+  const d=await r.json();
+  saveStatus.textContent=d.ok?`✓ Direkod dalam ${d.sheet}. Markah ${d.markah}/${d.jumlah}.`:'Gagal: '+(d.message||'Ralat');
+ }catch(e){saveStatus.textContent='Gagal dihantar: '+e.message;}
+}
+</script>
+</body>
+</html>
