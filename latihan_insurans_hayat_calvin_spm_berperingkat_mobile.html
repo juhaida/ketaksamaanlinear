@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Latihan SPM | Premium Insurans Hayat Encik Calvin</title>
+<style>
+:root{--blue:#104a71;--accent:#13739f;--ink:#213247;--bg:#f2f6fa;--border:#c7d6e2;--green:#147347;--red:#a62b30}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.55}
+main{max-width:850px;margin:auto;padding:12px}
+header{background:linear-gradient(120deg,#104a71,#1479a4);color:white;border-radius:14px;padding:18px 16px}
+header h1{font-size:clamp(21px,4vw,30px);margin:0 0 4px}header p{margin:0}
+.card{background:white;border:1px solid var(--border);border-radius:13px;padding:17px;margin-top:13px;box-shadow:0 2px 7px #1636500b}
+h2{font-size:21px;color:var(--blue);margin:0 0 12px}h3{font-size:17px;color:var(--blue);margin:10px 0}
+p{margin:8px 0}
+.problem{background:#f3f9fe;padding:12px 14px;border-left:4px solid var(--accent);border-radius:8px}
+.en{font-style:italic;color:#5b6c7d}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.info div{border:1px solid #d2e2ed;border-radius:9px;padding:10px;background:#fbfdff}
+.info strong{display:block;color:var(--blue);font-size:14px}.info span{font-size:17px}
+.progress{height:10px;background:#dce8f0;border-radius:12px;overflow:hidden;margin:8px 0 12px}.progress span{height:100%;display:block;background:#259867;width:0;transition:width .3s}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.pill{background:#eaf0f5;border-radius:999px;padding:5px 8px;font-size:12px;color:#456072}.pill.current{background:#cee6f6;color:#074c76;font-weight:750}.pill.completed{background:#dbf2e4;color:#155a32}
+.solution{border:1px solid #aebfcd;border-radius:9px;overflow:hidden}.solution .heading{background:#e7f2fa;text-align:center;font-weight:750;padding:10px}.line{padding:12px 13px;border-top:1px solid #d3dfe8}.line.inactive{color:#657788;background:#f6f8fa}.line.active{background:#fffdf5;border-left:4px solid #d3a033}.line.finished{background:#f1fcf4}.equation{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:9px;font-size:18px}
+.frac{display:inline-flex;align-items:center;flex-direction:column;vertical-align:middle;line-height:1.15;font-size:17px;min-width:82px}.frac .top{border-bottom:1.5px solid currentColor;padding:0 7px 3px;text-align:center}.frac .bottom{padding:3px 7px 0;text-align:center}.eqtext{font-family:Georgia,"Times New Roman",serif;font-size:18px}
+input{width:100%;min-width:0;border:1px solid #96b1c5;border-radius:8px;padding:12px;font:inherit;font-size:16px;background:white;color:#20384f}
+input:disabled{background:#edf1f5;color:#778594}input:focus{outline:3px solid #f5d48f;outline-offset:1px}
+.field{display:grid;grid-template-columns:1fr;gap:6px;max-width:370px;margin-top:10px}
+label{font-weight:650;font-size:14px}.goodvalue{font-weight:750;color:#11613a;margin-top:7px}
+.hint{margin-top:14px;background:#fff8e3;border-left:4px solid #d7a533;padding:12px;border-radius:8px}.hint summary{cursor:pointer;font-weight:700}
+.feedback{display:none;margin-top:12px;padding:12px;border-radius:9px;white-space:pre-wrap}.feedback.good{display:block;background:#e5f6ea;color:#155e37}.feedback.bad{display:block;background:#fff1ed;color:#95352c}
+.buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}button{border:1px solid #aec7d8;border-radius:9px;padding:11px 15px;font:inherit;font-weight:700;background:#fff;color:var(--blue);min-height:46px;cursor:pointer}button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}button:disabled{opacity:.45;cursor:not-allowed}.buttons button{flex:1 1 130px}
+.finish{background:#e4f7ea;border-radius:10px;padding:14px;margin-top:14px;display:none}
+footer{text-align:center;color:#667a8c;font-size:12px;padding:18px}
+@media(max-width:520px){main{padding:7px}header{padding:15px 12px;border-radius:10px}.card{padding:12px;border-radius:10px}.info{grid-template-columns:1fr}.eqtext{font-size:17px}.frac{font-size:16px}.line{padding:10px}.buttons button{flex:1 1 130px}}
+</style>
+</head>
+<body>
+<main>
+<header><h1>INSURANS HAYAT & PENYAKIT KRITIKAL</h1><p>Matematik SPM • Latihan langkah demi langkah</p></header>
+<section class="card">
+<h2>Soalan / Question</h2>
+<div class="problem">
+<p>Encik Calvin berumur <b>39 tahun</b>, seorang yang sihat dan bukan perokok. Encik Calvin ingin membeli polisi insurans hayat yang bernilai <b>RM320 000</b> dan menambah polisi penyakit kritikal. Syarikat insurans menawarkan perlindungan penyakit kritikal sebanyak <b>30%</b> daripada nilai muka asas dan kadar premium tambahan sebanyak <b>RM1.84 bagi setiap RM1 000</b> mengikut umur dan status kesihatan.</p>
+<p class="en">Encik Calvin is 39 years old, healthy and a non-smoker. He wants a life insurance policy with a basic face value of RM320,000 and additional critical illness coverage of 30%. The additional premium rate is RM1.84 per RM1,000.</p>
+<p><strong>Berdasarkan Jadual 1, kadar premium asas ialah RM3.24 bagi setiap RM1 000.</strong></p>
+<p><b>Hitung premium tahunan yang perlu dibayar oleh Encik Calvin.</b></p>
+<p class="en">Calculate the annual premium that Encik Calvin needs to pay.</p>
+</div>
+<div class="info">
+<div><strong>Nilai muka asas</strong><span>RM320 000</span></div>
+<div><strong>Kadar premium hayat</strong><span>RM3.24 / RM1 000</span></div>
+<div><strong>Perlindungan penyakit kritikal</strong><span>30%</span></div>
+<div><strong>Kadar premium tambahan</strong><span>RM1.84 / RM1 000</span></div>
+</div>
+</section>
+<section class="card">
+<h2>Penyelesaian / Solution</h2>
+<p id="stepTitle">Langkah 1 daripada 5</p><div class="progress"><span id="progressBar"></span></div><div id="stepPills" class="pills"></div>
+<p id="instruction"></p>
+<div class="solution">
+<div class="heading">Premium tahunan Encik Calvin</div>
+<div class="line" id="row0"><b>(a) Kadar premium asas</b><div class="equation eqtext">RM <span id="v0">□</span> bagi setiap RM1 000</div></div>
+<div class="line" id="row1"><b>(b) Premium asas tahunan / Annual basic premium</b><div class="equation eqtext">= <span class="frac"><span class="top">RM320 000</span><span class="bottom">RM1 000</span></span> × RM3.24</div><div class="equation eqtext">= RM <span id="v1">□</span></div></div>
+<div class="line" id="row2"><b>(c) Perlindungan penyakit kritikal</b><div class="equation eqtext">= <span id="v2">□</span> % daripada nilai muka asas</div></div>
+<div class="line" id="row3"><b>(d) Premium tambahan tahunan penyakit kritikal</b><div class="equation eqtext">= <span class="frac"><span class="top">RM320 000</span><span class="bottom">RM1 000</span></span> × <span class="frac"><span class="top">30</span><span class="bottom">100</span></span> × RM1.84</div><div class="equation eqtext">= RM <span id="v3">□</span></div></div>
+<div class="line" id="row4"><b>(e) Jumlah premium tahunan / Annual premium</b><div class="equation eqtext">= RM1 036.80 + RM176.64</div><div class="equation eqtext">= RM <span id="v4">□</span></div></div>
+</div>
+<div class="field"><label id="fieldLabel" for="answer">Jawapan untuk langkah semasa</label><input id="answer" type="number" step="any" inputmode="decimal" autocomplete="off" placeholder="Masukkan nilai tanpa RM"></div>
+<details class="hint"><summary>📘 Panduan menjawab langkah ini</summary><p id="hint"></p></details>
+<div class="feedback" id="feedback" aria-live="polite"></div>
+<div class="buttons"><button id="prev" type="button">← Sebelum</button><button class="primary" id="check" type="button">Semak Jawapan</button><button class="primary" id="next" type="button" disabled>Seterusnya →</button></div>
+<div class="finish" id="finish"><b>✓ Latihan selesai!</b><p>Premium tahunan Encik Calvin ialah <b>RM1 213.44</b>.</p><button id="reset" type="button">Mula semula</button></div>
+</section>
+<footer>Latihan Matematik SPM • HTML satu fail • Mesra telefon • Boleh digunakan di GitHub Pages</footer>
+</main>
+<script>
+'use strict';
+const answers=[3.24,1036.80,30,176.64,1213.44];
+const prompts=[
+'Isi kadar premium asas yang dinyatakan dalam soalan (RM bagi setiap RM1 000).',
+'Kira premium asas tahunan mengikut formula yang diberikan.',
+'Isi peratus perlindungan penyakit kritikal daripada nilai muka asas.',
+'Hitung premium tambahan tahunan untuk penyakit kritikal.',
+'Jumlahkan premium asas tahunan dan premium tambahan tahunan.'
+];
+const guides=[
+'Lihat ayat “Berdasarkan Jadual 1” dalam soalan. Ambil kadar untuk umur dan status kesihatan Encik Calvin.',
+'Bahagikan nilai muka asas dengan RM1 000 dahulu. Kemudian darabkan dengan kadar premium asas RM3.24.',
+'Perlindungan penyakit kritikal ialah peratus daripada nilai muka asas, bukan peratus daripada premium asas.',
+'Gunakan susunan seperti skema: (RM320 000 ÷ RM1 000) × (30 ÷ 100) × RM1.84.',
+'Tambahkan premium asas tahunan dengan premium tambahan tahunan. Jawapan akhir dalam RM.'
+];
+const names=['Kadar asas','Premium asas','Peratus kritikal','Premium tambahan','Jumlah tahunan'];
+const KEY='calvin_spm_insurans_v1';
+let step=0;let unlocked=[false,false,false,false,false];let values=['','','','',''];
+const $=id=>document.getElementById(id);
+function persist(){try{localStorage.setItem(KEY,JSON.stringify({step,unlocked,values}))}catch(e){}}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&Array.isArray(s.unlocked)&&s.unlocked.length===5&&Array.isArray(s.values)&&s.values.length===5){unlocked=s.unlocked.map(Boolean);values=s.values.map(v=>String(v));step=Math.max(0,Math.min(4,Number(s.step)||0));const firstLocked=unlocked.findIndex(x=>!x);if(firstLocked!==-1&&step>firstLocked)step=firstLocked}}catch(e){}}
+function fmt(n){return Number(n).toLocaleString('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function render(){
+ $('stepTitle').textContent='Langkah '+(step+1)+' daripada 5 — '+names[step];
+ $('instruction').textContent=prompts[step];$('hint').textContent=guides[step];
+ $('stepPills').innerHTML=names.map((n,i)=>'<span class="pill '+(unlocked[i]?'completed':i===step?'current':'')+'">'+(unlocked[i]?'✓ ':i>step?'🔒 ':'')+(i+1)+'. '+n+'</span>').join('');
+ $('progressBar').style.width=(unlocked.filter(Boolean).length/5*100)+'%';
+ for(let i=0;i<5;i++){
+  $('row'+i).className='line '+(unlocked[i]?'finished':i===step?'active':'inactive');
+  $('v'+i).textContent=unlocked[i]?(i===0?'3.24':i===2?'30':fmt(answers[i])):'□';
+ }
+ $('fieldLabel').textContent='Jawapan: '+names[step]+(step===0?' (RM)':step===2?' (%)':' (RM)');
+ $('answer').value=values[step];$('answer').disabled=unlocked[step];
+ $('prev').disabled=step===0;$('check').disabled=unlocked[step];$('next').disabled=!unlocked[step]||step===4;
+ $('finish').style.display=unlocked.every(Boolean)?'block':'none';
+ $('feedback').className='feedback';$('feedback').textContent='';
+ persist();
+}
+function check(){
+ if(unlocked[step])return;
+ const raw=$('answer').value.trim();const num=Number(raw);const fb=$('feedback');
+ if(raw!==''&&Number.isFinite(num)&&Math.abs(num-answers[step])<0.005){
+   unlocked[step]=true;values[step]=raw;render();fb.className='feedback good';fb.textContent=step===4?'✓ Betul! Kesemua lima langkah selesai.':'✓ Betul! Butang Seterusnya kini dibuka.';
+ } else {fb.className='feedback bad';fb.textContent='Jawapan belum tepat. Semak formula dan kadar dalam panduan. Langkah seterusnya masih terkunci.';}
+}
+$('answer').addEventListener('input',e=>{if(!unlocked[step]){values[step]=e.target.value;persist()}});
+$('check').addEventListener('click',check);
+$('next').addEventListener('click',()=>{if(unlocked[step]&&step<4){step++;render()}});
+$('prev').addEventListener('click',()=>{if(step>0){step--;render()}});
+$('reset').addEventListener('click',()=>{if(confirm('Padam jawapan dan mula semula?')){step=0;unlocked=[false,false,false,false,false];values=['','','','',''];render()}});
+load();render();
+</script>
+</body>
+</html>
