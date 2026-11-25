@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Latihan Rajah Pokok Interaktif | Matematik SPM</title>
+<style>
+:root{--navy:#12395c;--blue:#176da4;--pale:#ecf6fc;--green:#187343;--red:#bd3434;--line:#c7d6e1;--ink:#1c2f40}*{box-sizing:border-box}body{margin:0;background:#f0f4f8;color:var(--ink);font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;line-height:1.5}.wrap{max-width:1000px;margin:auto;padding:14px}.mast{background:linear-gradient(130deg,#0c3e67,#176b91);color:white;padding:22px;border-radius:16px;margin:4px 0 14px}.mast h1{font-size:clamp(24px,4vw,35px);margin:0 0 4px}.mast p{margin:0;opacity:.95}.card{background:white;border:1px solid #d6e2ec;border-radius:16px;padding:16px;margin-bottom:13px;box-shadow:0 2px 9px #183f6010}h2{font-size:20px;color:var(--navy);margin:0 0 10px}h3{font-size:17px;color:var(--navy);margin:12px 0 7px}.minor{color:#536c7e;font-size:14px}.toprow,.actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.toprow{justify-content:space-between}.tag{background:var(--pale);color:var(--navy);font-weight:700;border-radius:99px;padding:6px 12px}.question{background:#eef6fc;border-left:4px solid #2b83b7;padding:12px 14px;border-radius:9px;margin:12px 0}.question p{margin:6px 0}button,select,textarea,input{font:inherit}button{cursor:pointer;border:1px solid #aac6d7;background:white;color:var(--navy);padding:10px 14px;border-radius:10px;font-weight:650;min-height:44px}button.primary{background:#136391;color:white;border-color:#136391}button.green{background:#147347;color:white;border-color:#147347}button:disabled{opacity:.4;cursor:not-allowed}button:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid #facb64;outline-offset:2px}.figwrap{overflow:hidden;border:1px solid #d5e3ec;border-radius:12px;background:white}.figwrap svg{display:block;width:100%;height:auto;max-height:none;touch-action:manipulation}.svg-node{cursor:pointer}.svg-node:hover circle,.svg-node:focus circle{stroke:#db7a0a;stroke-width:3}.svg-node text{pointer-events:none;user-select:none}.editor{background:#fff9e9;border:1px solid #edcf8b;padding:12px;border-radius:12px;margin:10px 0}.editor label{display:block;font-weight:700;margin-bottom:7px}.editor select{border:1px solid #adbdc9;border-radius:8px;padding:10px;background:white;max-width:100%;min-width:170px}.editor button{margin-left:7px}.hint{background:#eff8ef;border-left:4px solid #55a96c;padding:10px 13px;border-radius:8px}.fields{display:grid;grid-template-columns:1fr;gap:11px}.fields label{display:block;font-weight:700;margin-bottom:5px}.fields textarea{width:100%;min-height:86px;padding:12px;border:1px solid #aabfce;border-radius:10px;resize:vertical}.fields input{width:100%;padding:12px;border:1px solid #aabfce;border-radius:10px}details{background:#f4f8fb;border-radius:10px;padding:10px 12px}summary{cursor:pointer;font-weight:700;color:#164b70}#feedback{white-space:pre-wrap;border-radius:10px;padding:12px;margin-top:9px;display:none}#feedback.good{display:block;background:#ecf9ed;border:1px solid #a3d4ab;color:#135a2c}#feedback.bad{display:block;background:#fff4ed;border:1px solid #e8b79f;color:#7b3d20}#keybox{display:none;padding:12px;background:#eef8f1;border:1px solid #b4d9c0;border-radius:10px;overflow-wrap:anywhere}.footer{font-size:13px;color:#647887;text-align:center;padding:13px}.legend{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:13px}.swatch{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:3px;vertical-align:middle}.progress{height:8px;border-radius:99px;background:#dde8f0;overflow:hidden;margin-top:10px}.progress div{height:100%;background:#5bbd8c;transition:width .2s}.stats{font-size:13px;color:#516c7b} @media(max-width:540px){.wrap{padding:8px}.mast{border-radius:12px;padding:15px}.card{padding:12px;border-radius:12px}h2{font-size:18px}.toprow button{flex:1}.actions button{flex:1 1 130px}.editor select{width:100%}.editor button{margin:9px 0 0;width:100%}.figwrap svg{max-height:none}}
+</style>
+</head>
+<body><main class="wrap">
+<header class="mast"><h1>🌳 Latihan Rajah Pokok Interaktif</h1><p>Matematik SPM • Teknik cabang dan label • Ruang sampel dan peristiwa</p></header>
+<section class="card"><div class="toprow"><span id="counter" class="tag">Soalan 1 daripada 8</span><span id="status" class="stats">Siap: 0/8</span></div><div class="progress"><div id="progressbar" style="width:0%"></div></div><div class="actions" style="margin-top:12px"><button id="prev">← Sebelum</button><button id="next" class="primary">Seterusnya →</button><button id="resetAll">Mula semula semua</button></div></section>
+<section class="card"><h2 id="questionTitle"></h2><div class="question" id="question"></div><div class="minor" id="instruction">Klik bulatan bertanda ? dan pilih label yang betul. Lengkapkan semua ruang kosong pada rajah pokok.</div><div class="legend" style="margin:12px 0"><span><i class="swatch" style="background:#cbe8fb"></i> Kotak/pilihan pertama</span><span><i class="swatch" style="background:#f9dfb0"></i> Kotak/pilihan kedua</span><span><i class="swatch" style="background:#e4f4e7"></i> Kesudahan</span></div><div class="figwrap"><svg id="tree" viewBox="0 0 760 520" role="img" aria-label="Rajah pokok dengan titik dan cabang interaktif"></svg></div><div class="editor" id="editor" hidden><label id="editLabel" for="choice">Pilih jawapan bagi tempat kosong</label><select id="choice"></select><button class="primary" id="apply">Isi label</button></div><div class="actions" style="margin-top:12px"><button id="clearTree">Padam isian rajah</button><button id="treeHint">Panduan bina rajah</button></div><p id="treeHintText" class="hint" hidden></p></section>
+<section class="card"><h2>✍️ Ruang Jawapan</h2><div class="fields"><div><label for="sample">1. Senaraikan ruang sampel, S (semua kesudahan)</label><textarea id="sample" placeholder="Contoh: {(A,1), (A,2), (B,1), (B,2)}"></textarea></div><div><label id="eventLabel" for="event">2. Senaraikan set peristiwa, E</label><textarea id="event" placeholder="Tulis pasangan yang memenuhi syarat peristiwa"></textarea></div><div><label for="prob">3. Kebarangkalian peristiwa, P(E)</label><input id="prob" placeholder="Contoh: 1/4 atau 0.25" autocomplete="off" inputmode="text"></div></div><div class="actions" style="margin-top:14px"><button class="green" id="check">Semak jawapan saya</button><button id="showKey">Tunjuk skema</button><button id="clearAnswers">Padam jawapan</button></div><div id="feedback" aria-live="polite"></div><div id="keybox"></div></section>
+<section class="card"><details><summary>📘 Panduan teknik rajah pokok untuk pelajar</summary><p><b>Langkah 1:</b> Senaraikan semua pilihan bagi percubaan pertama sebagai cabang utama.</p><p><b>Langkah 2:</b> Daripada setiap cabang utama, lukis satu cabang untuk setiap pilihan kedua.</p><p><b>Langkah 3:</b> Tulis pasangan hasil seperti <b>(A,1)</b>. Susunan pasangan penting: pilihan pertama dahulu, pilihan kedua kemudian.</p><p><b>Langkah 4:</b> Senaraikan kesemua pasangan sebagai <b>ruang sampel S</b> dalam kurungan berombak { }.</p><p><b>Langkah 5:</b> Pilih kesudahan yang menepati syarat peristiwa E. Kemudian gunakan <b>P(E) = bilangan kesudahan E ÷ jumlah kesudahan S</b>.</p><p><b>Tip:</b> Setiap kesudahan dianggap sama kemungkinan dalam soalan-soalan latihan ini.</p></details></section>
+<footer class="footer">Latihan Matematik SPM • Boleh digunakan secara luar talian selepas disimpan sebagai fail HTML • Sesuai untuk telefon dan komputer</footer>
+</main><script>
+'use strict';
+const DATA=[
+{title:'Kotak huruf dan nombor',context:'Kotak A mempunyai bola berlabel <b>M, N, P</b>. Kotak B mempunyai bola berlabel <b>1, 2, 3</b>. Satu bola dipilih daripada setiap kotak.',first:['M','N','P'],second:['1','2','3'],event:'Mendapat huruf M dan nombor ganjil',test:(a,b)=>a==='M'&&Number(b)%2===1},
+{title:'Dua syiling berlainan',context:'Syiling A dan Syiling B dilambung sekali. Setiap syiling boleh menunjukkan <b>G (gambar)</b> atau <b>N (nombor)</b>. Catat keputusan Syiling A dahulu.',first:['G','N'],second:['G','N'],event:'Kedua-dua syiling menunjukkan keputusan yang sama',test:(a,b)=>a===b},
+{title:'Roda warna dan nombor',context:'Sebuah roda berputar mempunyai <b>Merah (M), Biru (B) dan Hijau (H)</b>. Kemudian satu nombor dipilih secara rawak daripada <b>2, 4, 6</b>. Setiap pilihan sama kemungkinan.',first:['M','B','H'],second:['2','4','6'],event:'Mendapat warna Biru dan nombor lebih besar daripada 2',test:(a,b)=>a==='B'&&Number(b)>2},
+{title:'Dua beg bola bernombor',context:'Beg A mengandungi bola bernombor <b>1, 3, 5</b>. Beg B mengandungi bola bernombor <b>2, 4</b>. Satu bola dipilih daripada setiap beg.',first:['1','3','5'],second:['2','4'],event:'Jumlah kedua-dua nombor melebihi 6',test:(a,b)=>Number(a)+Number(b)>6},
+{title:'Huruf vokal dan nombor',context:'Kotak A mengandungi huruf <b>A, E, I</b>. Kotak B mengandungi nombor <b>1, 2, 3, 4</b>. Satu kad dipilih daripada setiap kotak.',first:['A','E','I'],second:['1','2','3','4'],event:'Mendapat huruf E atau nombor genap',test:(a,b)=>a==='E'||Number(b)%2===0},
+{title:'Baju dan seluar',context:'Tiga warna baju dipilih: <b>Putih (P), Hitam (H), Biru (B)</b>. Dua warna seluar dipilih: <b>Kelabu (K), Coklat (C)</b>. Semua padanan sama kemungkinan.',first:['P','H','B'],second:['K','C'],event:'Baju Hitam atau seluar Coklat',test:(a,b)=>a==='H'||b==='C'},
+{title:'Dua dadu kecil berlabel',context:'Dadu khas A berlabel <b>1, 2</b> dan dadu khas B berlabel <b>1, 2, 3</b>. Setiap muka sama kemungkinan. Catat dadu A dahulu.',first:['1','2'],second:['1','2','3'],event:'Hasil darab kedua-dua nombor ialah nombor genap',test:(a,b)=>(Number(a)*Number(b))%2===0},
+{title:'Kotak huruf dan bentuk',context:'Kotak huruf mempunyai kad <b>X, Y, Z</b>. Kotak bentuk mengandungi kad <b>Bulatan (B), Segi tiga (T), Segi empat (E)</b>. Pilih satu kad daripada setiap kotak.',first:['X','Y','Z'],second:['B','T','E'],event:'Mendapat huruf X atau bentuk Segi tiga',test:(a,b)=>a==='X'||b==='T'}
+];
+const $=id=>document.getElementById(id);const svg=$('tree');const ns='http://www.w3.org/2000/svg';let index=0,active=null;const SAVENAME='spm-tree-practice-v2';let saved={};try{saved=JSON.parse(localStorage.getItem(SAVENAME)||'{}')}catch(e){};
+const state=i=>saved[i]||(saved[i]={nodes:{},sample:'',event:'',prob:'',done:false});
+function persist(){try{localStorage.setItem(SAVENAME,JSON.stringify(saved))}catch(e){}}
+function pair(a,b){return `(${a},${b})`}
+function outcomes(q){return q.first.flatMap(a=>q.second.map(b=>pair(a,b)))}
+function eventOutcomes(q){return q.first.flatMap(a=>q.second.filter(b=>q.test(a,b)).map(b=>pair(a,b)))}
+function missing(q){const set=new Set();let total=q.first.length*q.second.length;
+ // hide a main node, about one third of secondary nodes, and about one third of leaves
+ set.add('f1');for(let i=0;i<q.first.length;i++)for(let j=0;j<q.second.length;j++){if((i+2*j+index)%3===0)set.add(`s${i}_${j}`);if((i*3+j+index)%4===0)set.add(`o${i}_${j}`)}
+ return set}
+function sEl(tag,attrs={},text){let e=document.createElementNS(ns,tag);for(let k in attrs)e.setAttribute(k,String(attrs[k]));if(text!==undefined)e.textContent=text;return e}
+function drawTree(){
+ const q=DATA[index],st=state(index),holes=missing(q),n=q.first.length,m=q.second.length,total=n*m;
+ const mobile=window.matchMedia('(max-width: 540px)').matches;
+ // Space each row by at least the full diameter of its outcome node PLUS a gap.
+ // The graphic is narrow on phones, but no circle is drawn on top of another.
+ const width=mobile?370:760,step=mobile?58:62,top=mobile?51:62;
+ const H=top+(total-1)*step+42;
+ svg.setAttribute('viewBox',`0 0 ${width} ${H}`);
+ svg.replaceChildren();
+ const left=mobile?37:82,middle=mobile?170:350,right=mobile?306:650;
+ const r1=mobile?17:23,r2=mobile?16:21,r3=mobile?22:26;
+ const headingSize=mobile?13:19;
+ for(const [x,t] of [[left,'Pilihan 1'],[middle,'Pilihan 2'],[right,'Kesudahan']]){
+   svg.append(sEl('text',{x,y:mobile?22:28,'text-anchor':'middle',fill:'#163d60','font-weight':700,'font-size':headingSize},t));
+ }
+ const lineLayer=sEl('g',{'stroke':'#99b2c6','stroke-width':mobile?1.5:2,'fill':'none'});svg.append(lineLayer);
+ for(let i=0;i<n;i++){
+   const fy=top+(i*m+(m-1)/2)*step;
+   for(let j=0;j<m;j++){
+     const y=top+(i*m+j)*step;
+     lineLayer.append(sEl('path',{d:`M ${left+r1} ${fy} L ${middle-r2} ${y}`}));
+     lineLayer.append(sEl('path',{d:`M ${middle+r2} ${y} L ${right-r3} ${y}`}));
+   }
+ }
+ function node(id,label,x,y,col,r){
+   const hole=holes.has(id),value=hole?(st.nodes[id]||'?'):label;
+   const g=sEl('g',{class:hole?'svg-node':'',role:hole?'button':'img','tabindex':hole?'0':'-1','aria-label':hole?`Isi label kosong ${id}`:`Label ${label}`});
+   g.append(sEl('circle',{cx:x,cy:y,r,fill:hole&&!st.nodes[id]?'#fff8e5':col,stroke:hole?'#d38d1c':'#2d698b','stroke-width':hole?2.1:1.3}));
+   const fontSize=mobile?(value.length>5?10:value.length>3?11:15):(value.length>5?13:19);
+   g.append(sEl('text',{x,y:y+fontSize*.35,'font-size':fontSize,'font-weight':700,'text-anchor':'middle',fill:'#123b56'},value));
+   if(hole){
+     // Invisible larger tap target keeps small visible circles easy to select.
+     g.append(sEl('circle',{cx:x,cy:y,r:mobile?24:r+4,fill:'transparent',stroke:'none','pointer-events':'all'}));
+     g.addEventListener('click',()=>editNode(id,label));
+     g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();editNode(id,label)}});
+   }
+   svg.append(g);
+ }
+ for(let i=0;i<n;i++){
+   let fy=top+(i*m+(m-1)/2)*step;
+   node(`f${i}`,q.first[i],left,fy,'#cae8fa',r1);
+   for(let j=0;j<m;j++){
+     let y=top+(i*m+j)*step;
+     node(`s${i}_${j}`,q.second[j],middle,y,'#fff0c9',r2);
+     node(`o${i}_${j}`,pair(q.first[i],q.second[j]),right,y,'#d9f2e0',r3);
+   }
+ }
+ $('editor').hidden=active===null;
+}
+function editNode(id){active=id;const q=DATA[index];let correct,opts;if(id.startsWith('f')){correct=q.first[Number(id.substring(1))];opts=q.first}else if(id.startsWith('s')){let [,j]=id.substring(1).split('_').map(Number);correct=q.second[j];opts=q.second}else{const [i,j]=id.substring(1).split('_').map(Number);correct=pair(q.first[i],q.second[j]);opts=outcomes(q)}
+ $('editLabel').textContent=`Lengkapkan bulatan bertanda ? (${id.startsWith('f')?'Pilihan pertama':id.startsWith('s')?'Pilihan kedua':'Kesudahan'})`;$('choice').replaceChildren();let placeholder=document.createElement('option');placeholder.value='';placeholder.textContent='— Pilih label —';$('choice').append(placeholder);opts.forEach(v=>{let o=document.createElement('option');o.value=v;o.textContent=v;$('choice').append(o)});$('choice').value=state(index).nodes[id]||'';$('editor').hidden=false;$('choice').focus({preventScroll:true});}
+$('apply').addEventListener('click',()=>{if(!active||!$('choice').value)return;state(index).nodes[active]=$('choice').value;active=null;persist();drawTree();});
+function parsePairs(str){let s=str.trim().toUpperCase().replace(/\s+/g,'').replace(/（/g,'(').replace(/）/g,')');if(!s)return [];
+ const matches=[...s.matchAll(/\(([^,(){}]+),([^,(){}]+)\)/g)].map(m=>pair(m[1],m[2]));return matches.length?matches:null}
+function sameSet(a,b){return a!==null&&a.length===b.length&&new Set(a).size===b.length&&a.every(x=>b.includes(x))}
+function gcd(a,b){return b?gcd(b,a%b):a}
+function checkProb(input,good,total){let s=input.replace(/\s/g,'').replace(',','.');if(!s)return false;let p;if(/^\d+\/\d+$/.test(s)){let [a,b]=s.split('/').map(Number);p=b?a/b:NaN}else p=Number(s);return Number.isFinite(p)&&Math.abs(p-good/total)<0.00011}
+function check(){const q=DATA[index],st=state(index),holes=missing(q);let correct=0;const total=holes.size;for(const id of holes){let expected;if(id.startsWith('f'))expected=q.first[Number(id.substring(1))];else if(id.startsWith('s')){let [,j]=id.substring(1).split('_').map(Number);expected=q.second[j]}else{const [i,j]=id.substring(1).split('_').map(Number);expected=pair(q.first[i],q.second[j])}if(st.nodes[id]===expected)correct++}let sm=sameSet(parsePairs(st.sample),outcomes(q)),ev=sameSet(parsePairs(st.event),eventOutcomes(q)),pr=checkProb(st.prob,eventOutcomes(q).length,outcomes(q).length);let all=correct===total&&sm&&ev&&pr;st.done=all;persist();const fb=$('feedback');fb.className=all?'good':'bad';fb.textContent=`Rajah pokok: ${correct}/${total} label betul.\nRuang sampel S: ${sm?'✓ Betul':'✗ Semak semula'}.\nSet peristiwa E: ${ev?'✓ Betul':'✗ Semak semula'}.\nKebarangkalian P(E): ${pr?'✓ Betul':'✗ Semak semula'}.\n${all?'Syabas! Semua jawapan betul.':'Tip: Lengkapkan rajah dahulu, kemudian senaraikan semua kesudahan mengikut cabang.'}`;updateStatus()}
+function showKey(){const q=DATA[index],O=outcomes(q),E=eventOutcomes(q),k=E.length,d=O.length,g=gcd(k,d),box=$('keybox');box.style.display=box.style.display==='block'?'none':'block';box.innerHTML=`<b>SKEMA SOALAN ${index+1}</b><p><b>Rajah:</b> Setiap cabang pertama mempunyai ${q.second.length} cabang kedua.</p><p><b>S =</b> {${O.join(', ')}}</p><p><b>E =</b> {${E.join(', ')}}</p><p><b>P(E) =</b> ${k}/${d} = ${k/g}/${d/g}</p>`}
+function updateStatus(){const solved=Object.values(saved).filter(x=>x.done).length;$('status').textContent=`Siap: ${solved}/${DATA.length}`;$('progressbar').style.width=`${100*solved/DATA.length}%`}
+function saveFields(){const st=state(index);st.sample=$('sample').value;st.event=$('event').value;st.prob=$('prob').value;persist()}
+function render(){active=null;const q=DATA[index],st=state(index);$('counter').textContent=`Soalan ${index+1} daripada ${DATA.length}`;$('questionTitle').textContent=`Soalan ${index+1}: ${q.title}`;$('question').innerHTML=`<p>${q.context}</p><p><b>(a)</b> Lengkapkan rajah pokok bagi semua kesudahan yang mungkin.</p><p><b>(b)</b> Senaraikan ruang sampel <b>S</b>.</p><p><b>(c)</b> Senaraikan set peristiwa <b>E</b>: ${q.event}.</p><p><b>(d)</b> Hitung <b>P(E)</b>.</p>`;$('eventLabel').textContent=`2. Set peristiwa, E: ${q.event}`;$('sample').value=st.sample;$('event').value=st.event;$('prob').value=st.prob;$('prev').disabled=index===0;$('next').disabled=index===DATA.length-1;$('treeHintText').hidden=true;$('keybox').style.display='none';$('feedback').style.display='none';$('feedback').className='';drawTree();updateStatus()}
+$('sample').addEventListener('input',saveFields);$('event').addEventListener('input',saveFields);$('prob').addEventListener('input',saveFields);
+$('prev').addEventListener('click',()=>{saveFields();index--;render();window.scrollTo({top:0,behavior:'smooth'})});$('next').addEventListener('click',()=>{saveFields();index++;render();window.scrollTo({top:0,behavior:'smooth'})});$('check').addEventListener('click',()=>{saveFields();check()});$('showKey').addEventListener('click',showKey);
+$('clearTree').addEventListener('click',()=>{state(index).nodes={};state(index).done=false;active=null;persist();drawTree();updateStatus()});$('clearAnswers').addEventListener('click',()=>{const st=state(index);st.sample=st.event=st.prob='';st.done=false;$('sample').value=$('event').value=$('prob').value='';persist();$('feedback').style.display='none';updateStatus()});$('treeHint').addEventListener('click',()=>{const t=$('treeHintText'),q=DATA[index];t.hidden=!t.hidden;t.textContent=`Mulakan dengan ${q.first.length} cabang pertama (${q.first.join(', ')}). Daripada SETIAP cabang pertama, sediakan ${q.second.length} cabang kedua (${q.second.join(', ')}). Bilangan kesudahan = ${q.first.length} × ${q.second.length} = ${q.first.length*q.second.length}. Klik mana-mana bulatan '?' untuk memilih isian.`});window.addEventListener('resize',()=>{const mode=window.matchMedia('(max-width: 540px)').matches;if(mode!==window._lastTreeMode){window._lastTreeMode=mode;drawTree()}});$('resetAll').addEventListener('click',()=>{if(confirm('Padam semua jawapan bagi 8 soalan?')){saved={};persist();index=0;render()}});render();
+</script></body></html>
