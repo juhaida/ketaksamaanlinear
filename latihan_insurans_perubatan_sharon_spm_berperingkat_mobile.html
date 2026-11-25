@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Insurans Perubatan Sharon | Latihan SPM</title>
+<style>
+:root{--navy:#124868;--blue:#176f9c;--pale:#eff7fc;--ink:#203448;--line:#c6d8e4;--green:#12663d;--red:#a72d2d;--gold:#fff5d8}
+*{box-sizing:border-box}
+body{margin:0;background:#eef3f7;color:var(--ink);font-family:Arial,'Segoe UI',sans-serif;line-height:1.55}
+.container{max-width:900px;margin:0 auto;padding:12px}
+header{background:linear-gradient(130deg,#0e4568,#187a9f);color:white;border-radius:14px;padding:20px 18px}
+header h1{font-size:clamp(22px,4vw,32px);margin:0}header p{margin:5px 0 0}
+.card{background:white;border:1px solid #d4e0e8;border-radius:13px;margin-top:13px;padding:18px;box-shadow:0 2px 8px #2344580b}
+h2{font-size:21px;color:var(--navy);margin:0 0 12px}h3{font-size:18px;margin:0 0 8px;color:var(--navy)}
+.en{font-style:italic;color:#5a6774}.given{background:var(--pale);border-left:4px solid #2c86b4;border-radius:8px;padding:12px}
+.data{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.datum{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fafcfd}
+.datum small{display:block;color:#5b6f7f}.datum b{font-size:20px;color:#123f62}
+.progress{height:9px;background:#d9e6ed;border-radius:99px;overflow:hidden;margin:12px 0 6px}.progress>div{height:100%;width:0;background:#2d9d72;transition:width .2s}
+.stepcount{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:14px;color:#50687b}
+.solution{border:1px solid #879faf;border-radius:10px;overflow:hidden;margin:14px 0}
+.solution-title{background:#edf4f9;text-align:center;padding:11px;font-weight:bold;font-family:Georgia,serif;font-size:18px}
+.srow{padding:14px;border-top:1px solid #cad9e4}
+.mathline{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:6px 0;font-size:clamp(16px,3vw,20px);font-family:Georgia,'Times New Roman',serif}
+.fraction{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;min-width:60px;line-height:1.2}
+.fraction .num{border-bottom:1.8px solid #1b394e;padding:2px 6px}
+.fraction .den{padding:2px 6px}
+input{min-width:0;max-width:100%;height:44px;border:1px solid #9cb6c7;border-radius:8px;padding:8px 10px;font-family:Arial,sans-serif;font-size:17px;background:white;color:#142e43}
+input[type=number]{appearance:textfield;-moz-appearance:textfield}input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.field{width:146px}.field.small{width:76px}.field.medium{width:116px}
+.hint{border-left:4px solid #deb344;background:var(--gold);border-radius:8px;padding:11px 13px;margin:12px 0}
+.hint summary{font-weight:bold;cursor:pointer} .feedback{padding:11px;border-radius:8px;margin:12px 0;display:none;white-space:pre-wrap}.feedback.ok{display:block;background:#e6f6ed;color:#155a34;border:1px solid #a9d4bc}.feedback.error{display:block;background:#fff1f0;color:#96352d;border:1px solid #e7b8b4}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}button{border:1px solid #a7becf;background:#fff;color:var(--navy);padding:11px 15px;border-radius:9px;min-height:44px;font-weight:bold;font-size:15px;cursor:pointer}button.primary{background:#146f9d;border-color:#146f9d;color:white}button:disabled{opacity:.45;cursor:not-allowed}.actions button{flex:1 1 130px}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}.pill{font-size:12px;border-radius:99px;padding:5px 9px;background:#edf2f7;color:#506779}.pill.done{background:#dff4e7;color:#145d33}.pill.current{background:#d8eefc;color:#15567d;font-weight:bold}
+.result{background:#e6f7ee;border:1px solid #9fd3b6;border-radius:10px;padding:14px}.locked-note{font-size:14px;color:#596f80}
+@media(max-width:540px){.container{padding:7px}.card{padding:12px;border-radius:11px}header{padding:16px 13px;border-radius:11px}.data{grid-template-columns:1fr 1fr}.datum{padding:9px}.datum b{font-size:17px}.srow{padding:11px 9px}.mathline{gap:5px}.field{width:126px}.field.small{width:66px}.field.medium{width:105px}h2{font-size:19px}.solution-title{font-size:17px}.actions button{flex:1 1 120px}}
+@media(max-width:355px){.data{grid-template-columns:1fr}.field{width:112px}.mathline{font-size:16px}}
+</style>
+</head>
+<body>
+<div class="container">
+<header><h1>INSURANS PERUBATAN</h1><p>MATEMATIK SPM KERTAS 2 • Teknik Langkah Demi Langkah</p></header>
+<section class="card">
+<h2>Soalan / Question</h2>
+<p>Kos perubatan Sharon yang dilindungi polisi insuransnya berjumlah <b>RM15 800</b>. Dia ingin menuntut pampasan daripada polisi insurans perubatan utamanya yang mempunyai peruntukan deduktibel sebanyak <b>RM500</b> dan penyertaan peratusan ko-insurans <b>80/20</b>.</p>
+<p>Hitung <b>bayaran yang perlu ditanggung oleh Sharon</b> dan <b>bayaran pampasan yang diterimanya</b>.</p>
+<p class="en">Sharon's covered medical cost is RM15 800. Her policy has a deductible of RM500 and an 80/20 co-insurance participation clause. Calculate the amount borne by Sharon and the compensation she receives.</p>
+<div class="data">
+ <div class="datum"><small>Kos perubatan</small><b>RM15 800</b></div>
+ <div class="datum"><small>Deduktibel</small><b>RM500</b></div>
+ <div class="datum"><small>Bahagian syarikat insurans</small><b>80%</b></div>
+ <div class="datum"><small>Bahagian Sharon</small><b>20%</b></div>
+</div>
+</section>
+<section class="card">
+<div class="stepcount"><strong id="stageHeading">Langkah 1 daripada 5</strong><span id="stageStatus">0/5 selesai</span></div>
+<div class="progress"><div id="progressbar"></div></div>
+<div class="pills" id="pills"></div>
+<h2 style="margin-top:16px" id="stepTitle"></h2>
+<p id="instruction"></p>
+<div class="solution">
+ <div class="solution-title">Penyelesaian / <i>Solution</i></div>
+ <div class="srow" id="stepBody"></div>
+</div>
+<details class="hint"><summary>📘 Panduan Menjawab (klik untuk buka)</summary><p id="hintText"></p></details>
+<div class="feedback" id="feedback" aria-live="polite"></div>
+<div class="actions">
+ <button id="prev">← Sebelum</button>
+ <button id="check" class="primary">Semak Jawapan</button>
+ <button id="next" disabled>Seterusnya →</button>
+</div>
+<div id="finish" class="result" hidden style="margin-top:14px">
+<strong>✓ Latihan selesai!</strong>
+<p>Sharon menanggung <b>RM3 560</b> dan menerima pampasan <b>RM12 240</b>.</p>
+<button id="reset">Mula semula</button>
+</div>
+</section>
+</div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const STORAGE='spm_sharon_medical_steps_v1';
+const steps=[
+ {title:'Tolak deduktibel', instruction:'Hitung kos perubatan selepas ditolak deduktibel.', html:`<strong>Kos perubatan selepas deduktibel</strong><div class="mathline">= RM15 800 − RM500</div><div class="mathline">= RM <input class="field" id="value" inputmode="decimal" autocomplete="off" aria-label="Kos selepas deduktibel" placeholder="Jawapan"></div>`, answer:15300, hint:'Deduktibel ialah bahagian kos yang ditanggung terlebih dahulu. Tolak RM500 daripada jumlah kos perubatan RM15 800.'},
+ {title:'Peratus ditanggung oleh Sharon', instruction:'Tentukan bahagian ko-insurans yang perlu dibayar oleh Sharon sendiri.', html:`<strong>Bahagian Sharon / <i>Sharon's share</i></strong><div class="mathline">= <span class="fraction"><span class="num"><input class="field small" id="value" inputmode="decimal" aria-label="Peratus bahagian Sharon" placeholder="%"></span><span class="den">100</span></span> × RM15 300</div>`, answer:20, hint:'Ko-insurans 80/20 bermaksud syarikat insurans menanggung 80% dan Sharon menanggung 20% daripada baki selepas deduktibel.'},
+ {title:'Hitung bahagian ko-insurans Sharon', instruction:'Hitung amaun 20% daripada kos selepas deduktibel.', html:`<strong>Bayaran ko-insurans Sharon</strong><div class="mathline">= 20/100 × RM15 300</div><div class="mathline">= RM <input class="field" id="value" inputmode="decimal" aria-label="Jumlah ko-insurans Sharon" placeholder="Jawapan"></div>`, answer:3060, hint:'Darab 15 300 dengan 20, kemudian bahagi 100. Ini belum termasuk deduktibel RM500.'},
+ {title:'Jumlah bayaran Sharon', instruction:'Tambahkan ko-insurans Sharon dengan deduktibel.', html:`<strong>Bayaran yang ditanggung oleh Sharon</strong><div class="mathline">= RM3 060 + RM500</div><div class="mathline">= RM <input class="field" id="value" inputmode="decimal" aria-label="Jumlah ditanggung Sharon" placeholder="Jawapan"></div>`, answer:3560, hint:'Sharon membayar deduktibel RM500 DAN 20% daripada kos selepas deduktibel.'},
+ {title:'Pampasan daripada syarikat insurans', instruction:'Hitung jumlah pampasan menggunakan kadar ko-insurans 80%.', html:`<strong>Bayaran pampasan yang diterima Sharon</strong><div class="mathline">= <span class="fraction"><span class="num">80</span><span class="den">100</span></span> × RM15 300</div><div class="mathline">= RM <input class="field" id="value" inputmode="decimal" aria-label="Pampasan diterima Sharon" placeholder="Jawapan"></div>`, answer:12240, hint:'Syarikat insurans membayar 80% daripada RM15 300, iaitu kos selepas deduktibel. Semak: bayaran Sharon + pampasan = RM15 800.'}
+];
+let current=0,passed=[false,false,false,false,false],values=['','','','',''];
+function store(){try{localStorage.setItem(STORAGE,JSON.stringify({current,passed,values}))}catch(e){}}
+function restore(){try{let x=JSON.parse(localStorage.getItem(STORAGE)||'null');if(x&&Array.isArray(x.passed)&&x.passed.length===5&&Array.isArray(x.values)&&x.values.length===5){passed=x.passed.map(Boolean);values=x.values;current=Math.max(0,Math.min(4,Number(x.current)||0));if(current>0&&!passed.slice(0,current).every(Boolean))current=passed.findIndex(p=>!p);if(current<0)current=4;}}catch(e){}}
+function normalizedNumber(s){s=String(s).trim().replace(/\s/g,'').replace(/RM/ig,'').replace(/,/g,'');return s===''?NaN:Number(s)}
+function render(){let s=steps[current];$('stageHeading').textContent=`Langkah ${current+1} daripada 5`;$('stageStatus').textContent=`${passed.filter(Boolean).length}/5 selesai`;$('progressbar').style.width=(passed.filter(Boolean).length/5*100)+'%';$('stepTitle').textContent=s.title;$('instruction').textContent=s.instruction;$('stepBody').innerHTML=s.html;$('hintText').textContent=s.hint;$('pills').innerHTML=steps.map((v,i)=>`<span class="pill ${passed[i]?'done':i===current?'current':''}">${passed[i]?'✓ ':i>current?'🔒 ':''}${i+1}. ${['Deduktibel','20%','Ko-insurans','Bayaran Sharon','Pampasan'][i]}</span>`).join('');let input=$('value');input.value=values[current]||'';input.disabled=passed[current];input.addEventListener('input',()=>{values[current]=input.value;store()});$('prev').disabled=current===0;$('next').disabled=!passed[current]||current===4;$('check').disabled=passed[current];$('finish').hidden=!passed.every(Boolean);$('feedback').className='feedback';$('feedback').style.display='none';store()}
+$('check').addEventListener('click',()=>{if(passed[current])return;let val=normalizedNumber($('value').value);let fb=$('feedback');if(Number.isFinite(val)&&Math.abs(val-steps[current].answer)<0.005){passed[current]=true;values[current]=$('value').value;render();fb.className='feedback ok';fb.textContent=current===4?'Betul! Anda telah melengkapkan semua langkah.':'✓ Betul! Tekan Seterusnya untuk meneruskan.';fb.style.display='block'}else{fb.className='feedback error';fb.textContent='Belum tepat. Semak pengiraan dan gunakan Panduan Menjawab. Langkah seterusnya masih terkunci.';fb.style.display='block'}});
+$('next').addEventListener('click',()=>{if(current<4&&passed[current]){current++;render()}});
+$('prev').addEventListener('click',()=>{if(current>0){current--;render()}});
+$('reset').addEventListener('click',()=>{if(confirm('Padam semua jawapan dan mula semula?')){current=0;passed=[false,false,false,false,false];values=['','','','',''];render()}});
+restore();render();
+</script>
+</body>
+</html>
