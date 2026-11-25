@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insurans Kebakaran Emily - Matematik SPM</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #eef4f8;
+  font-family: Arial, sans-serif;
+  color: #243548;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 850px;
+  margin: auto;
+  padding: 12px;
+}
+
+header {
+  background: #105178;
+  color: white;
+  text-align: center;
+  padding: 20px 12px;
+  border-radius: 12px;
+}
+
+header h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+header p { margin: 5px 0; }
+
+.card {
+  background: white;
+  border: 1px solid #d2e0e9;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 14px;
+}
+
+h2 { color: #105178; font-size: 21px; }
+h3 { color: #105178; }
+
+.info {
+  background: #eaf5fc;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #a8b8c5;
+  padding: 12px;
+  text-align: left;
+}
+
+td:first-child {
+  background: #f2f7fb;
+  font-weight: bold;
+  width: 45%;
+}
+
+input {
+  width: 100%;
+  max-width: 230px;
+  min-width: 0;
+  padding: 12px;
+  font-size: 17px;
+  border: 1px solid #90aabd;
+  border-radius: 7px;
+}
+
+input:disabled {
+  background: #edf0f2;
+}
+
+input[readonly] {
+  background: #e1f6e9;
+  color: #155a34;
+}
+
+button {
+  padding: 12px 16px;
+  border: none;
+  background: #116c99;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  min-height: 44px;
+}
+
+button:disabled {
+  background: #aebbc5;
+  cursor: not-allowed;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.buttons button { flex: 1; }
+
+.guide {
+  background: #fff8df;
+  border-left: 4px solid #e3b54e;
+  padding: 12px;
+  margin-top: 14px;
+  border-radius: 7px;
+}
+
+.feedback {
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 8px;
+  display: none;
+}
+
+.correct {
+  background: #e0f5e6;
+  color: #145c32;
+}
+
+.wrong {
+  background: #ffeded;
+  color: #a02525;
+}
+
+.progress {
+  background: #d6e3ed;
+  height: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#bar {
+  background: #229b68;
+  height: 100%;
+  width: 0%;
+  transition: width .3s;
+}
+
+.step {
+  padding: 6px 10px;
+  margin: 6px 4px 6px 0;
+  display: inline-block;
+  border-radius: 20px;
+  background: #e8eef3;
+  font-size: 13px;
+}
+
+.done {
+  background: #d9f3e2;
+  color: #166339;
+}
+
+.active {
+  background: #cfe8fc;
+  color: #11547e;
+  font-weight: bold;
+}
+
+.finish {
+  background: #e2f6e9;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 16px;
+}
+
+@media(max-width:600px) {
+  .container { padding: 7px; }
+  .card { padding: 12px; }
+  header h1 { font-size: 21px; }
+
+  table, tbody, tr, td {
+    display: block;
+    width: 100%;
+  }
+
+  tr { margin-bottom: 10px; }
+
+  td:first-child {
+    width: 100%;
+    border-bottom: none;
+  }
+
+  td:last-child { width: 100%; }
+
+  input {
+    max-width: 100%;
+    font-size: 16px;
+  }
+
+  .buttons button {
+    flex: 1 1 120px;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+<h1>INSURANS KEBAKARAN</h1>
+<p>MATEMATIK SPM KERTAS 2</p>
+<p>Latihan Interaktif Langkah Demi Langkah</p>
+</header>
+
+<div class="card">
+<h2>Soalan / Question</h2>
+
+<p>
+Emily ingin membeli insurans kebakaran untuk rumahnya.
+Nilai boleh insurans rumah itu ialah
+<b>RM450 000</b>.
+Polisi insurans mempunyai peruntukan ko-insurans
+<b>80%</b> daripada nilai boleh insurans
+dan deduktibel <b>RM2 400</b>.
+</p>
+
+<p>
+Rumah Emily mengalami kebakaran dan jumlah
+kerugiannya ialah <b>RM37 000</b>.
+</p>
+
+<p><i>
+Emily wants to buy fire insurance for her house.
+The insurable value is RM450 000.
+The co-insurance provision is 80%,
+the deductible is RM2 400,
+and the loss is RM37 000.
+</i></p>
+
+<div class="info">
+<b>Jika nilai yang diinsuranskan = jumlah insurans yang harus dibeli</b>
+</div>
+
+<p>
+<b>(a)</b> Hitung jumlah insurans yang harus dibeli
+oleh Emily bagi rumahnya. [2 markah]
+</p>
+
+<p>
+<b>(b)</b> Hitung bayaran pampasan yang diterima Emily
+jika rumahnya diinsuranskan pada jumlah
+insurans yang harus dibeli. [2 markah]
+</p>
+</div>
+
+<div class="card">
+<h2>Maklumat Diberi</h2>
+
+<table>
+<tr><td>Nilai rumah</td><td>RM450 000</td></tr>
+<tr><td>Ko-insurans</td><td>80%</td></tr>
+<tr><td>Deduktibel</td><td>RM2 400</td></tr>
+<tr><td>Jumlah kerugian</td><td>RM37 000</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2>Penyelesaian / Solution</h2>
+
+<div class="progress"><div id="bar"></div></div>
+
+<div id="stepLabels"></div>
+
+<p id="instruction"></p>
+
+<table>
+<tr>
+<td>
+(a) Langkah 1<br>
+Peratus ko-insurans
+</td>
+<td>
+<input id="answer0" type="number"
+placeholder="Pengangka">
+<div>──────── × RM450 000</div>
+<div>100</div>
+</td>
+</tr>
+
+<tr>
+<td>
+(a) Langkah 2<br>
+Jumlah insurans yang harus dibeli
+</td>
+<td>
+RM
+<input id="answer1" type="number"
+placeholder="Jumlah insurans">
+</td>
+</tr>
+
+<tr>
+<td>
+(b) Langkah 3<br>
+Kerugian ditolak deduktibel
+</td>
+<td>
+RM37 000 − RM
+<input id="answer2" type="number"
+placeholder="Deduktibel">
+</td>
+</tr>
+
+<tr>
+<td>
+(b) Langkah 4<br>
+Jumlah bayaran pampasan
+</td>
+<td>
+RM
+<input id="answer3" type="number"
+placeholder="Pampasan">
+</td>
+</tr>
+</table>
+
+<div class="guide">
+<h3>📘 Panduan Menjawab</h3>
+<p id="hint"></p>
+</div>
+
+<div id="feedback" class="feedback"></div>
+
+<div class="buttons">
+<button onclick="previousStep()" id="prev">
+← Sebelum
+</button>
+
+<button onclick="checkAnswer()" id="check">
+Semak Jawapan
+</button>
+
+<button onclick="nextStep()" id="next">
+Seterusnya →
+</button>
+</div>
+
+<div id="complete" class="finish" style="display:none">
+<h3>✓ Tahniah!</h3>
+<p>Anda telah melengkapkan semua langkah dengan betul.</p>
+<button onclick="resetExercise()">Mula Semula</button>
+</div>
+
+</div>
+</div>
+
+<script>
+const expected = [80, 360000, 2400, 34600];
+
+const instructions = [
+  "Langkah 1: Isi pengangka peratus ko-insurans.",
+  "Langkah 2: Hitung jumlah insurans yang harus dibeli.",
+  "Langkah 3: Isi amaun deduktibel.",
+  "Langkah 4: Hitung bayaran pampasan."
+];
+
+const hints = [
+  "Tukar peratus ko-insurans kepada pecahan dengan penyebut 100.",
+  "Darab peratus ko-insurans dengan nilai boleh insurans rumah.",
+  "Cari nilai deduktibel dalam maklumat soalan.",
+  "Tolak deduktibel daripada jumlah kerugian sebenar."
+];
+
+const key = "emily_fire_spm_steps_v2";
+
+let stage = 0;
+let passed = [false, false, false, false];
+let values = ["", "", "", ""];
+
+function save() {
+  try {
+    localStorage.setItem(key, JSON.stringify({
+      stage, passed, values
+    }));
+  } catch(e) {}
+}
+
+function load() {
+  try {
+    const data = JSON.parse(localStorage.getItem(key));
+    if (data && Array.isArray(data.passed)
+        && data.passed.length === 4) {
+      stage = Math.max(0, Math.min(3, data.stage));
+      passed = data.passed;
+      values = data.values;
+    }
+  } catch(e) {}
+}
+
+function render() {
+  for (let i = 0; i < 4; i++) {
+    const input = document.getElementById("answer" + i);
+
+    input.value = values[i] || "";
+    input.disabled = i !== stage || passed[i];
+    input.readOnly = passed[i];
+
+    if (i > stage) {
+      input.placeholder = "Langkah terkunci";
+    } else if (passed[i]) {
+      input.placeholder = "Disahkan";
+    } else {
+      input.placeholder = "Isi jawapan";
+    }
+  }
+
+  document.getElementById("instruction").textContent =
+    instructions[stage];
+
+  document.getElementById("hint").textContent =
+    hints[stage];
+
+  document.getElementById("prev").disabled = stage === 0;
+
+  document.getElementById("next").disabled =
+    !passed[stage] || stage === 3;
+
+  document.getElementById("check").disabled =
+    passed[stage];
+
+  const completed = passed.filter(Boolean).length;
+
+  document.getElementById("bar").style.width =
+    (completed / 4 * 100) + "%";
+
+  let labels = "";
+
+  for (let i = 0; i < 4; i++) {
+    let css = "step";
+
+    if (passed[i]) css += " done";
+    else if (i === stage) css += " active";
+
+    labels += '<span class="' + css + '">';
+    labels += passed[i] ? "✓ " : (i > stage ? "🔒 " : "");
+    labels += "Langkah " + (i + 1);
+    labels += "</span>";
+  }
+
+  document.getElementById("stepLabels").innerHTML = labels;
+
+  document.getElementById("complete").style.display =
+    passed.every(Boolean) ? "block" : "none";
+
+  const feedback = document.getElementById("feedback");
+  feedback.style.display = "none";
+
+  save();
+}
+
+function checkAnswer() {
+  if (passed[stage]) return;
+
+  const input = document.getElementById("answer" + stage);
+  const raw = input.value.trim();
+  const value = Number(raw);
+
+  const feedback = document.getElementById("feedback");
+  feedback.style.display = "block";
+
+  if (raw !== "" && value === expected[stage]) {
+    values[stage] = raw;
+    passed[stage] = true;
+
+    render();
+
+    feedback.className = "feedback correct";
+    feedback.style.display = "block";
+    feedback.textContent =
+      stage === 3
+        ? "✓ Betul! Semua langkah telah selesai."
+        : "✓ Betul! Tekan Seterusnya untuk meneruskan.";
+
+  } else {
+    feedback.className = "feedback wrong";
+    feedback.textContent =
+      "Jawapan belum tepat. Sila semak semula menggunakan panduan. Langkah seterusnya masih terkunci.";
+  }
+}
+
+function nextStep() {
+  if (passed[stage] && stage < 3) {
+    stage++;
+    render();
+    window.scrollTo({top: 0, behavior: "smooth"});
+  }
+}
+
+function previousStep() {
+  if (stage > 0) {
+    stage--;
+    render();
+  }
+}
+
+function resetExercise() {
+  if (confirm("Padam semua jawapan dan mula semula?")) {
+    stage = 0;
+    passed = [false, false, false, false];
+    values = ["", "", "", ""];
+    render();
+  }
+}
+
+for (let i = 0; i < 4; i++) {
+  document.getElementById("answer" + i)
+    .addEventListener("input", function() {
+      if (stage === i && !passed[i]) {
+        values[i] = this.value;
+        save();
+      }
+    });
+}
+
+load();
+render();
+</script>
+
+</body>
+</html>
