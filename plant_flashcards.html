@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Plant Flashcards</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#edf7ef;color:#18243d;font:16px system-ui,sans-serif;min-height:100vh;display:grid;place-items:center;padding:16px}.app{width:100%;max-width:560px}header{margin-bottom:18px}.eyebrow{font-size:12px;letter-spacing:2px;font-weight:800;color:#216341}h1{font-size:28px;margin:6px 0 18px}.track{height:10px;background:#d2e8d8;border-radius:20px;overflow:hidden}.fill{height:100%;background:#328457;border-radius:20px;transition:width .25s}.meta{display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px;font-weight:700}.card{background:white;border-radius:24px;padding:clamp(18px,5vw,32px);box-shadow:0 12px 40px #28356815}.badge{display:grid;place-items:center;width:64px;height:64px;border-radius:20px;background:#e4f5e8;color:#216341;font-size:28px;font-weight:800;margin:0 auto 16px}h2{text-align:center;font-size:23px;line-height:1.4;margin:12px 0 24px}.options{display:grid;gap:12px}button{font:inherit;cursor:pointer;touch-action:manipulation}.option{display:flex;align-items:center;gap:12px;text-align:left;width:100%;padding:13px;border:2px solid #e0e5f0;border-radius:14px;background:white;color:#18243d;font-weight:600}.option:not(:disabled):hover{border-color:#328457;background:#f2faf4}.letter{display:grid;place-items:center;width:34px;height:34px;flex-shrink:0;border-radius:9px;background:#eff2fa}.mark{margin-left:auto;font-size:22px}.option.wrong{border-color:#dc7373;background:#fff0f0;color:#a51f2c}.option.correct{border-color:#32a67a;background:#eafbf2;color:#12623e}.option:disabled{cursor:default}.option:disabled:not(.correct):not(.wrong){opacity:.65}.feedback{margin-top:18px;padding:15px;border-radius:12px;background:#fff4d7;color:#714a00;line-height:1.5}.feedback.done{background:#eaf0ff;color:#233d85}.primary{width:100%;border:0;background:#246b43;color:white;padding:15px;border-radius:13px;font-weight:800;margin-top:18px}.primary:hover{background:#194e30}button:focus-visible{outline:3px solid #42966a;outline-offset:3px}.score{width:140px;height:140px;border:9px solid #a8d5b5;border-radius:50%;display:grid;place-items:center;margin:24px auto;font-size:40px;font-weight:800;color:#216341;background:#f0faf2}.center{text-align:center;line-height:1.6}[hidden]{display:none!important}footer{text-align:center;color:#64718a;font-size:12px;margin-top:18px}
+</style></head><body><main class="app"><header><div class="eyebrow">LEARN SCIENCE • PLANTS</div><h1>Plant Flashcards</h1><div class="meta"><span id="count">Card 1 of 8</span><span id="percent">13%</span></div><div class="track" role="progressbar" aria-label="Card progress" aria-valuemin="0" aria-valuemax="8" aria-valuenow="1" id="track"><div class="fill" id="fill"></div></div></header><section class="card" id="quiz"><div class="badge" id="badge" aria-hidden="true"></div><h2 id="question" tabindex="-1"></h2><div class="options" id="options"></div><div id="feedback" class="feedback" role="status" hidden></div><button class="primary" id="next" hidden>Next →</button></section><section class="card center" id="result" hidden><div class="badge" aria-hidden="true">🌻</div><h2 id="complete" tabindex="-1">Deck completed!</h2><div class="score" id="score"></div><p id="message"></p><button class="primary" id="retry">Try again ↻</button></section><footer>Practice • Learn • Improve</footer></main>
+<script>
+// EDIT QUESTIONS HERE. correct: 0 = A, 1 = B, 2 = C.
+const cards = [
+  {
+    "icon": "🌱",
+    "question": "Which part of a plant absorbs water from the soil?",
+    "options": [
+      "Leaves",
+      "Roots",
+      "Flowers"
+    ],
+    "correct": 1,
+    "hint": "Think about the part that grows underground.",
+    "explanation": "Roots absorb water and mineral nutrients from the soil."
+  },
+  {
+    "icon": "🌿",
+    "question": "Which part of a plant makes most of its food?",
+    "options": [
+      "Leaves",
+      "Roots",
+      "Flowers"
+    ],
+    "correct": 0,
+    "hint": "Look for the green part that captures sunlight.",
+    "explanation": "Leaves contain chlorophyll and make food through photosynthesis."
+  },
+  {
+    "icon": "☀️",
+    "question": "What process do plants use to make their own food?",
+    "options": [
+      "Germination",
+      "Pollination",
+      "Photosynthesis"
+    ],
+    "correct": 2,
+    "hint": "This process uses light energy.",
+    "explanation": "Photosynthesis uses light energy, water and carbon dioxide to make sugars."
+  },
+  {
+    "icon": "🍃",
+    "question": "Which gas do plants take in for photosynthesis?",
+    "options": [
+      "Oxygen",
+      "Carbon dioxide",
+      "Nitrogen"
+    ],
+    "correct": 1,
+    "hint": "This gas is also released when we breathe out.",
+    "explanation": "Plants use carbon dioxide to produce sugars during photosynthesis."
+  },
+  {
+    "icon": "🌷",
+    "question": "Which part of a flowering plant helps it reproduce?",
+    "options": [
+      "Flower",
+      "Root",
+      "Stem"
+    ],
+    "correct": 0,
+    "hint": "This part often has colourful petals.",
+    "explanation": "Flowers contain reproductive structures that help produce seeds."
+  },
+  {
+    "icon": "🌳",
+    "question": "What is one main function of the stem?",
+    "options": [
+      "Absorb sunlight only",
+      "Produce seeds",
+      "Support the plant and transport water"
+    ],
+    "correct": 2,
+    "hint": "Think of the part that holds leaves upright.",
+    "explanation": "The stem supports the plant and transports water and other substances."
+  },
+  {
+    "icon": "💧",
+    "question": "What does most seed germination require?",
+    "options": [
+      "Water, oxygen and a suitable temperature",
+      "Only sunlight",
+      "Only soil"
+    ],
+    "correct": 0,
+    "hint": "A seed needs moisture, air and suitable warmth.",
+    "explanation": "Most seeds need water, oxygen and a suitable temperature to germinate."
+  },
+  {
+    "icon": "🌾",
+    "question": "What is the green pigment in leaves called?",
+    "options": [
+      "Pollen",
+      "Chlorophyll",
+      "Glucose"
+    ],
+    "correct": 1,
+    "hint": "This pigment helps capture light energy.",
+    "explanation": "Chlorophyll absorbs light energy for photosynthesis."
+  }
+];
+let index=0,score=0,wrong=0,locked=false;
+const $=id=>document.getElementById(id);
+function progress(done=false){const n=done?cards.length:index+1;const p=Math.round(n/cards.length*100);$('count').textContent=done?'Completed '+cards.length+' of '+cards.length:`Card ${n} of ${cards.length}`;$('percent').textContent=p+'%';$('fill').style.width=p+'%';$('track').setAttribute('aria-valuenow',n);}
+function render(){wrong=0;locked=false;progress();const c=cards[index];$('badge').textContent=c.icon;$('question').textContent=c.question;$('feedback').hidden=true;$('feedback').className='feedback';$('feedback').textContent='';$('next').hidden=true;$('next').textContent=index===cards.length-1?'See results →':'Next →';$('options').replaceChildren();c.options.forEach((value,i)=>{const b=document.createElement('button');b.className='option';const l=document.createElement('span');l.className='letter';l.textContent='ABC'[i];const t=document.createElement('span');t.textContent=value;const m=document.createElement('span');m.className='mark';b.append(l,t,m);b.addEventListener('click',()=>choose(i));$('options').append(b);});}
+function choose(i){const c=cards[index],buttons=[...$('options').children],b=buttons[i];if(locked||b.disabled)return;if(i===c.correct){score++;finish(true);return;}wrong++;b.disabled=true;b.classList.add('wrong');b.querySelector('.mark').textContent='✕';if(wrong===1){$('feedback').textContent='Hint: '+c.hint+' Try once more.';$('feedback').hidden=false;const remaining=buttons.find(x=>!x.disabled);if(remaining)remaining.focus();}else{finish(false);}}
+function finish(success){locked=true;const c=cards[index];[...$('options').children].forEach((b,i)=>{b.disabled=true;if(i===c.correct){b.classList.add('correct');b.querySelector('.mark').textContent='✓';}});$('feedback').className='feedback done';$('feedback').textContent=(success?'Correct! ':'The correct answer is '+c.options[c.correct]+'. ')+c.explanation;$('feedback').hidden=false;$('next').hidden=false;$('next').focus();}
+$('next').addEventListener('click',()=>{if(!locked)return;if(index<cards.length-1){index++;render();$('question').focus();}else{progress(true);$('quiz').hidden=true;$('result').hidden=false;$('score').textContent=score+'/'+cards.length;$('message').textContent=score===cards.length?'Excellent work! You answered every card correctly.':score>=5?'Great effort! Keep practising to learn more about plants.':'Good effort! Every practice round helps you learn.';$('complete').focus();}});
+$('retry').addEventListener('click',()=>{index=0;score=0;$('result').hidden=true;$('quiz').hidden=false;render();$('question').focus();});render();
+</script></body></html>
